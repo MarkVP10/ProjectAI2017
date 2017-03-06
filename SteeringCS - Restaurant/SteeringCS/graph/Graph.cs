@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SteeringCS.util;
 
 namespace SteeringCS.graph
 {
@@ -54,6 +55,68 @@ namespace SteeringCS.graph
         }
 
 
+
+        public List<Vertex> AStar(Vertex start, Vertex target)
+        {
+            int StepIncrement = 10;
+
+            List<Vertex> pathToTarget = new List<Vertex>();
+            List<Vertex> CleanUpList = new List<Vertex>();
+            PriorityQueue_Vertex queue = new PriorityQueue_Vertex();
+            Vertex currentVertex = null;
+            
+
+            CleanUpList.Add(start);
+            start.Seen = true;
+            start.StepCount = 0;
+            start.Target = target;
+            queue.Add(start);
+
+            while (queue.IsEmpty())
+            {
+                currentVertex = queue.Pop();
+                currentVertex.Seen = true;
+
+                if (currentVertex == target)
+                    break;
+
+                foreach (Edge edge in currentVertex.Adjacent)
+                {
+                    //If already seen, no need to do anything.
+                    if(edge.Destination.Seen)
+                        continue;
+
+                    //Add to cleanup list for resetting values when A* is done.
+                    CleanUpList.Add(edge.Destination);
+
+                    //Stepcount update
+                    if (edge.Destination.StepCount > currentVertex.StepCount + StepIncrement)
+                    {
+                        //Update variables
+                        edge.Destination.Previous = currentVertex;
+                        edge.Destination.StepCount = currentVertex.StepCount + StepIncrement;
+                        edge.Destination.Target = target;
+                        //Re-add to queue
+                        queue.UpdateQueue(edge.Destination);
+                    }
+                }
+            }
+
+
+            //Go through a loop to get all previous from Target.
+            pathToTarget.Add(target);
+            while (target.Previous != null)
+            {
+                pathToTarget.Add(target.Previous);
+                target = target.Previous;
+            }
+
+
+
+            CleanUpList.ForEach(vertex => vertex.ResetPath()); //Reset all vertexes so they can be used again.
+
+            return pathToTarget;
+        }
 
 
     }

@@ -52,17 +52,22 @@ namespace SteeringCS
             switch (e.KeyChar)
             {
                 case 'q':
+                    label_CurrentBehaviour.Text = "None";
+                    world.SwitchAgentBehaviour(CombineForces.Behaviours.None);
+                    break;
+                case 'w':
                     label_CurrentBehaviour.Text = "Seek";
                     world.SwitchAgentBehaviour(CombineForces.Behaviours.Seek);
                     break;
-                case 'w':
+                case 'e':
                     label_CurrentBehaviour.Text = "Arrive";
                     world.SwitchAgentBehaviour(CombineForces.Behaviours.Arrive);
                     break;
-                case 'e':
+                case 'r':
                     label_CurrentBehaviour.Text = "Wander";
                     world.SwitchAgentBehaviour(CombineForces.Behaviours.Wander);
                     break;
+                
                 case '1':
                     label_DecelerationSpeed.Text = "Slow";
                     world.SetArriveDeceleration(ArriveBehaviour.Deceleration.Slow);

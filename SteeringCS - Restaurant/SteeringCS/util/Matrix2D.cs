@@ -12,23 +12,24 @@ namespace SteeringCS.util
     {
         const int matrixSize = 3;
         double[,] mat = new double[matrixSize, matrixSize]; //First [] is the row, second [] is the column.
-                                                          /* How it works
 
-                                                              Array:
-                                                              { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} }
+        /* How it works
 
-                                                              Matrix:
-                                                              | 1 2 3 |
-                                                              | 4 5 6 |
-                                                              | 7 8 9 |
+            Array:
+            { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} }
+
+            Matrix:
+            | 1 2 3 |
+            | 4 5 6 |
+            | 7 8 9 |
 
 
-                                                              [0] -> { 1, 2, 3 }
-                                                              [1] -> { 4, 5, 6 } (Row is the first [])
-                                                              [2] -> { 7, 8, 9 }
-                                                                      [0][1][2]
-                                                                      (Column is the second [], aka the row item)
-                                                          */
+            [0] -> { 1, 2, 3 }
+            [1] -> { 4, 5, 6 } (Row is the first [])
+            [2] -> { 7, 8, 9 }
+                    [0][1][2]
+                    (Column is the second [], aka the row item)
+        */
 
 
         public Matrix2D() : 
@@ -152,12 +153,12 @@ namespace SteeringCS.util
         public static Matrix2D Scale(float factor)
         {
             Matrix2D m = new Matrix2D(factor);
-            //m.mat[matrixSize-1, matrixSize-1] = 1; not needed, seeing as the default constructor for a matrix is making an identity matrix, that has it's lower right corner set to 1.
+            //m.mat[matrixSize-1, matrixSize-1] = 1; //not needed, seeing as the default constructor for a matrix is making an identity matrix, that has it's lower right corner set to 1.
             return m;
         }
 
         //Returns a rotation matrix
-        public static Matrix2D Rotate(float degrees)
+        public static Matrix2D RotateCounterClockWise(float degrees)
         {
             double radian = Math.PI / 180 * (double)degrees;
             Matrix2D m = new Matrix2D();
@@ -167,6 +168,11 @@ namespace SteeringCS.util
             m.mat[1, 1] = (float)Math.Cos(radian);
 
             return m;
+        }
+
+        public static Matrix2D RotateClockWise(float degrees)
+        {
+            return RotateCounterClockWise(degrees*-1);
         }
 
         //Returns a Translation matrix

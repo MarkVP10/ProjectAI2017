@@ -60,8 +60,10 @@
     <Compile Include="DBPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="entity\BasicCircularObstacle.cs" />
     <Compile Include="entity\Customer.cs" />
     <Compile Include="entity\MovingEntity.cs" />
+    <Compile Include="entity\Obstacle.cs" />
     <Compile Include="entity\Vehicle.cs" />
     <Compile Include="entity\Waitress.cs" />
     <Compile Include="Form1.cs">

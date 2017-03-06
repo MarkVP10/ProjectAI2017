@@ -70,7 +70,7 @@ namespace SteeringCS
             return this;
         }
 
-        public Vector2D Normalize() //Is this correct?
+        public Vector2D Normalize()
         {
             Divide(Length());
             return this;
@@ -102,19 +102,93 @@ namespace SteeringCS
         }
 
 
+        
+        /*     -------EXPLANATION-------
+                          
 
+                           negY
+                   D     0°=360°     A
+                    \   d   |   a   /                                            
+                     \      |      /                                             
+                      \ 30° | 30° /                                              
+                       \    |    /                               
+                        \   |   /                                
+                         \  |  /                                 
+                    60°   \ | /   60°                             
+                           \|/                                                   
+   negX  270°---------------+--------------- 90°  posX                            
+                           /|\                      
+                    60°   / | \   60°                             
+                         /  |  \                                 
+                        /   |   \                                
+                       /    |    \                               
+                      / 30° | 30° \                                             
+                     /      |      \                             
+                    /   c   |   b   \                            
+                   C       180°      B                       
+                           posY 
+
+             a = 30°
+             b = 30°
+             c = 30°
+             d = 30°
+
+            A =   0° + 30° = 30°
+            B = 180° - 30° = 150°
+            C = 180° + 30° = 210°
+            D = 360° - 30° = 330°
+        */
+
+
+        /// <summary>
+        /// The one where it returns a degree using the Windows Forms way of graphic.
+        /// Where the Zenith is negY.
+        /// </summary>
+        /// <returns></returns>
         public static float ToDegrees(Vector2D v1)
         {
-            Vector2D tempV = v1.Clone().Normalize();
+            Vector2D tempV = v1.Clone();
+
+
             
-            float result = (float)(Math.Atan(tempV.Y/tempV.X)/(Math.PI/180));
-            if (tempV.X < 0)
+            if (tempV.X == 0)
             {
-                result = 0 - result;
+                if (tempV.Y > 0) //Down(posY)
+                    return 180;
+                if (tempV.Y < 0) //Up (negY)
+                    return 0;
             }
-            return result;
+            else if (tempV.Y == 0)
+            {
+                if (tempV.X > 0) //Right (posX)
+                    return 90;
+                if (tempV.X < 0) //Left (negX)
+                    return 270;
+                return 0; //Both X and Y are 0
+            }
+
+
+            //Gets the angle
+            double angle = Math.Atan(tempV.X/tempV.Y)/(Math.PI/180);
+            float returnAngle = 0;
+
+            
+            //Determine what angle to return
+            //Also, when there is an uneven amount of Negative coordinates, the angle needs to be multiplied by -1 to get the correct angle.
+            if (tempV.X > 0 && tempV.Y < 0) //PosX & NegY -> up, right -> NorthEast -> A (0°-90°)
+                returnAngle = (float)angle*-1;
+            else if (tempV.X > 0 && tempV.Y > 0) //PosX & PosY -> down, right -> SouthEast -> B (90°-180°)
+                returnAngle = (float)(180-angle);
+            else if (tempV.X < 0 && tempV.Y > 0) //NegX & PosY -> down, left -> SouthWest -> C (180°-270°)   
+                returnAngle = (float)(180+angle*-1);
+            else if (tempV.X < 0 && tempV.Y < 0) //NegX & NegY -> up, left -> NorthWest -> D (270°-360°)
+                returnAngle = (float)(360-angle);
+
+            //Return the angle
+            return returnAngle;
         }
 
+            
         public PointF ToPointF()
         {
             return new PointF((float)this.X, (float)this.Y);

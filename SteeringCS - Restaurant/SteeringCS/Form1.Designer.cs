@@ -33,12 +33,16 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label_CurrentBehaviour = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.dbPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dbPanel1
             // 
             this.dbPanel1.BackColor = System.Drawing.Color.White;
+            this.dbPanel1.Controls.Add(this.label4);
+            this.dbPanel1.Controls.Add(this.label3);
             this.dbPanel1.Controls.Add(this.label_DecelerationSpeed);
             this.dbPanel1.Controls.Add(this.label2);
             this.dbPanel1.Controls.Add(this.label_CurrentBehaviour);
@@ -73,9 +77,9 @@
             this.label_CurrentBehaviour.AutoSize = true;
             this.label_CurrentBehaviour.Location = new System.Drawing.Point(168, 9);
             this.label_CurrentBehaviour.Name = "label_CurrentBehaviour";
-            this.label_CurrentBehaviour.Size = new System.Drawing.Size(32, 13);
+            this.label_CurrentBehaviour.Size = new System.Drawing.Size(33, 13);
             this.label_CurrentBehaviour.TabIndex = 1;
-            this.label_CurrentBehaviour.Text = "Seek";
+            this.label_CurrentBehaviour.Text = "None";
             // 
             // label1
             // 
@@ -85,6 +89,24 @@
             this.label1.Size = new System.Drawing.Size(97, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Current behaviour: ";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(269, 9);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(184, 13);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Press q,w,e and r to change behavior";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(269, 35);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(179, 13);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Press 1, 2 or 3 to change dec speed";
             // 
             // Form1
             // 
@@ -108,6 +130,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label_DecelerationSpeed;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
     }
 }
 

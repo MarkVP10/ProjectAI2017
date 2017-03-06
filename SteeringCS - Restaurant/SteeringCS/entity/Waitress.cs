@@ -17,7 +17,6 @@ namespace SteeringCS.entity
 
         public Waitress(Vector2D pos, World w) : base(pos, w)
         {
-            Velocity = new Vector2D(0, 0);
             Scale = 10;
 
             VColor = Color.CadetBlue;
@@ -30,6 +29,12 @@ namespace SteeringCS.entity
             Vector2D v1 = Pos + HeadingVector * 2 * Scale;//Top
             Vector2D v2 = Pos + ((HeadingVector * -1 + SideVector) * Scale);//Left bottom
             Vector2D v3 = Pos + ((HeadingVector * -1 - SideVector) * Scale);//Right bottom
+
+
+            double MinDetectionBoxLength = 40;
+            double DetectionBoxLength = MinDetectionBoxLength + (Velocity.Length() / MaxSpeed) * MinDetectionBoxLength;
+            Vector2D v5 = v2 + (HeadingVector*(DetectionBoxLength + Scale)); //Left detection box
+            Vector2D v6 = v3 + (HeadingVector*(DetectionBoxLength + Scale)); //Right detection box
 
             //
             double leftCorner = Pos.X - Scale;
@@ -47,6 +52,12 @@ namespace SteeringCS.entity
             g.DrawLine(outlinePen, v1.ToPointF(), v2.ToPointF());
             g.DrawLine(outlinePen, v2.ToPointF(), v3.ToPointF());
             g.DrawLine(outlinePen, v3.ToPointF(), v1.ToPointF());
+
+
+            //Draw the detection box
+            g.DrawLine(outlinePen, v2.ToPointF(), v5.ToPointF()); //left side of detection box
+            g.DrawLine(outlinePen, v3.ToPointF(), v6.ToPointF()); //top side of detection box
+            g.DrawLine(outlinePen, v5.ToPointF(), v6.ToPointF()); //right side of detection box
 
 
             //Draw the velocity

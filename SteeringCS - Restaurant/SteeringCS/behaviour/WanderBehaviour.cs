@@ -26,7 +26,7 @@ namespace SteeringCS.behaviour
             wanderDistance = distance;
             wanderJitter = jitter;
             wanderCurrentAngle = randomizer.Next(0, 360);
-            MessageBox.Show(wanderCurrentAngle.ToString());
+            //MessageBox.Show(wanderCurrentAngle.ToString()); //Prints current randomized angle to test if the randomizers are different //todo remove the messagebox.show
         }
 
         public override Vector2D Calculate()

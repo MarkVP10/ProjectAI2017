@@ -98,8 +98,8 @@ namespace SteeringCS.entity
 
 
 
-            // to do
-            Console.WriteLine(ToString());
+            // todo - remove the '\\' to show the velocity again in the console.
+            //Console.WriteLine(ToString());
         }
 
         public override string ToString()

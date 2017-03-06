@@ -10,15 +10,15 @@ namespace SteeringCS.graph
     {
         public string Name;         //Name of this vertex.
         public List<Edge> Adjacent; //List of adjacent edges.
-        public double Y;            //Y-position on map
-        public double X;            //X-position on map
+        public float Y;            //Y-position on map
+        public float X;            //X-position on map
 
         public Vertex Previous; //Stores the vertex
         public int StepCount; //How many steps away from the start this vertex is.
         public bool Seen; //Set to true when searched.
         public Vertex Target;
 
-        public Vertex(string name,double x,double y)
+        public Vertex(string name, float x, float y)
         {
             Name = name;
             X = x;

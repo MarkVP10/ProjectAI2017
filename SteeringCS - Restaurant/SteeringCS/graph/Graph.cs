@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace SteeringCS.graph
         private Dictionary<string, Vertex> graphMap = new Dictionary<string, Vertex>();
 
 
-        public void AddVertex(string name, double x, double y)
+        public void AddVertex(string name, float x, float y)
         {
             graphMap.Add(name, new Vertex(name, x, y));
         }
@@ -49,9 +50,18 @@ namespace SteeringCS.graph
             return v;
         }
 
-        public void DrawGraph()
+        public void DrawGraph(Graphics g)
         {
-
+            var penBox = new Pen(Color.Gray, 7f);
+            var penLine = new Pen(Color.Gray, 2f);
+            foreach (Vertex vertex in graphMap.Values)
+            {
+                g.DrawEllipse(penBox, new RectangleF(vertex.X - 3.5f, vertex.Y - 3.5f, 7, 7));
+                foreach (Edge edge in vertex.Adjacent)
+                {
+                    g.DrawLine(penLine, vertex.X, vertex.Y, edge.Destination.X, edge.Destination.Y);
+                }
+            }
         }
 
 

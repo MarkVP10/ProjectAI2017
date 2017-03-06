@@ -80,6 +80,9 @@ namespace SteeringCS
                     label_DecelerationSpeed.Text = "Fast";
                     world.SetArriveDeceleration(ArriveBehaviour.Deceleration.Fast);
                     break;
+                case 'd':
+                    world.graphVisible = !world.graphVisible;
+                    break;
             }
         }
     }

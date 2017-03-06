@@ -29,12 +29,13 @@
         private void InitializeComponent()
         {
             this.dbPanel1 = new SteeringCS.DBPanel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.label_DecelerationSpeed = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label_CurrentBehaviour = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.gameDisplay1 = new SteeringCS.graph.GameDisplay();
             this.dbPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,6 +54,24 @@
             this.dbPanel1.TabIndex = 0;
             this.dbPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.dbPanel1_Paint);
             this.dbPanel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dbPanel1_MouseClick);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(269, 35);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(179, 13);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Press 1, 2 or 3 to change dec speed";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(269, 9);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(184, 13);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Press q,w,e and r to change behavior";
             // 
             // label_DecelerationSpeed
             // 
@@ -90,29 +109,20 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Current behaviour: ";
             // 
-            // label3
+            // gameDisplay1
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(269, 9);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(184, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Press q,w,e and r to change behavior";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(269, 35);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(179, 13);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Press 1, 2 or 3 to change dec speed";
+            this.gameDisplay1.BackColor = System.Drawing.Color.White;
+            this.gameDisplay1.Location = new System.Drawing.Point(735, 12);
+            this.gameDisplay1.Name = "gameDisplay1";
+            this.gameDisplay1.Size = new System.Drawing.Size(500, 500);
+            this.gameDisplay1.TabIndex = 1;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(612, 436);
+            this.ClientSize = new System.Drawing.Size(1422, 544);
+            this.Controls.Add(this.gameDisplay1);
             this.Controls.Add(this.dbPanel1);
             this.Name = "Form1";
             this.Text = "Steering";
@@ -132,6 +142,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
+        private graph.GameDisplay gameDisplay1;
     }
 }
 

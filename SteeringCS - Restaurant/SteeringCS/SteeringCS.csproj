@@ -73,6 +73,12 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="graph\Edge.cs" />
+    <Compile Include="graph\GameDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="graph\GameDisplay.Designer.cs">
+      <DependentUpon>GameDisplay.cs</DependentUpon>
+    </Compile>
     <Compile Include="graph\Graph.cs" />
     <Compile Include="graph\Vertex.cs" />
     <Compile Include="Program.cs" />
@@ -83,6 +89,9 @@
     <Compile Include="world\World.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="graph\GameDisplay.resx">
+      <DependentUpon>GameDisplay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -55,3 +55,9 @@ D:\Visual Studio\AAI_Project\SteeringCS - Restaurant\SteeringCS\obj\Debug\Steeri
 C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\bin\Debug\SteeringCS.exe.config
 C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\obj\Debug\SteeringCS.exe
 C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\obj\Debug\SteeringCS.pdb
+C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\bin\Debug\SteeringCS.exe
+C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\bin\Debug\SteeringCS.pdb
+C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\obj\Debug\SteeringCS.csprojResolveAssemblyReference.cache
+C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\obj\Debug\SteeringCS.Form1.resources
+C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\obj\Debug\SteeringCS.Properties.Resources.resources
+C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\obj\Debug\SteeringCS.csproj.GenerateResource.Cache

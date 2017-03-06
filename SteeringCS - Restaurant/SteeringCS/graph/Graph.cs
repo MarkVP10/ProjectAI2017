@@ -65,7 +65,7 @@ namespace SteeringCS.graph
         }
 
 
-
+        //todo test!!!
         public List<Vertex> AStar(Vertex start, Vertex target)
         {
             int StepIncrement = 10;

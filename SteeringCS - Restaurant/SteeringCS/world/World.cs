@@ -41,9 +41,7 @@ namespace SteeringCS
             Customer c1 = new Customer(new Vector2D(100, 300), this);
             //entities.Add(c1);
             Customer c2 = new Customer(new Vector2D(100, 400), this);
-           // entities.Add(c2);
-
-
+            // entities.Add(c2);
 
             Target = new Vehicle(new Vector2D(), this);
             Target.VColor = Color.DarkRed;

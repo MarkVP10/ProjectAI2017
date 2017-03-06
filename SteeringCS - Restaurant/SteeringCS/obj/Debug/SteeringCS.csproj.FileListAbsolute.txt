@@ -61,3 +61,4 @@ C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\
 C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\obj\Debug\SteeringCS.Form1.resources
 C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\obj\Debug\SteeringCS.Properties.Resources.resources
 C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\obj\Debug\SteeringCS.csproj.GenerateResource.Cache
+C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\obj\Debug\SteeringCS.graph.GameDisplay.resources

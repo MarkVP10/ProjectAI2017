@@ -35,7 +35,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label_CurrentBehaviour = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.gameDisplay1 = new SteeringCS.graph.GameDisplay();
             this.dbPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -109,20 +108,11 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Current behaviour: ";
             // 
-            // gameDisplay1
-            // 
-            this.gameDisplay1.BackColor = System.Drawing.Color.White;
-            this.gameDisplay1.Location = new System.Drawing.Point(735, 12);
-            this.gameDisplay1.Name = "gameDisplay1";
-            this.gameDisplay1.Size = new System.Drawing.Size(500, 500);
-            this.gameDisplay1.TabIndex = 1;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1422, 544);
-            this.Controls.Add(this.gameDisplay1);
+            this.ClientSize = new System.Drawing.Size(676, 451);
             this.Controls.Add(this.dbPanel1);
             this.Name = "Form1";
             this.Text = "Steering";
@@ -142,7 +132,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private graph.GameDisplay gameDisplay1;
     }
 }
 

@@ -18,13 +18,30 @@ namespace SteeringCS.util
         }
 
 
+
+        //todo Very inefficient!!
+        //todo Improve/Optimize later
         public void Add(Vertex newItem)
         {
+            //Adds the item to the first if the list is empty
+            if (IsEmpty())
+            {
+                queue.AddFirst(newItem);
+                return;
+            }
+
+            //Go through each vertex, untill you find one that has a lower 'score' (Score = Stepcount + (manhatten)Heuristic)
             foreach (Vertex vertex in queue)
             {
                 if (newItem.GetScore() < vertex.GetScore())
+                {
                     queue.AddBefore(queue.Find(vertex), newItem);
+                    return;
+                }
             }
+
+            //Adds the item to the end when not found
+            queue.AddLast(newItem);
         }
 
         public void UpdateQueue(Vertex relocateVertex)

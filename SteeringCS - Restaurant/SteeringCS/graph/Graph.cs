@@ -17,7 +17,12 @@ namespace SteeringCS.graph
 
         public void AddVertex(string name, float x, float y)
         {
-            graphMap.Add(name, new Vertex(name, x, y));
+            AddVertex(new Vertex(name, x, y));
+        }
+
+        public void AddVertex(Vertex v)
+        {
+            graphMap.Add(v.Name, v);
         }
 
         public void AddEdge(string sourceName, string destinationName)
@@ -25,6 +30,13 @@ namespace SteeringCS.graph
             Vertex source = GetVertex(sourceName);
             Vertex destination = GetVertex(destinationName);
 
+            
+            if (source == null || destination == null)
+            {
+                //throw new NullReferenceException("Can't add Egde when the source or destination Vertex is NULL.");
+                return;
+            }
+                
 
             source.Adjacent.Add(new Edge(destination));
         }
@@ -50,10 +62,12 @@ namespace SteeringCS.graph
             return v;
         }
 
-        public void DrawGraph(Graphics g)
+        public void DrawGraph(Graphics g, Color? color = null)
         {
-            var penBox = new Pen(Color.Gray, 7f);
-            var penLine = new Pen(Color.Gray, 2f);
+            Color trueColor = color ?? Color.Gray;
+
+            var penBox = new Pen(trueColor, 7f);
+            var penLine = new Pen(trueColor, 2f);
             foreach (Vertex vertex in graphMap.Values)
             {
                 g.DrawEllipse(penBox, new RectangleF(vertex.X - 3.5f, vertex.Y - 3.5f, 7, 7));
@@ -64,6 +78,12 @@ namespace SteeringCS.graph
             }
         }
 
+
+
+        public Vertex GetVertexByName(string nameOfVertex)
+        {
+            return GetVertex(nameOfVertex);
+        }
 
         //todo test!!!
         public List<Vertex> AStar(Vertex start, Vertex target)
@@ -82,7 +102,7 @@ namespace SteeringCS.graph
             start.Target = target;
             queue.Add(start);
 
-            while (queue.IsEmpty())
+            while (!queue.IsEmpty())
             {
                 currentVertex = queue.Pop();
                 currentVertex.Seen = true;

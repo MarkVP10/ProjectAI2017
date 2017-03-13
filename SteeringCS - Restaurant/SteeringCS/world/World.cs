@@ -22,6 +22,13 @@ namespace SteeringCS
         public int Width { get; set; }
         public int Height { get; set; }
 
+
+
+
+        private Graph AStarGraph = new Graph();
+        private List<Vertex> AStarListTEST = new List<Vertex>();
+
+
         public World(int w, int h)
         {
             Width = w;
@@ -82,6 +89,7 @@ namespace SteeringCS
             if (graphVisible)
             {
                 graph.DrawGraph(g);
+                AStarGraph.DrawGraph(g, Color.Blue);
             }
             entities.ForEach(e => e.Render(g));
             Target.Render(g);
@@ -130,7 +138,27 @@ namespace SteeringCS
 
             GenerateVertices();
             AddEdges();
-            
+
+
+            string start = "Node11";
+            string end = "Node14";
+            //string end = "Node15";
+            //string end = "Node36";
+            //string end = "Node4x";
+            AStarListTEST = graph.AStar(graph.GetVertexByName(start), graph.GetVertexByName(end));
+            string message = "List of vertexes to target:";
+            foreach (Vertex vertex in AStarListTEST)
+            {
+                message += ("\r\n" + vertex.Name + " [" + vertex.X + ":" + vertex.Y + "]");
+
+                AStarGraph.AddVertex(vertex.Name, vertex.X, vertex.Y);
+            }
+            MessageBox.Show(message);
+            //Put all the A* nodes in a separate graph
+            for (int i = 0; i < AStarListTEST.Count-1; i++)
+            {
+                AStarGraph.AddMultiEdge(AStarListTEST[i].Name, AStarListTEST[i+1].Name);
+            }
         }
 
         private void GenerateVertices()

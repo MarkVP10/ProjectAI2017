@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SteeringCS.util;
 
 namespace SteeringCS.graph
 {
@@ -16,7 +17,12 @@ namespace SteeringCS.graph
 
         public void AddVertex(string name, float x, float y)
         {
-            graphMap.Add(name, new Vertex(name, x, y));
+            AddVertex(new Vertex(name, x, y));
+        }
+
+        public void AddVertex(Vertex v)
+        {
+            graphMap.Add(v.Name, v);
         }
 
         public void AddEdge(string sourceName, string destinationName)
@@ -24,6 +30,13 @@ namespace SteeringCS.graph
             Vertex source = GetVertex(sourceName);
             Vertex destination = GetVertex(destinationName);
 
+            
+            if (source == null || destination == null)
+            {
+                //throw new NullReferenceException("Can't add Egde when the source or destination Vertex is NULL.");
+                return;
+            }
+                
 
             source.Adjacent.Add(new Edge(destination));
         }
@@ -49,10 +62,12 @@ namespace SteeringCS.graph
             return v;
         }
 
-        public void DrawGraph(Graphics g)
+        public void DrawGraph(Graphics g, Color? color = null)
         {
-            var penBox = new Pen(Color.Gray, 7f);
-            var penLine = new Pen(Color.Gray, 2f);
+            Color trueColor = color ?? Color.Gray;
+
+            var penBox = new Pen(trueColor, 7f);
+            var penLine = new Pen(trueColor, 2f);
             foreach (Vertex vertex in graphMap.Values)
             {
                 g.DrawEllipse(penBox, new RectangleF(vertex.X - 3.5f, vertex.Y - 3.5f, 7, 7));
@@ -64,6 +79,74 @@ namespace SteeringCS.graph
         }
 
 
+
+        public Vertex GetVertexByName(string nameOfVertex)
+        {
+            return GetVertex(nameOfVertex);
+        }
+
+        //todo test!!!
+        public List<Vertex> AStar(Vertex start, Vertex target)
+        {
+            int StepIncrement = 10;
+
+            List<Vertex> pathToTarget = new List<Vertex>();
+            List<Vertex> CleanUpList = new List<Vertex>();
+            PriorityQueue_Vertex queue = new PriorityQueue_Vertex();
+            Vertex currentVertex = null;
+            
+
+            CleanUpList.Add(start);
+            start.Seen = true;
+            start.StepCount = 0;
+            start.Target = target;
+            queue.Add(start);
+
+            while (!queue.IsEmpty())
+            {
+                currentVertex = queue.Pop();
+                currentVertex.Seen = true;
+
+                if (currentVertex == target)
+                    break;
+
+                foreach (Edge edge in currentVertex.Adjacent)
+                {
+                    //If already seen, no need to do anything.
+                    if(edge.Destination.Seen)
+                        continue;
+
+                    //Add to cleanup list for resetting values when A* is done.
+                    CleanUpList.Add(edge.Destination);
+
+                    //Stepcount update
+                    if (edge.Destination.StepCount > currentVertex.StepCount + StepIncrement)
+                    {
+                        //Update variables
+                        edge.Destination.Previous = currentVertex;
+                        edge.Destination.StepCount = currentVertex.StepCount + StepIncrement;
+                        edge.Destination.Target = target;
+                        //Re-add to queue
+                        queue.UpdateQueue(edge.Destination);
+                    }
+                }
+            }
+
+
+            //Go through a loop to get all previous from Target.
+            pathToTarget.Add(target);
+            while (target.Previous != null)
+            {
+                pathToTarget.Add(target.Previous);
+                target = target.Previous;
+            }
+
+
+
+            CleanUpList.ForEach(vertex => vertex.ResetPath()); //Reset all vertexes so they can be used again.
+
+            return pathToTarget;
+        }
 
 
     }

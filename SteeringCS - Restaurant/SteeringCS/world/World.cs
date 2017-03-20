@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteeringCS.util;
 using SteeringCS.graph;
+using SteeringCS.goal_driven_behaviour.CompositeGoals;
 
 namespace SteeringCS
 {
@@ -31,6 +32,11 @@ namespace SteeringCS
 
         public World(int w, int h)
         {
+            TalkToCustomer goal = new TalkToCustomer();
+            //goal.Activate();
+            //goal.Process();
+
+        
             Width = w;
             Height = h;
             populate();
@@ -41,14 +47,14 @@ namespace SteeringCS
         {
             Vehicle v = new Vehicle(new Vector2D(200,100), this);
             v.VColor = Color.Blue;
-            //entities.Add(v);
+            entities.Add(v);
 
             Waitress w1 = new Waitress(new Vector2D(100, 200), this);
-            //entities.Add(w1);
+            entities.Add(w1);
             Customer c1 = new Customer(new Vector2D(100, 300), this);
-            //entities.Add(c1);
+            entities.Add(c1);
             Customer c2 = new Customer(new Vector2D(100, 400), this);
-            // entities.Add(c2);
+            entities.Add(c2);
 
             Target = new Vehicle(new Vector2D(), this);
             Target.VColor = Color.DarkRed;
@@ -57,7 +63,7 @@ namespace SteeringCS
 
             BasicCircularObstacle b1 = new BasicCircularObstacle(new Vector2D(300,300), this);
             b1.Scale = 10;
-            //obstacles.Add(b1);
+            obstacles.Add(b1);
         }
 
 
@@ -77,11 +83,14 @@ namespace SteeringCS
 
         public void Update(float timeElapsed)
         {
-            foreach (MovingEntity me in entities)
-            {
-                me.combineStratagy.SetTarget(Target.Pos);
-                me.Update(timeElapsed);
-            }
+            new GroupFollowingBehaviour().Group(timeElapsed, entities, Target);
+
+            //foreach (MovingEntity me in entities)
+            //{
+            //    me.combineStratagy.SetTarget(Target.Pos);
+            //    me.Update(timeElapsed);
+            //}
+
         }
 
         public void Render(Graphics g)

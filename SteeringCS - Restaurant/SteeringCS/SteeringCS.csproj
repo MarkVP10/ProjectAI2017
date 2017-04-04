@@ -72,11 +72,20 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="fuzzy\FuzzyModule.cs" />
+    <Compile Include="fuzzy\FuzzyRule.cs" />
+    <Compile Include="fuzzy\FuzzySet.cs" />
+    <Compile Include="fuzzy\fuzzysets\LeftShoulder.cs" />
+    <Compile Include="fuzzy\fuzzysets\RightShoulder.cs" />
+    <Compile Include="fuzzy\fuzzysets\Triangle.cs" />
+    <Compile Include="fuzzy\FuzzyTerm.cs" />
+    <Compile Include="fuzzy\FuzzyVariable.cs" />
+    <Compile Include="fuzzy\FzAND.cs" />
     <Compile Include="goal-driven-behaviour\CompositeGoal.cs" />
-    <Compile Include="goal-driven-behaviour\CompositeGoals\Subgoals\ChooseCustomer.cs" />
-    <Compile Include="goal-driven-behaviour\CompositeGoals\Subgoals\FindPathToCustomer.cs" />
-    <Compile Include="goal-driven-behaviour\CompositeGoals\Subgoals\GoToCustomer.cs" />
-    <Compile Include="goal-driven-behaviour\CompositeGoals\Subgoals\TalkToCustomer.cs" />
+    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\ChooseCustomer.cs" />
+    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\FindPathToCustomer.cs" />
+    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\GoToCustomer.cs" />
+    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\TalkCustomer.cs" />
     <Compile Include="goal-driven-behaviour\CompositeGoals\TalkToCustomer.cs" />
     <Compile Include="goal-driven-behaviour\Enums.cs" />
     <Compile Include="goal-driven-behaviour\Goal.cs" />

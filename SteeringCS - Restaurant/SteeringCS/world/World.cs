@@ -33,10 +33,10 @@ namespace SteeringCS
         public World(int w, int h)
         {
             TalkToCustomer goal = new TalkToCustomer();
-            //goal.Activate();
-            //goal.Process();
+            goal.Activate();
+            goal.Process();
 
-        
+
             Width = w;
             Height = h;
             populate();

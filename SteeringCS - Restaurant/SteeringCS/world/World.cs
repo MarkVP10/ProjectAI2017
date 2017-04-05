@@ -14,6 +14,7 @@ using SteeringCS.graph;
 using System.IO;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using SteeringCS.goal_driven_behaviour.CompositeGoals;
 
 namespace SteeringCS
 {
@@ -37,12 +38,17 @@ namespace SteeringCS
         public readonly int RestaurantHeight = 28;//amount of nodes that span the height of the restaurant
 
 
-        
-        
+
+
 
 
         public World(int w, int h)
         {
+            TalkToCustomer goal = new TalkToCustomer();
+            goal.Activate();
+            goal.Process();
+
+
             Width = w;
             Height = h;
             populate();
@@ -60,7 +66,7 @@ namespace SteeringCS
             Customer c1 = new Customer(new Vector2D(100, 300), this);
             //entities.Add(c1);
             Customer c2 = new Customer(new Vector2D(100, 400), this);
-            // entities.Add(c2);
+            //entities.Add(c2);
 
             Target = new Vehicle(new Vector2D(), this);
             Target.VColor = Color.DarkRed;
@@ -89,11 +95,15 @@ namespace SteeringCS
 
         public void Update(float timeElapsed)
         {
+            //todo: uncomment
+            //new GroupFollowingBehaviour().Group(timeElapsed, entities, Target);
+
             foreach (MovingEntity me in entities)
             {
                 me.combineStratagy.SetTarget(Target.Pos);
                 me.Update(timeElapsed);
             }
+
         }
 
         public void Render(Graphics g)
@@ -102,13 +112,13 @@ namespace SteeringCS
             {
                 restaurandWallGraph.DrawGraph(g, Color.Black);
                 restaurandFloorGraph.DrawGraph(g, Color.SteelBlue);
-                
+
                 AStar_FirstRemnant?.Draw(g); //Null Propogation
-                
+
                 /* Same as:
                     if(AStar_FirstRemnant != null)
                     {
-                        AStar_FirstRemnant?.Draw(g); 
+                        AStar_FirstRemnant?.Draw(g);
                     }
                 */
             }
@@ -162,8 +172,8 @@ namespace SteeringCS
         {
             List<Vertex> restaurantFloorNodes = CreateNodesFromFile(@"Data\RestaurantNodes.txt");
             List<Vertex> restaurantWallNodes = CreateNodesFromFile(@"Data\RestaurantWallNodes.txt");
-            
-            
+
+
             restaurandWallGraph.AddVertecis(restaurantWallNodes);
             restaurandFloorGraph.AddVertecis(restaurantFloorNodes);
             GenerateWallEdges();
@@ -180,7 +190,7 @@ namespace SteeringCS
             AStar_FirstRemnant = pathFindingRemnant;
         }
 
-        
+
         /*
          How to call A* example:
             //string start = "3024";
@@ -227,7 +237,7 @@ namespace SteeringCS
                 if (firstChar == '{')
                     nodeLines.Add(line);
             }
-            
+
             return nodeLines;
         }
         private List<Vertex> CreateNodesFromFile(string filename)
@@ -243,24 +253,24 @@ namespace SteeringCS
                 v = new Vertex(v.X, v.Y, graphNodeSeperationFactor);
                 nodeList.Add(v);
             }
-            
+
             return nodeList;
         }
 
 
-        
+
         private void GenerateWallEdges()
         {
             restaurandWallGraph.AddMultiEdge("0000", "0027");//TopLeft to BottomLeft
             restaurandWallGraph.AddMultiEdge("0000", "3300");//TopLeft to TopRight
             restaurandWallGraph.AddMultiEdge("0027", "3327");//BottomLeft to BottomRight
             restaurandWallGraph.AddMultiEdge("3300", "3327");//TopRight to BottomRight
-            
+
             restaurandWallGraph.AddMultiEdge("0006", "2506");//kitchenBottomLeft to kitchenBottomRight
 
             restaurandWallGraph.AddMultiEdge("2500", "2503");//kitchenTopRight to toiletMaleBottomLeft
             restaurandWallGraph.AddMultiEdge("2900", "2903");//toiletMaleTopRight to toiletMaleBottomRight
-            
+
             restaurandWallGraph.AddMultiEdge("2927", "2922");//receptionBottomLeft to receptionTopLeft
         }
         private void GenerateFloorEdges()
@@ -283,13 +293,13 @@ namespace SteeringCS
 
                     belowVertex = restaurandFloorGraph.GetVertexByName(Utility.LeadZero(x) + Utility.LeadZero(y + 1));
                     rightVertex = restaurandFloorGraph.GetVertexByName(Utility.LeadZero(x + 1) + Utility.LeadZero(y));
-                    
+
 
 
                     //Vertical: South(Down)
                     if (belowVertex != null)
                         restaurandFloorGraph.AddMultiEdge(indexVertex.Name, belowVertex.Name);
-                    
+
                     //Horizontal & Diagonal
                     if (rightVertex != null)
                     {
@@ -318,7 +328,7 @@ namespace SteeringCS
             }
 
         }
-        
+
 
     }
 }

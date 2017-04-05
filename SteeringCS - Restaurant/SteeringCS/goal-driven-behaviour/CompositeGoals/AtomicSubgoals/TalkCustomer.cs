@@ -25,35 +25,35 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
             FuzzyModule fm = new FuzzyModule();
 
             FuzzyVariable food = fm.CreateFLV("Food");
-            FuzzySet slecht = food.AddLeftShoulderSet("Bad", 0, 25, 50);
-            FuzzySet voldoende = food.AddTriangular("Decent", 25, 50, 75);
-            FuzzySet goed = food.AddRightShoulderSet("Good", 50, 75, 100);
+            FuzzySet bad = food.AddLeftShoulderSet("Bad", 0, 25, 50);
+            FuzzySet decent = food.AddTriangular("Decent", 25, 50, 75);
+            FuzzySet good = food.AddRightShoulderSet("Good", 50, 75, 100);
 
             FuzzyVariable service = fm.CreateFLV("Service");
-            FuzzySet ontevreden = service.AddLeftShoulderSet("Discontent", 0,0,100);
-            FuzzySet tevreden = service.AddRightShoulderSet("Content",0,100,100 );
+            FuzzySet discontent = service.AddLeftShoulderSet("Discontent", 0,0,100);
+            FuzzySet content = service.AddRightShoulderSet("Content",0,100,100 );
             
             FuzzyVariable total = fm.CreateFLV("Total");
             FuzzySet sad = total.AddLeftShoulderSet("Sad", 0, 30, 50);
             FuzzySet meh = total.AddTriangular("Meh", 30, 50, 100);
             FuzzySet yay = total.AddRightShoulderSet("Yay",50,100,100);
 
-            fm.AddRule(new FzAND(slecht, ontevreden), new FuzzyTerm(sad));
-            fm.AddRule(new FzAND(slecht, tevreden), new FuzzyTerm(meh));
+            fm.AddRule(new FzAND(bad, discontent), new FuzzyTerm(sad));
+            fm.AddRule(new FzAND(bad, content), new FuzzyTerm(meh));
 
-            fm.AddRule(new FzAND(voldoende, ontevreden), new FuzzyTerm(meh));
-            fm.AddRule(new FzAND(voldoende, tevreden), new FuzzyTerm(yay));
+            fm.AddRule(new FzAND(decent, discontent), new FuzzyTerm(meh));
+            fm.AddRule(new FzAND(decent, content), new FuzzyTerm(yay));
 
-            fm.AddRule(new FzAND(goed, ontevreden), new FuzzyTerm(meh));
-            fm.AddRule(new FzAND(goed, tevreden), new FuzzyTerm(yay));
+            fm.AddRule(new FzAND(good, discontent), new FuzzyTerm(meh));
+            fm.AddRule(new FzAND(good, content), new FuzzyTerm(yay));
 
             Random rnd = new Random();
 
             int x = rnd.Next(0, 101);
             int y = rnd.Next(0, 101);
 
-            Dictionary<string, double>  domFood = fm.Fuzzify("Food", x);
-            Dictionary<string, double> domService = fm.Fuzzify("Service", y);
+            Dictionary<string, double>  domFood = fm.Fuzzify("Food", 52);
+            Dictionary<string, double> domService = fm.Fuzzify("Service", 32);
 
             double fuzzyCrispResult = fm.CalculatePerRule(domFood, domService);
 

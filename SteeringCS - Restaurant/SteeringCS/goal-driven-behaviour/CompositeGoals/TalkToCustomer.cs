@@ -12,13 +12,6 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
         
         public override void Activate()
         {
-
-            /* Make list of subgoals:
-             * Choose customer to talk to.
-             * Find path to that customer
-             * Go to that customer.
-             * Talk to that customer
-             */
             subgoals = new stack.MyStack<Goal>();
 
             this.AddSubgoal(new TalkCustomer());

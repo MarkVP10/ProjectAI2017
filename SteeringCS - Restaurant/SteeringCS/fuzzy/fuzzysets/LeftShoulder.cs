@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace SteeringCS.fuzzy.fuzzysets.eten
 {
-    class RightShoulder : FuzzySet //Rightshoulder
+    class LeftShoulder : FuzzySet //LeftShoulder
     {
         //the values that define the shape of this FLV
-        public double PeakPoint;
-        public double LeftOffset;
-        public double RightOffset;
+        double PeakPoint;
+        double LeftOffset;
+        double RightOffset;
 
-        public RightShoulder(double mid, double lft, double rgt, string name) : base(((mid + rgt) / 2), mid, lft, rgt, name) // mid + rgt / 2  because its a right shoulder.
+        public LeftShoulder(double mid, double lft, double rgt, string name) : base(((mid + lft) / 2), mid, lft, rgt, name) // mid + lft / 2  because its a left shoulder.
         {
             PeakPoint = mid;
             LeftOffset = lft;
@@ -22,28 +22,30 @@ namespace SteeringCS.fuzzy.fuzzysets.eten
 
         public override double CalculateDom(double val)
         {
-            double DOM = 0;
+            double DOM = 0.0;
 
             //check if in set
-            if(val <= LeftOffset)
+            if (val >= RightOffset)
             {
                 return DOM;
             }
 
-            //Since this is the right shoulder of the graph, if the value bigger or equal than the peakpoint the values DOM is definitely 1.0. Cause the value cant outscale the graph.
-            if(val >= PeakPoint)
+            //Since this is the left shoulder of the graph, if the value less or equal than the peakpoint the values DOM is definitely 1.0. Cause the value cant outscale the graph.
+            if (val <= PeakPoint)
             {
                 return DOM = 1.0;
             }
 
-            //if you come here, the value is between the left offset and the peak.
-            double distanceToPeak = Math.Abs(LeftOffset - PeakPoint);
-            double gradSide = 1.0 / distanceToPeak;
-            double DifferenceFromPeak = Math.Abs(LeftOffset - val);
+            //if you come here, the value is between the right offset and the peak.
+                
+            //val = 30
+
+            double distanceToPeak = Math.Abs(RightOffset - PeakPoint); 
+            double gradSide = 1.0 / distanceToPeak;                    
+            double DifferenceFromPeak = Math.Abs(RightOffset - val);   
             DOM = DifferenceFromPeak * gradSide;
 
             return DOM;
         }
-
     }
 }

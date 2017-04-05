@@ -75,8 +75,8 @@
     <Compile Include="fuzzy\FuzzyModule.cs" />
     <Compile Include="fuzzy\FuzzyRule.cs" />
     <Compile Include="fuzzy\FuzzySet.cs" />
-    <Compile Include="fuzzy\fuzzysets\LeftShoulder.cs" />
     <Compile Include="fuzzy\fuzzysets\RightShoulder.cs" />
+    <Compile Include="fuzzy\fuzzysets\LeftShoulder.cs" />
     <Compile Include="fuzzy\fuzzysets\Triangle.cs" />
     <Compile Include="fuzzy\FuzzyTerm.cs" />
     <Compile Include="fuzzy\FuzzyVariable.cs" />

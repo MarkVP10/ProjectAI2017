@@ -36,6 +36,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -72,6 +76,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="graph\AStarRemnant.cs" />
     <Compile Include="fuzzy\FuzzyModule.cs" />
     <Compile Include="fuzzy\FuzzyRule.cs" />
     <Compile Include="fuzzy\FuzzySet.cs" />
@@ -107,6 +112,7 @@
     <Compile Include="stack\Stack.cs" />
     <Compile Include="util\Matrix2D.cs" />
     <Compile Include="util\PriorityQueue_Vertex.cs" />
+    <Compile Include="util\Utility.cs" />
     <Compile Include="util\Vector2D.cs" />
     <Compile Include="world\World.cs" />
     <EmbeddedResource Include="Form1.resx">
@@ -124,6 +130,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

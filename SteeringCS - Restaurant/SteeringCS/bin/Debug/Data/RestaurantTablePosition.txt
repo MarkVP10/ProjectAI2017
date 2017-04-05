@@ -1,0 +1,16 @@
+//Tables
+{"X":5,"Y":11} //6p - top
+{"X":5,"Y":17} //6p - middle
+{"X":5,"Y":23} //6p - bottom
+
+{"X":12,"Y":11} //3p - top (left)
+{"X":12,"Y":17} //3p - middle (left)
+{"X":12,"Y":23} //3p - bottom (left)
+
+{"X":18,"Y":11} //3p - top (middle)
+{"X":18,"Y":17} //3p - middle (middle)
+{"X":18,"Y":23} //3p - bottom (middle)
+
+{"X":24,"Y":11} //3p - top (right)
+{"X":24,"Y":17} //3p - middle (right)
+{"X":24,"Y":23} //3p - bottom (right)

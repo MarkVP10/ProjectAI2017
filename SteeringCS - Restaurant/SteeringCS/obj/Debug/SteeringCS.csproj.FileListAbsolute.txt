@@ -63,6 +63,8 @@ C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\
 C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\obj\Debug\SteeringCS.csproj.GenerateResource.Cache
 C:\Users\Mark\Documents\School\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\obj\Debug\SteeringCS.graph.GameDisplay.resources
 D:\Visual Studio\AAI_Project\SteeringCS - Restaurant\SteeringCS\obj\Debug\SteeringCS.graph.GameDisplay.resources
+D:\Visual Studio\AAI_Project\SteeringCS - Restaurant\SteeringCS\bin\Debug\Newtonsoft.Json.dll
+D:\Visual Studio\AAI_Project\SteeringCS - Restaurant\SteeringCS\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Mark\Documents\Games Programming\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\bin\Debug\SteeringCS.exe.config
 C:\Users\Mark\Documents\Games Programming\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\obj\Debug\SteeringCS.exe
 C:\Users\Mark\Documents\Games Programming\ProjectAI2017\SteeringCS - Restaurant\SteeringCS\obj\Debug\SteeringCS.pdb

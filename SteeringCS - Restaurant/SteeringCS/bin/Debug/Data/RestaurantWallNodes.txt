@@ -1,0 +1,20 @@
+{"Name":"Wall0000","X":0,"Y":0}//top left
+{"Name":"Wall0027","X":0,"Y":27}//bottom left
+{"Name":"Wall3300","X":33,"Y":0}//top right
+{"Name":"Wall3327","X":33,"Y":27}//bottom right
+
+
+{"Name":"Wall2500","X":25,"Y":0} //kitchenTopRight
+{"Name":"Wall0006","X":0,"Y":6} //kitchenBottomLeft
+{"Name":"Wall2506","X":25,"Y":6} //kitchenBottomRight
+
+{"Name":"Wall2900","X":29,"Y":0} //toiletMaleTopRight
+{"Name":"Wall2503","X":25,"Y":3} //toiletMaleBottomLeft
+{"Name":"Wall2903","X":29,"Y":3} //toiletMaleBottomRight
+
+{"Name":"Wall3303","X":33,"Y":3} //toiletFemaleBottomRight
+
+{"Name":"Wall2922","X":29,"Y":22} //receptionTopLeft
+{"Name":"Wall3322","X":33,"Y":22} //receptionTopRight
+{"Name":"Wall2927","X":29,"Y":27} //receptionBottomLeft
+

@@ -14,15 +14,35 @@ namespace SteeringCS.graph
 
         private Dictionary<string, Vertex> graphMap = new Dictionary<string, Vertex>();
 
+        public double graphNodeSeperationFactor;
 
-        public void AddVertex(string name, float x, float y)
+        public Graph(double separationFactor)
         {
-            AddVertex(new Vertex(name, x, y));
+            graphNodeSeperationFactor = separationFactor;
         }
+        
+        
+
+
+        //todo remove this
+        public void AddVertex(int x, int y)
+        {
+            //string newName = name + IntToStringWithLeadingZeros(x) + IntToStringWithLeadingZeros(y);
+            //AddVertex(new Vertex(newName, x, y));
+            AddVertex(new Vertex(x, y, graphNodeSeperationFactor));
+        }
+
 
         public void AddVertex(Vertex v)
         {
+            //v.Name contains the tile number and nothing else. ex. v.Name = "2606"; 26 is the x-coord and 6 is the y-coord
             graphMap.Add(v.Name, v);
+        }
+
+        public void AddVertecis(List<Vertex> vl)
+        {
+            foreach (Vertex vertex in vl)
+                AddVertex(vertex);
         }
 
         public void AddEdge(string sourceName, string destinationName)
@@ -46,34 +66,35 @@ namespace SteeringCS.graph
             AddEdge(destName, sourceName);
         }
 
+
+
+        
+
+        
         private Vertex GetVertex(string targetName)
         {
             //Find the vertex in the dictionary
-            Vertex v;
-            try
-            {
-                v = graphMap[targetName];
-            }
-            catch (Exception)
-            {
-                v = null;
-            }
-
-            return v;
+            if (graphMap.ContainsKey(targetName))
+                return graphMap[targetName];
+            
+            //Nothing found
+            return null;
         }
+        
+
 
         public void DrawGraph(Graphics g, Color? color = null)
         {
             Color trueColor = color ?? Color.Gray;
 
-            var penBox = new Pen(trueColor, 7f);
-            var penLine = new Pen(trueColor, 2f);
+            var penBox = new Pen(trueColor, 4f);
+            var penLine = new Pen(trueColor, 1f);
             foreach (Vertex vertex in graphMap.Values)
             {
-                g.DrawEllipse(penBox, new RectangleF(vertex.X - 3.5f, vertex.Y - 3.5f, 7, 7));
+                g.DrawEllipse(penBox, new RectangleF((float)vertex.Pos.X - 2f, (float)vertex.Pos.Y - 2f, 4, 4));
                 foreach (Edge edge in vertex.Adjacent)
                 {
-                    g.DrawLine(penLine, vertex.X, vertex.Y, edge.Destination.X, edge.Destination.Y);
+                    g.DrawLine(penLine, (float)vertex.Pos.X, (float)vertex.Pos.Y, (float)edge.Destination.Pos.X, (float)edge.Destination.Pos.Y);
                 }
             }
         }
@@ -85,18 +106,21 @@ namespace SteeringCS.graph
             return GetVertex(nameOfVertex);
         }
 
-        //todo test!!!
-        public List<Vertex> AStar(Vertex start, Vertex target)
+
+
+        public AStarRemnant AStar(string startName, string targetName)
         {
-            int StepIncrement = 10;
-
-            List<Vertex> pathToTarget = new List<Vertex>();
-            List<Vertex> CleanUpList = new List<Vertex>();
-            PriorityQueue_Vertex queue = new PriorityQueue_Vertex();
-            Vertex currentVertex = null;
+            return AStar(GetVertex(startName), GetVertex(targetName));
+        }
+        public AStarRemnant AStar(Vertex start, Vertex target)
+        {
+            //todo: possiblitlity to make the step increment be math.sqrt(2) for diagonal edges...
+            int StepIncrement = 1;
             
-
-            CleanUpList.Add(start);
+            List<Vertex> visitedVertices = new List<Vertex>();
+            PriorityQueue_Vertex queue = new PriorityQueue_Vertex();
+            
+            
             start.Seen = true;
             start.StepCount = 0;
             start.Target = target;
@@ -104,8 +128,9 @@ namespace SteeringCS.graph
 
             while (!queue.IsEmpty())
             {
-                currentVertex = queue.Pop();
+                Vertex currentVertex = queue.Pop();
                 currentVertex.Seen = true;
+                visitedVertices.Add(currentVertex);
 
                 if (currentVertex == target)
                     break;
@@ -113,14 +138,12 @@ namespace SteeringCS.graph
                 foreach (Edge edge in currentVertex.Adjacent)
                 {
                     //If already seen, no need to do anything.
-                    if(edge.Destination.Seen)
+                    if (edge.Destination.Seen)
                         continue;
-
-                    //Add to cleanup list for resetting values when A* is done.
-                    CleanUpList.Add(edge.Destination);
-
+                    
+                    
                     //Stepcount update
-                    if (edge.Destination.StepCount > currentVertex.StepCount + StepIncrement)
+                    if (edge.Destination.StepCount >= currentVertex.StepCount + StepIncrement)
                     {
                         //Update variables
                         edge.Destination.Previous = currentVertex;
@@ -133,19 +156,50 @@ namespace SteeringCS.graph
             }
 
 
-            //Go through a loop to get all previous from Target.
-            pathToTarget.Add(target);
-            while (target.Previous != null)
+            //Add all items in the priotity queue to the visitedList
+            Vertex insertionVertex = queue.Pop();
+            while (insertionVertex != null)
             {
-                pathToTarget.Add(target.Previous);
-                target = target.Previous;
+                visitedVertices.Add(insertionVertex);
+                insertionVertex = queue.Pop();
             }
 
 
+            //Create the returning remnant
+            AStarRemnant theFirstRemnant = Utility.ListOfVertexToRemnants(visitedVertices, target, start);
 
-            CleanUpList.ForEach(vertex => vertex.ResetPath()); //Reset all vertexes so they can be used again.
+            //Clean up the vertecis in the graph to be used for A* again
+            visitedVertices.ForEach(vertex => vertex.ResetPath()); //Reset all vertexes so they can be used again.
 
-            return pathToTarget;
+            //Return the remnant containing all the other remnants
+            return theFirstRemnant;
+        }
+
+
+
+        //todo: Remove this unnecesary function. I'll let it stay, because it might be used later on.
+        public void RemoveVertex(string vertexName)
+        {
+            //Get the vertex and check if it is present in the list.
+            Vertex target = GetVertexByName(vertexName);
+            if (target == null)
+                return;
+
+            //Go through each vertex that the target is connected to and remove all edges that connect to the target-vertex.
+            //(basically removing all multiedges.)
+            foreach (Edge edge in target.Adjacent)
+            {
+                //Gets the destination vertex from the target-vertex.
+                Vertex destination = edge.Destination;
+                destination.Adjacent =
+                    (from backEgde in destination.Adjacent where backEgde.Destination.Name != vertexName select backEgde)
+                        .ToList();
+            }
+
+            //Remove the target vertex from the list of vertexes. If this fails, throw an exception, because this isn't ment to happen.
+            if (!graphMap.Remove(target.Name))
+                throw new NullReferenceException(
+                    "There was an error removing a Node from the Graph.\r\nThe Node that the Graph is trying to remove is not present in the Vertex List.");
         }
 
 

@@ -1,32 +1,44 @@
 ﻿using SteeringCS.behaviour;
 using SteeringCS.entity;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 using SteeringCS.util;
 using SteeringCS.graph;
+using System.IO;
+using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 
 namespace SteeringCS
 {
     class World
     {
-        private Graph graph = new Graph();
+        private static readonly double graphNodeSeperationFactor = 30;
+        private readonly Graph restaurandWallGraph = new Graph(graphNodeSeperationFactor);
+        private readonly Graph restaurandFloorGraph = new Graph(graphNodeSeperationFactor);
+        private AStarRemnant AStar_FirstRemnant;
+
         public bool graphVisible = false;
+
+
         private List<MovingEntity> entities = new List<MovingEntity>();
         private List<BaseGameEntity> obstacles = new List<BaseGameEntity>(); 
+
         public Vehicle Target { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+        public readonly int RestaurantWidth = 34; //amount of nodes that span the width of the restaurant
+        public readonly int RestaurantHeight = 28;//amount of nodes that span the height of the restaurant
 
 
-
-
-        private Graph AStarGraph = new Graph();
-        private List<Vertex> AStarListTEST = new List<Vertex>();
+        
+        
 
 
         public World(int w, int h)
@@ -88,19 +100,31 @@ namespace SteeringCS
         {
             if (graphVisible)
             {
-                graph.DrawGraph(g);
-                AStarGraph.DrawGraph(g, Color.Blue);
+                restaurandWallGraph.DrawGraph(g, Color.Black);
+                restaurandFloorGraph.DrawGraph(g, Color.SteelBlue);
+                
+                AStar_FirstRemnant?.Draw(g); //Null Propogation
+                
+                /* Same as:
+                    if(AStar_FirstRemnant != null)
+                    {
+                        AStar_FirstRemnant?.Draw(g); 
+                    }
+                */
             }
+
+            //Todo: edit render function to draw all Agents(entities) and StaticObjects(obstacles).
             entities.ForEach(e => e.Render(g));
             Target.Render(g);
             obstacles.ForEach(o => o.Render(g));
         }
 
+
+        //Needed for object avoidance detection
         public List<BaseGameEntity> GetAllWorldObstacles()
         {
             return obstacles;
         }
-
         public List<BaseGameEntity> GetAllObstaclesInRange(MovingEntity entity, double radius)
         {
             //Fill the container with obstacles in range
@@ -124,7 +148,6 @@ namespace SteeringCS
                 me.combineStratagy.SwitchBehaviour(behaviour);
             }
         }
-
         public void SetArriveDeceleration(ArriveBehaviour.Deceleration deceleration)
         {
             foreach (MovingEntity me in entities)
@@ -133,179 +156,169 @@ namespace SteeringCS
             }
         }
 
+
+
         private void GenerateGraph()
         {
+            List<Vertex> restaurantFloorNodes = CreateNodesFromFile(@"Data\RestaurantNodes.txt");
+            List<Vertex> restaurantWallNodes = CreateNodesFromFile(@"Data\RestaurantWallNodes.txt");
+            
+            
+            restaurandWallGraph.AddVertecis(restaurantWallNodes);
+            restaurandFloorGraph.AddVertecis(restaurantFloorNodes);
+            GenerateWallEdges();
+            GenerateFloorEdges();
 
-            GenerateVertices();
-            AddEdges();
 
 
-            string start = "Node11";
-            string end = "Node14";
-            //string end = "Node15";
-            //string end = "Node36";
-            //string end = "Node4x";
-            AStarListTEST = graph.AStar(graph.GetVertexByName(start), graph.GetVertexByName(end));
+            //todo: Remove this A* call
+            string start = "3024";
+            string end = "1117";
+            //string start = "1117";
+            //string end = "3103";
+            AStarRemnant pathFindingRemnant = restaurandFloorGraph.AStar(start, end);
+            AStar_FirstRemnant = pathFindingRemnant;
+        }
+
+        
+        /*
+         How to call A* example:
+            //string start = "3024";
+            //string end = "1117";
+            string start = "1117";
+            string end = "3103";
+            AStarRemnant pathFindingRemnant = restaurandFloorGraph.AStar(start, end);
+            AStar_FirstRemnant = pathFindingRemnant;
+
+        Debug info:
+            AStarRemnant indexRemnant = pathFindingRemnant;
             string message = "List of vertexes to target:";
-            foreach (Vertex vertex in AStarListTEST)
+            while (indexRemnant != null)
             {
-                message += ("\r\n" + vertex.Name + " [" + vertex.X + ":" + vertex.Y + "]");
-
-                AStarGraph.AddVertex(vertex.Name, vertex.X, vertex.Y);
+                message += ("\r\n [" + indexRemnant.GetPosition().X + ":" + indexRemnant.GetPosition().Y + "]");
+                indexRemnant = indexRemnant.GetNext();
             }
             MessageBox.Show(message);
-            //Put all the A* nodes in a separate graph
-            for (int i = 0; i < AStarListTEST.Count-1; i++)
+                         */
+
+
+        /// <summary>
+        /// Returns a list of strings that contains only JSON objects and is save to be used for deserialization. (Without worry of syntax errors or empty strings)
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        private List<string> ReadNodeFile(string fileName)
+        {
+            //ex. filename = @"Data\RestaurantWallNodes.txt";
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileName);
+            string[] lines = File.ReadAllLines(path);
+            List<string> nodeLines = new List<string>();
+
+
+            //todo: test is file is opened/exists before trying to read it. If it can't be found/opened, return an empty list or throw an error.
+
+
+            foreach (string s in lines)
             {
-                AStarGraph.AddMultiEdge(AStarListTEST[i].Name, AStarListTEST[i+1].Name);
+                string line = s.TrimStart();
+                if(line.Length == 0)
+                    continue;
+                char firstChar = line.Substring(0, 1).ToCharArray()[0];
+                if (firstChar == '{')
+                    nodeLines.Add(line);
             }
+            
+            return nodeLines;
         }
-
-        private void GenerateVertices()
+        private List<Vertex> CreateNodesFromFile(string filename)
         {
-            //Row1 of graph
-            graph.AddVertex("Node11", 10f, 100f);
-            graph.AddVertex("Node12", 100f, 100f);
-            graph.AddVertex("Node13", 200f, 100f);
-            graph.AddVertex("Node14", 400f, 100f);
-            graph.AddVertex("Node15", 500f, 100f);
-            graph.AddVertex("Node16", 600f, 100f);
-
-            //Row 2
-            graph.AddVertex("Node21", 10f, 200f);
-            graph.AddVertex("Node22", 100f, 200f);
-            graph.AddVertex("Node23", 200f, 200f);
-            graph.AddVertex("Node24", 400f, 200f);
-            graph.AddVertex("Node25", 500f, 200f);
-            graph.AddVertex("Node26", 600f, 200f);
-
-            //Row 3
-            graph.AddVertex("Node31", 10f, 300f);
-            graph.AddVertex("Node32", 100f, 300f);
-            graph.AddVertex("Node33", 200f, 300f);
-            graph.AddVertex("Node34", 400f, 300f);
-            graph.AddVertex("Node35", 500f, 300f);
-            graph.AddVertex("Node36", 600f, 300f);
+            List<Vertex> nodeList = new List<Vertex>();
+            List<string> fileNodeList = ReadNodeFile(filename);
 
 
-            //Row 4
-            graph.AddVertex("Node41", 10f, 400f);
-            graph.AddVertex("Node42", 100f, 400f);
-            graph.AddVertex("Node43", 200f, 400f);
-            graph.AddVertex("Node4x", 300f, 400f);
-            graph.AddVertex("Node44", 400f, 400f);
-            graph.AddVertex("Node45", 500f, 400f);
-            graph.AddVertex("Node46", 600f, 400f);
+            //Convert JSON objects from the file to Vertex node objects.
+            foreach (string s in fileNodeList)
+            {
+                Vertex v = JsonConvert.DeserializeObject<Vertex>(s);
+                v = new Vertex(v.X, v.Y, graphNodeSeperationFactor);
+                nodeList.Add(v);
+            }
+            
+            return nodeList;
         }
 
-        private void AddEdges()
+
+        
+        private void GenerateWallEdges()
         {
-            //Add edges
-            //1.1
-            graph.AddMultiEdge("Node11", "Node12");
-            graph.AddMultiEdge("Node11", "Node21");
-            graph.AddMultiEdge("Node11", "Node22");
+            restaurandWallGraph.AddMultiEdge("0000", "0027");//TopLeft to BottomLeft
+            restaurandWallGraph.AddMultiEdge("0000", "3300");//TopLeft to TopRight
+            restaurandWallGraph.AddMultiEdge("0027", "3327");//BottomLeft to BottomRight
+            restaurandWallGraph.AddMultiEdge("3300", "3327");//TopRight to BottomRight
+            
+            restaurandWallGraph.AddMultiEdge("0006", "2506");//kitchenBottomLeft to kitchenBottomRight
 
-            //1.2
-            graph.AddMultiEdge("Node12", "Node22");
-            graph.AddMultiEdge("Node12", "Node13");
-            graph.AddMultiEdge("Node12", "Node23");
-            graph.AddMultiEdge("Node12", "Node21");
-
-            //1.3
-            graph.AddMultiEdge("Node13", "Node23");
-            graph.AddMultiEdge("Node13", "Node22");
-
-            //2.1
-            graph.AddMultiEdge("Node21", "Node22");
-            graph.AddMultiEdge("Node21", "Node31");
-            graph.AddMultiEdge("Node21", "Node32");
-
-
-            //2.2
-            graph.AddMultiEdge("Node22", "Node23");
-            graph.AddMultiEdge("Node22", "Node32");
-            graph.AddMultiEdge("Node22", "Node33");
-            graph.AddMultiEdge("Node22", "Node31");
-
-            //2.3
-            graph.AddMultiEdge("Node23", "Node33");
-            graph.AddMultiEdge("Node23", "Node32");
-
-            //3.1
-            graph.AddMultiEdge("Node31", "Node32");
-            graph.AddMultiEdge("Node31", "Node41");
-            graph.AddMultiEdge("Node31", "Node42");
-
-            //3.2
-            graph.AddMultiEdge("Node32", "Node33");
-            graph.AddMultiEdge("Node32", "Node42");
-            graph.AddMultiEdge("Node32", "Node43");
-            graph.AddMultiEdge("Node32", "Node41");
-
-            //3.3
-            graph.AddMultiEdge("Node33", "Node43");
-            graph.AddMultiEdge("Node33", "Node42");
-            graph.AddMultiEdge("Node33", "Node4x");
-
-            //4 4.1 to 4.x
-            graph.AddMultiEdge("Node41", "Node42");
-            graph.AddMultiEdge("Node42", "Node43");
-            graph.AddMultiEdge("Node43", "Node4x");
-
-            //4.x
-            graph.AddMultiEdge("Node4x", "Node44");
-            graph.AddMultiEdge("Node4x", "Node34");
-
-            //1.4
-            graph.AddMultiEdge("Node14", "Node15");
-            graph.AddMultiEdge("Node14", "Node24");
-            graph.AddMultiEdge("Node14", "Node25");
-
-            //1.5
-            graph.AddMultiEdge("Node15", "Node16");
-            graph.AddMultiEdge("Node15", "Node25");
-            graph.AddMultiEdge("Node15", "Node26");
-            graph.AddMultiEdge("Node15", "Node24");
-
-            //1.6
-            graph.AddMultiEdge("Node16", "Node26");
-            graph.AddMultiEdge("Node16", "Node25");
-
-            //2.4
-            graph.AddMultiEdge("Node24", "Node25");
-            graph.AddMultiEdge("Node24", "Node34");
-            graph.AddMultiEdge("Node24", "Node35");
-
-            //2.5
-            graph.AddMultiEdge("Node25", "Node26");
-            graph.AddMultiEdge("Node25", "Node35");
-            graph.AddMultiEdge("Node25", "Node36");
-            graph.AddMultiEdge("Node25", "Node34");
-
-            //2.6
-            graph.AddMultiEdge("Node26", "Node36");
-            graph.AddMultiEdge("Node26", "Node35");
-
-            //3.4
-            graph.AddMultiEdge("Node34", "Node35");
-            graph.AddMultiEdge("Node34", "Node44");
-            graph.AddMultiEdge("Node34", "Node45");
-
-            //3.5
-            graph.AddMultiEdge("Node35", "Node36");
-            graph.AddMultiEdge("Node35", "Node45");
-            graph.AddMultiEdge("Node35", "Node46");
-            graph.AddMultiEdge("Node35", "Node44");
-
-            //2.6
-            graph.AddMultiEdge("Node36", "Node46");
-            graph.AddMultiEdge("Node36", "Node45");
-
-            //4 the underline
-            graph.AddMultiEdge("Node44", "Node45");
-            graph.AddMultiEdge("Node45", "Node46");
+            restaurandWallGraph.AddMultiEdge("2500", "2503");//kitchenTopRight to toiletMaleBottomLeft
+            restaurandWallGraph.AddMultiEdge("2900", "2903");//toiletMaleTopRight to toiletMaleBottomRight
+            
+            restaurandWallGraph.AddMultiEdge("2927", "2922");//receptionBottomLeft to receptionTopLeft
         }
+        private void GenerateFloorEdges()
+        {
+            Vertex indexVertex = null;
+            Vertex belowVertex = null;
+            Vertex rightVertex = null;
+            Vertex upperVertex = null;
+            Vertex NE_Vertex = null;
+            Vertex SE_Vertex = null;
+
+            for (int x = 0; x < RestaurantWidth; x++)
+            {
+                for (int y = 0; y < RestaurantHeight; y++)
+                {
+                    indexVertex =
+                        restaurandFloorGraph.GetVertexByName(Utility.LeadZero(x) + Utility.LeadZero(y));
+                    if (indexVertex == null)
+                        continue;
+
+                    belowVertex = restaurandFloorGraph.GetVertexByName(Utility.LeadZero(x) + Utility.LeadZero(y + 1));
+                    rightVertex = restaurandFloorGraph.GetVertexByName(Utility.LeadZero(x + 1) + Utility.LeadZero(y));
+                    
+
+
+                    //Vertical: South(Down)
+                    if (belowVertex != null)
+                        restaurandFloorGraph.AddMultiEdge(indexVertex.Name, belowVertex.Name);
+                    
+                    //Horizontal & Diagonal
+                    if (rightVertex != null)
+                    {
+                        //Horizontal: East(Right)
+                        restaurandFloorGraph.AddMultiEdge(indexVertex.Name, rightVertex.Name);
+
+                        //Diagonal: NorthEast
+                        upperVertex = restaurandFloorGraph.GetVertexByName(Utility.LeadZero(x) + Utility.LeadZero(y - 1));
+                        if (upperVertex != null)
+                        {
+                            NE_Vertex =
+                                restaurandFloorGraph.GetVertexByName(Utility.LeadZero(x + 1) + Utility.LeadZero(y - 1));
+                            if(NE_Vertex != null)
+                                restaurandFloorGraph.AddMultiEdge(indexVertex.Name, NE_Vertex.Name);
+                        }
+
+                        //Diagonal: SouthEast
+                        if (belowVertex != null)
+                        {
+                            SE_Vertex = restaurandFloorGraph.GetVertexByName(Utility.LeadZero(x + 1) + Utility.LeadZero(y + 1));
+                            if (SE_Vertex != null)
+                                restaurandFloorGraph.AddMultiEdge(indexVertex.Name, SE_Vertex.Name);
+                        }
+                    }
+                }
+            }
+
+        }
+        
 
     }
 }

@@ -33,7 +33,9 @@ namespace SteeringCS.util
             //Go through each vertex, untill you find one that has a lower 'score' (Score = Stepcount + (manhatten)Heuristic)
             foreach (Vertex vertex in queue)
             {
-                if (newItem.GetScore() < vertex.GetScore())
+                //todo: fix this: choose one...
+                //if (newItem.GetScore() < vertex.GetScore())
+                if (newItem.GetScore() <= vertex.GetScore())
                 {
                     queue.AddBefore(queue.Find(vertex), newItem);
                     return;
@@ -52,6 +54,9 @@ namespace SteeringCS.util
 
         public Vertex Pop()
         {
+            if (queue.Count == 0)
+                return null;
+
             Vertex returnItem = queue.First.Value;
             queue.RemoveFirst();
             return returnItem;

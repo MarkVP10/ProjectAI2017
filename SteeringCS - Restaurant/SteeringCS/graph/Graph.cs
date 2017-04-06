@@ -223,7 +223,6 @@ namespace SteeringCS.graph
             List<Vertex> visitedVertices = new List<Vertex>();
             PriorityQueue_Vertex queue = new PriorityQueue_Vertex();
             
-            
             start.Seen = true;
             start.StepCount = 0;
             start.Target = target;

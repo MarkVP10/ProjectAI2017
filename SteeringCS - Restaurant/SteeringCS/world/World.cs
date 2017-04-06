@@ -25,7 +25,7 @@ namespace SteeringCS
         public readonly Graph restaurandFloorGraph = new Graph(graphNodeSeperationFactor);
         public AStarRemnant AStar_FirstRemnant;
 
-        public bool graphVisible = false;
+        public bool graphVisible = true;
 
 
         private List<MovingEntity> entities = new List<MovingEntity>();
@@ -219,8 +219,9 @@ namespace SteeringCS
             //Compare
             int deltaX = (int) Math.Abs(TheBoss.Pos.X - AStar_FirstRemnant.GetPosition().X);
             int deltaY = (int) Math.Abs(TheBoss.Pos.Y - AStar_FirstRemnant.GetPosition().Y);
+            int dist = 10;
 
-            if (deltaX < 10 && deltaY < 10)
+            if (deltaX < dist && deltaY < dist)
             {
                 //Hardstop if it reached the final node.
                 if (AStar_FirstRemnant.isEnd())
@@ -246,18 +247,6 @@ namespace SteeringCS
             restaurandFloorGraph.AddVertecis(restaurantFloorNodes);
             GenerateWallEdges();
             GenerateFloorEdges();
-
-
-
-            //todo: Remove this A* call
-            string start = "3024";
-            string end = "1117";
-            //string start = "1117";
-            //string end = "3103";
-            //string start = "1117";
-            //string end = "2405";
-            AStarRemnant pathFindingRemnant = restaurandFloorGraph.AStar(start, end);
-            AStar_FirstRemnant = pathFindingRemnant;
         }
 
 

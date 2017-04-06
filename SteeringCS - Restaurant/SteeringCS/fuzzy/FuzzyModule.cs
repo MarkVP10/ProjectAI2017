@@ -27,14 +27,15 @@ namespace SteeringCS.fuzzy
             
         }
 
-        public double CalculatePerRule(Dictionary<string, double> set1, Dictionary<string, double> set2)
+        public double CalculatePerRule(Dictionary<string, double> set1, Dictionary<string, double> set2, string nameOfResultSet)
         {
             double crisp = 0;
 
-            Dictionary<string, double> fam  = new Dictionary<string, double>();
-            fam.Add("Sad", 0);
-            fam.Add("Meh", 0);
-            fam.Add("Yay", 0);
+            Dictionary<string, double> fam = new Dictionary<string, double>();
+            foreach (KeyValuePair<string, FuzzySet> resSet in fuzzyMap[nameOfResultSet].memberSets)
+            {
+                fam.Add(resSet.Key, 0);
+            }
 
             foreach (FuzzyRule fr in m_rules)
             {

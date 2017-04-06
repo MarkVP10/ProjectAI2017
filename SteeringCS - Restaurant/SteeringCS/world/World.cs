@@ -182,12 +182,17 @@ namespace SteeringCS
 
 
             //todo: Remove this A* call
-            string start = "3024";
-            string end = "1117";
             //string start = "1117";
             //string end = "3103";
+
+            string start = "3024";
+            string end = "1117";
+
             AStarRemnant pathFindingRemnant = restaurandFloorGraph.AStar(start, end);
+
+
             AStar_FirstRemnant = pathFindingRemnant;
+
         }
 
 

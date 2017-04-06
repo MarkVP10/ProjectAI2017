@@ -22,8 +22,10 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
 
         public override int Process()
         {
+            //Construct Fuzzy module
             FuzzyModule fm = new FuzzyModule();
 
+            //Create FLV's
             FuzzyVariable food = fm.CreateFLV("Food");
             FuzzySet bad = food.AddLeftShoulderSet("Bad", 0, 25, 50);
             FuzzySet decent = food.AddTriangular("Decent", 25, 50, 75);
@@ -38,6 +40,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
             FuzzySet meh = total.AddTriangular("Meh", 30, 50, 100);
             FuzzySet yay = total.AddRightShoulderSet("Yay",50,100,100);
 
+            //Construct rule set.
             fm.AddRule(new FzAND(bad, discontent), new FuzzyTerm(sad));
             fm.AddRule(new FzAND(bad, content), new FuzzyTerm(meh));
 
@@ -47,20 +50,22 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
             fm.AddRule(new FzAND(good, discontent), new FuzzyTerm(meh));
             fm.AddRule(new FzAND(good, content), new FuzzyTerm(yay));
 
+            //Generate random number to go into the Fuzzy logic to determine a grade for this restaurant.
             Random rnd = new Random();
-
             int x = rnd.Next(0, 101);
             int y = rnd.Next(0, 101);
 
-            Dictionary<string, double>  domFood = fm.Fuzzify("Food", 52);
-            Dictionary<string, double> domService = fm.Fuzzify("Service", 32);
+            //Fuzzify the Food and the Service values
+            Dictionary<string, double>  domFood = fm.Fuzzify("Food", x);
+            Dictionary<string, double> domService = fm.Fuzzify("Service", y);
 
-            double fuzzyCrispResult = fm.CalculatePerRule(domFood, domService);
+            //Calculate the result of the DOMs out of the food and Service FLV's.
+            double fuzzyCrispResult = fm.CalculatePerRule(domFood, domService, "Total");
 
-
-            //fuzzy logic here
+            //Talk to customer and use the fuzzy logic result to show the result of the review.
             System.Windows.Forms.MessageBox.Show("Manager:'Is everything to your liking?'");
-            System.Windows.Forms.MessageBox.Show("Customer:'I'll give the dinner a " + Math.Round((fuzzyCrispResult/10), 1) + " out of 10!'");
+            System.Windows.Forms.MessageBox.Show("Customer:'I'll give the dinner a " + 
+                Math.Round((fuzzyCrispResult/10), 1) + " out of 10!'");
             System.Windows.Forms.MessageBox.Show("Manager:'Thank you for your review with your Fuzzy Logic. :)'");
 
             Terminate();

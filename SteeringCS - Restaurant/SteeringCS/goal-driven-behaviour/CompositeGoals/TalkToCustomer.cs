@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SteeringCS.entity;
 
 namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 {
     class TalkToCustomer : CompositeGoal
     {
-        
+        public TalkToCustomer()
+        {}
+
         public override void Activate()
         {
 
@@ -21,10 +24,11 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
              */
             subgoals = new stack.MyStack<Goal>();
 
-            this.AddSubgoal(new TalkCustomer());
-            this.AddSubgoal(new GoToCustomer());
-            this.AddSubgoal(new FindPathToCustomer());
-            this.AddSubgoal(new ChooseCustomer());
+            //this.AddSubgoal(new TalkCustomer());
+            //this.AddSubgoal(new GoToCustomer());
+            //this.AddSubgoal(new FindPathToCustomer());
+            //this.AddSubgoal(new ChooseCustomer());
+            
 
         }
 
@@ -45,6 +49,11 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
              */
 
 
+        }
+
+        public override string GetName()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -7,8 +7,11 @@ using static SteeringCS.goal_driven_behaviour.Enums;
 
 namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
 {
-    class GoToCustomer : CompositeGoal
+    class GoToCustomer : Goal
     {
+        public GoToCustomer()
+        {}
+
         public override void Activate()
         {
             System.Windows.Forms.MessageBox.Show("Activating GoToCustomer");
@@ -40,6 +43,11 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
             System.Windows.Forms.MessageBox.Show("Terminating GoToCustomer");
 
             state = State.Complete;
+        }
+
+        public override string GetName()
+        {
+            throw new NotImplementedException();
         }
     }
 }

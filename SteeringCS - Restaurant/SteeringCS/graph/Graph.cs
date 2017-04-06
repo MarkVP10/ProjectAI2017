@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using SteeringCS.util;
 
 namespace SteeringCS.graph
@@ -22,17 +24,7 @@ namespace SteeringCS.graph
         }
         
         
-
-
-        //todo remove this
-        public void AddVertex(int x, int y)
-        {
-            //string newName = name + IntToStringWithLeadingZeros(x) + IntToStringWithLeadingZeros(y);
-            //AddVertex(new Vertex(newName, x, y));
-            AddVertex(new Vertex(x, y, graphNodeSeperationFactor));
-        }
-
-
+        
         public void AddVertex(Vertex v)
         {
             //v.Name contains the tile number and nothing else. ex. v.Name = "2606"; 26 is the x-coord and 6 is the y-coord
@@ -68,9 +60,120 @@ namespace SteeringCS.graph
 
 
 
-        
 
-        
+
+
+        public List<Vertex> PrepareAStarUsingWorldPosition(int xStart, int yStart, int xTarget, int yTarget)
+        {
+            List<Vertex> resultList = new List<Vertex>();
+
+
+            //
+            resultList.Add(FindClosestNodeToWorldCoords(xStart, yStart));
+            resultList.Add(FindClosestNodeToWorldCoords(xTarget, yTarget));
+            
+
+            return resultList;
+        }
+
+
+
+
+        public Vertex FindClosestNodeToWorldCoords(int xCoord, int yCoord)
+        {
+            //graphSeperationFactor
+            
+            int startNodeX = (xCoord/(int)graphNodeSeperationFactor);
+            int startNodeY = (yCoord/(int) graphNodeSeperationFactor);
+            Vector2D inWorldVector = new Vector2D(xCoord, yCoord);
+
+            Vertex leftTop = GetVertexByName(Utility.LeadZero(startNodeX) + Utility.LeadZero(startNodeY));
+            Vertex leftBottom = GetVertexByName(Utility.LeadZero(startNodeX) + Utility.LeadZero(startNodeY+1));
+            Vertex rightTop = GetVertexByName(Utility.LeadZero(startNodeX+1) + Utility.LeadZero(startNodeY));
+            Vertex rightBottom = GetVertexByName(Utility.LeadZero(startNodeX+1) + Utility.LeadZero(startNodeY+1));
+
+            List<Vertex> listOfVertices = new List<Vertex>();
+            listOfVertices.Add(leftTop);
+            listOfVertices.Add(leftBottom);
+            listOfVertices.Add(rightTop);
+            listOfVertices.Add(rightBottom);
+
+            Vertex returnVertex = null;
+            double delta = Int32.MaxValue;
+
+            //foreach (Vertex vertex in listOfVertices)
+            //{
+            //    if(vertex == null)
+            //        continue;
+            //    double diff = (vertex.Pos - inWorldVector).Length();
+            //    if (diff < delta)
+            //        returnVertex = vertex;
+            //}
+
+            
+            //if(returnVertex != null)
+            //    return returnVertex;
+            
+            
+
+            foreach (KeyValuePair<string, Vertex> pair in graphMap)
+            {
+                double diff = (pair.Value.Pos - inWorldVector).Length();
+                if (diff < delta)
+                {
+                    returnVertex = pair.Value;
+                    delta = diff;
+                }
+                    
+            }
+
+
+            return returnVertex;
+        }
+
+
+
+
+        public List<Vertex> PrepareAStarOnClick(int xCoord, int yCoord, int xCurr, int yCurr)
+        {
+            List<Vertex> res = new List<Vertex>();
+
+            res.Add(FindClosestNode(xCoord, yCoord));
+            res.Add(FindClosestNode(xCurr, yCurr));
+
+
+            return res;
+        }
+
+        public Vertex FindClosestNode(int xCoord, int yCoord)
+        {
+            Vertex closest = null;
+
+            foreach (KeyValuePair<string, Vertex> node in graphMap)
+            {
+                if (closest == null)
+                {
+                    closest = node.Value;
+                    continue;
+                }
+
+                int now = Math.Abs((int)node.Value.X - xCoord) + Math.Abs((int)node.Value.Y - yCoord);
+
+                int curr = Math.Abs(closest.X - xCoord) + Math.Abs(closest.Y - yCoord);
+
+                if (now < curr)
+                {
+                    closest = node.Value;
+                }
+            }
+            return closest;
+        }
+
+
+
+
+
+
         private Vertex GetVertex(string targetName)
         {
             //Find the vertex in the dictionary

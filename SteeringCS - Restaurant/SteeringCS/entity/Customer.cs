@@ -9,10 +9,6 @@ namespace SteeringCS.entity
 {
     class Customer : MovingEntity
     {
-        private Color OutLineColor;
-        public Color VColor { get; set; }
-
-
         public Customer(Vector2D pos, World w) : base(pos, w)
         {
             Velocity = new Vector2D(0, 0);

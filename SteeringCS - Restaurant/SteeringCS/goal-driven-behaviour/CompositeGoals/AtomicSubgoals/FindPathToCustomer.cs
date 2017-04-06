@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SteeringCS.entity;
 using static SteeringCS.goal_driven_behaviour.Enums;
 
 namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
 {
-    class FindPathToCustomer : CompositeGoal
+    class FindPathToCustomer : Goal
     {
+        public FindPathToCustomer()
+        { }
+
         public Vertex vertexFrom;
         public Vertex vertexTo;
 
@@ -47,6 +51,11 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
             /*
              * Goal met, next task.
              */
+        }
+
+        public override string GetName()
+        {
+            throw new NotImplementedException();
         }
     }
 }

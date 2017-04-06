@@ -66,8 +66,11 @@
     </Compile>
     <Compile Include="entity\BasicCircularObstacle.cs" />
     <Compile Include="entity\Customer.cs" />
+    <Compile Include="entity\Manager.cs" />
     <Compile Include="entity\MovingEntity.cs" />
     <Compile Include="entity\Obstacle.cs" />
+    <Compile Include="entity\PottedPlant.cs" />
+    <Compile Include="entity\SentientTable.cs" />
     <Compile Include="entity\Vehicle.cs" />
     <Compile Include="entity\Waitress.cs" />
     <Compile Include="Form1.cs">
@@ -76,6 +79,16 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\Goal_ChooseCustomer.cs" />
+    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\Goal_FindPathToLocation.cs" />
+    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\Goal_FollowEdge.cs" />
+    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\Goal_GetScoreFromCustomer.cs" />
+    <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_GoToLocation.cs" />
+    <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_GoToPlayerSpot.cs" />
+    <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_GoToTable.cs" />
+    <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_TalkWithCustomer.cs" />
+    <Compile Include="goal-driven-behaviour\CompositeGoals\ThinkManager.cs" />
+    <Compile Include="goal-driven-behaviour\Telegram.cs" />
     <Compile Include="graph\AStarRemnant.cs" />
     <Compile Include="fuzzy\FuzzyModule.cs" />
     <Compile Include="fuzzy\FuzzyRule.cs" />

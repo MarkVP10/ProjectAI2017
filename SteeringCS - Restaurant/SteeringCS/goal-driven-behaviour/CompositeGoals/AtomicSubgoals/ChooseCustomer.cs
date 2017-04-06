@@ -7,8 +7,11 @@ using static SteeringCS.goal_driven_behaviour.Enums;
 
 namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
 {
-    class ChooseCustomer : CompositeGoal
+    class ChooseCustomer : Goal
     {
+        public ChooseCustomer()
+        { }
+
         private Random rnd;
         private int maxValue;
 
@@ -41,6 +44,11 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
              */
 
 
+        }
+
+        public override string GetName()
+        {
+            throw new NotImplementedException();
         }
     }
 }

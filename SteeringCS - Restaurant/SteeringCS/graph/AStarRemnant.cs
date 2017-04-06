@@ -39,6 +39,11 @@ namespace SteeringCS.graph
             Considered.AddRange(remnants);
         }
 
+        public bool isEnd()
+        {
+            return IsEnd;
+        }
+
         
         public AStarRemnant GetNext()
         {

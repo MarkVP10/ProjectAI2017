@@ -22,14 +22,15 @@ namespace SteeringCS
     {
         private static readonly double graphNodeSeperationFactor = 30;
         private readonly Graph restaurandWallGraph = new Graph(graphNodeSeperationFactor);
-        private readonly Graph restaurandFloorGraph = new Graph(graphNodeSeperationFactor);
-        private AStarRemnant AStar_FirstRemnant;
+        public readonly Graph restaurandFloorGraph = new Graph(graphNodeSeperationFactor);
+        public AStarRemnant AStar_FirstRemnant;
 
         public bool graphVisible = false;
 
 
         private List<MovingEntity> entities = new List<MovingEntity>();
-        private List<BaseGameEntity> obstacles = new List<BaseGameEntity>(); 
+        private List<BaseGameEntity> obstacles = new List<BaseGameEntity>();
+        public Manager TheBoss;
 
         public Vehicle Target { get; set; }
         public int Width { get; set; }
@@ -44,9 +45,17 @@ namespace SteeringCS
 
         public World(int w, int h)
         {
-            TalkToCustomer goal = new TalkToCustomer();
-            goal.Activate();
-            goal.Process();
+            //TalkToCustomer goal = new TalkToCustomer();
+            //goal.Activate();
+            //List<string> goalStringList = goal.GetCompositeGoalAsStringList();
+            //goal.Process();
+            //MessageBox.Show("Test");
+            //string messageGoal = "";
+            //foreach (string s in goalStringList.AsReadOnly())
+            //{
+            //    messageGoal += s + "\r\n";
+            //}
+            //MessageBox.Show(messageGoal);
 
 
             Width = w;
@@ -61,11 +70,36 @@ namespace SteeringCS
             v.VColor = Color.Blue;
             //entities.Add(v);
 
+
+
+            //Waitresses
             Waitress w1 = new Waitress(new Vector2D(100, 200), this);
-            //entities.Add(w1);
-            Customer c1 = new Customer(new Vector2D(100, 300), this);
+            w1.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.Wander);
+            entities.Add(w1);
+
+            Waitress w2 = new Waitress(new Vector2D(150, 200), this);
+            w2.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.Wander);
+            entities.Add(w2);
+
+            Waitress w3 = new Waitress(new Vector2D(200, 200), this);
+            w3.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.Wander);
+            entities.Add(w3);
+
+            Waitress w4 = new Waitress(new Vector2D(250, 200), this);
+            w4.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.Wander);
+            entities.Add(w4);
+
+
+
+            //Manager
+            TheBoss = new Manager(new Vector2D(300, 300), this);
+            
+
+
+
+            //Customer c1 = new Customer(new Vector2D(100, 300), this);
             //entities.Add(c1);
-            Customer c2 = new Customer(new Vector2D(100, 400), this);
+            //Customer c2 = new Customer(new Vector2D(100, 400), this);
             //entities.Add(c2);
 
             Target = new Vehicle(new Vector2D(), this);
@@ -73,7 +107,7 @@ namespace SteeringCS
             Target.Pos = new Vector2D(200, 200);
 
 
-            BasicCircularObstacle b1 = new BasicCircularObstacle(new Vector2D(300,300), this);
+            BasicCircularObstacle b1 = new BasicCircularObstacle(new Vector2D(300, 300), this);
             b1.Scale = 10;
             //obstacles.Add(b1);
         }
@@ -104,29 +138,41 @@ namespace SteeringCS
                 me.Update(timeElapsed);
             }
 
+
+
+            if (AStar_FirstRemnant != null)
+            {
+                DoTheBossMove();
+                TheBoss.Update(timeElapsed);
+            }
+                
         }
 
         public void Render(Graphics g)
         {
             if (graphVisible)
             {
-                restaurandWallGraph.DrawGraph(g, Color.Black);
                 restaurandFloorGraph.DrawGraph(g, Color.SteelBlue);
 
-                AStar_FirstRemnant?.Draw(g); //Null Propogation
 
-                /* Same as:
-                    if(AStar_FirstRemnant != null)
-                    {
-                        AStar_FirstRemnant?.Draw(g);
-                    }
-                */
+                //todo if the manager has a path, draw it's A*Remnants
+                AStar_FirstRemnant?.Draw(g); //Null Propogation
             }
+
+            restaurandWallGraph.DrawGraph(g, Color.Black);
+
 
             //Todo: edit render function to draw all Agents(entities) and StaticObjects(obstacles).
             entities.ForEach(e => e.Render(g));
             Target.Render(g);
             obstacles.ForEach(o => o.Render(g));
+            TheBoss.Render(g);
+
+
+            //todo: Draw rooms
+            //Kitchen
+            //BathroomMale
+            //BathroomFemale
         }
 
 
@@ -167,6 +213,28 @@ namespace SteeringCS
         }
 
 
+        //It's better if this method is in the Goals, but we're short on time, so this'll do.
+        public void DoTheBossMove()
+        {
+            //Compare
+            int deltaX = (int) Math.Abs(TheBoss.Pos.X - AStar_FirstRemnant.GetPosition().X);
+            int deltaY = (int) Math.Abs(TheBoss.Pos.Y - AStar_FirstRemnant.GetPosition().Y);
+
+            if (deltaX < 10 && deltaY < 10)
+            {
+                //Hardstop if it reached the final node.
+                if (AStar_FirstRemnant.isEnd())
+                {
+                    TheBoss.Velocity = new Vector2D();
+                    AStar_FirstRemnant = null;
+                    return;
+                }
+                AStar_FirstRemnant = AStar_FirstRemnant.GetNext();
+                TheBoss.combineStratagy.SetTarget(AStar_FirstRemnant.GetPosition());
+            }
+        }
+
+
 
         private void GenerateGraph()
         {
@@ -186,6 +254,8 @@ namespace SteeringCS
             string end = "1117";
             //string start = "1117";
             //string end = "3103";
+            //string start = "1117";
+            //string end = "2405";
             AStarRemnant pathFindingRemnant = restaurandFloorGraph.AStar(start, end);
             AStar_FirstRemnant = pathFindingRemnant;
         }

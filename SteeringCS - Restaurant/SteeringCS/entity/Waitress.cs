@@ -11,10 +11,6 @@ namespace SteeringCS.entity
 {
     class Waitress : MovingEntity
     {
-        private Color OutLineColor;
-        public Color VColor { get; set; }
-
-
         public Waitress(Vector2D pos, World w) : base(pos, w)
         {
             Scale = 10;

@@ -1,37 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b2a352d9-a7dc-4796-9845-81f9432505fb" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/ProjectAI2017.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/fuzzy/FuzzyModule.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/fuzzy/FuzzyRule.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/fuzzy/FuzzySet.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/fuzzy/FuzzyTerm.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/fuzzy/FuzzyVariable.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/fuzzy/FzAND.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/fuzzy/fuzzysets/LeftShoulder.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/fuzzy/fuzzysets/RightShoulder.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/fuzzy/fuzzysets/Triangle.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/goal-driven-behaviour/CompositeGoal.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/goal-driven-behaviour/CompositeGoals/AtomicSubgoals/ChooseCustomer.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/goal-driven-behaviour/CompositeGoals/AtomicSubgoals/FindPathToCustomer.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/goal-driven-behaviour/CompositeGoals/AtomicSubgoals/GoToCustomer.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/goal-driven-behaviour/CompositeGoals/AtomicSubgoals/TalkCustomer.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/goal-driven-behaviour/CompositeGoals/TalkToCustomer.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/goal-driven-behaviour/Enums.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/goal-driven-behaviour/Goal.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/stack/IStack.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/stack/LinkedList/LinkedList.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/stack/LinkedList/ListNode.cs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/stack/Stack.cs" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/bin/Debug/SteeringCS.vshost.exe.manifest" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS.sln" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS.sln" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/Program.cs" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/Program.cs" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/SteeringCS.csproj" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/SteeringCS.csproj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/obj/Debug/SteeringCS.csproj.FileListAbsolute.txt" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/obj/Debug/SteeringCS.csproj.FileListAbsolute.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/world/World.cs" afterPath="$PROJECT_DIR$/SteeringCS - Restaurant/SteeringCS/world/World.cs" />
-    </list>
+    <list default="true" id="b2a352d9-a7dc-4796-9845-81f9432505fb" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -99,16 +69,16 @@
       <option name="presentableId" value="Default" />
       <updated>1491384013990</updated>
       <workItem from="1491384015560" duration="10000" />
-      <workItem from="1491384364755" duration="68000" />
+      <workItem from="1491384364755" duration="264000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="78000" />
+    <option name="totallyTimeSpent" value="274000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1056" extended-state="7" />
-    <editor active="true" />
+    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24973656" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />

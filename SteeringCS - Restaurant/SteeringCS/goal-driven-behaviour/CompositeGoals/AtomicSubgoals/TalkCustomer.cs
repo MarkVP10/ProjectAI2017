@@ -11,8 +11,11 @@ using SteeringCS.fuzzy.fuzzysets;
 
 namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
 {
-    class TalkCustomer : CompositeGoal
+    class TalkCustomer : Goal
     {
+        public TalkCustomer()
+        {}
+
         public override void Activate()
         {
             System.Windows.Forms.MessageBox.Show("Activating talking");
@@ -72,6 +75,11 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
             System.Windows.Forms.MessageBox.Show("Terminate talking");
 
             state = State.Complete;
+        }
+
+        public override string GetName()
+        {
+            throw new NotImplementedException();
         }
     }
 }

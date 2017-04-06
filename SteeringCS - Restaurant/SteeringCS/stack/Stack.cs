@@ -10,7 +10,7 @@ namespace SteeringCS.stack
 {
     class MyStack<T> : IStack<T>
     {
-        private MyLinkedList<T> List;
+        public readonly MyLinkedList<T> List;
 
         public MyStack()
         {

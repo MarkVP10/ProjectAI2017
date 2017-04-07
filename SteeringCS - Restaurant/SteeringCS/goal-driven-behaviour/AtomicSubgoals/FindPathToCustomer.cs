@@ -1,17 +1,12 @@
-﻿using SteeringCS.graph;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SteeringCS.entity;
-using static SteeringCS.goal_driven_behaviour.Enums;
+﻿using System;
+using SteeringCS.goal_driven_behaviour;
+using SteeringCS.graph;
 
-namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
+namespace SteeringCS.AtomicSubgoals
 {
     class FindPathToCustomer : Goal
     {
-        public FindPathToCustomer()
+        public FindPathToCustomer(World w) : base(w)
         { }
 
         public Vertex vertexFrom;
@@ -28,7 +23,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
              * vertexFrom = closest Node(current x and y)
              * vertexTo = closestNode(target x and y)
              */
-            state = State.Active;
+            state = Enums.State.Active;
         }
 
         public override int Process()
@@ -47,7 +42,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
         {
             System.Windows.Forms.MessageBox.Show("Terminating FindPath");
 
-            state = State.Complete;
+            state = Enums.State.Complete;
             /*
              * Goal met, next task.
              */

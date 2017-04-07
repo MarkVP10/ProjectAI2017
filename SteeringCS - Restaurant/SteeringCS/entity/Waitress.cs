@@ -5,13 +5,14 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SteeringCS.goal_driven_behaviour.ThinkGoals;
 using SteeringCS.util;
 
 namespace SteeringCS.entity
 {
     class Waitress : MovingEntity
     {
-        public Waitress(Vector2D pos, World w) : base(pos, w)
+        public Waitress(Vector2D pos, World w) : base(pos, w, new Goal_NullThink(w))
         {
             Scale = 10;
 

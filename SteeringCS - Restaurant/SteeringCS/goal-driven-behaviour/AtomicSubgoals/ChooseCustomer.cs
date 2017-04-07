@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static SteeringCS.goal_driven_behaviour.Enums;
+using SteeringCS.goal_driven_behaviour;
 
-namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
+namespace SteeringCS.AtomicSubgoals
 {
     class ChooseCustomer : Goal
     {
-        public ChooseCustomer()
+        public ChooseCustomer(World w) : base(w)
         { }
 
         private Random rnd;
@@ -21,7 +17,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
 
             rnd = new Random();
             //maxValue = World.Customers.Length(); //TODO: set Max value --> Max value is the highest index in an array of customers.
-            state = State.Active;
+            state = Enums.State.Active;
         }
 
         public override int Process()
@@ -38,7 +34,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
         {
             System.Windows.Forms.MessageBox.Show("Terminate Choosecustomer");
 
-            this.state = State.Complete;
+            this.state = Enums.State.Complete;
             /* Goal was met.
              * Next subgoal of main goal.
              */

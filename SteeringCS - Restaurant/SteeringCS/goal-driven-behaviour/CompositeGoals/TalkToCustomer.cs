@@ -1,5 +1,4 @@
-﻿using SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,12 +9,13 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 {
     class TalkToCustomer : CompositeGoal
     {
-        public TalkToCustomer()
+        public TalkToCustomer(World w) : base(w)
         {}
 
         public override void Activate()
         {
-            subgoals = new stack.MyStack<Goal>();
+            //subgoals = new stack.MyStack<Goal>();
+            subgoalStack = new Stack<Goal>();
 
             //this.AddSubgoal(new TalkCustomer());
             //this.AddSubgoal(new GoToCustomer());

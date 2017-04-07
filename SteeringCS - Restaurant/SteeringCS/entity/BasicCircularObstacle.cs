@@ -10,9 +10,6 @@ namespace SteeringCS.entity
 {
     class BasicCircularObstacle : Obstacle
     {
-        private Color OutLineColor = Color.Black;
-        public Color VColor { get; set; }
-
         public BasicCircularObstacle(Vector2D pos, World w) : base(pos, w)
         {
             Scale = 10;

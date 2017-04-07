@@ -10,15 +10,23 @@ namespace SteeringCS.goal_driven_behaviour
 {
     //todo: Make this class generic and add a rule that all classes must be children of BaseGameEntity
 
-    public abstract class Goal
+    abstract class Goal
     {
-        public State state;
+        public State state = State.Idle;
+        protected readonly World world;
 
         public abstract void Activate();
         public abstract int Process();
         public abstract void Terminate();
         public virtual void AddSubgoal(Goal g)
         { throw new Exception("Cannot add goals to atomic goals.");}
+
+
+
+        protected Goal(World theWorld)
+        {
+            world = theWorld;
+        }
 
 
         //todo 'HandleMessage()' remove if not used
@@ -34,7 +42,13 @@ namespace SteeringCS.goal_driven_behaviour
             return result;
         }
 
-        
+
+
+        public void ActivateIfIdle()
+        {
+            if (isIdle())
+                Activate();
+        }
         
         
         public bool isActive()

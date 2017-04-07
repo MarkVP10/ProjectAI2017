@@ -18,7 +18,12 @@ namespace SteeringCS.util
         public static string LeadZero(int i)
         {
             if (i < 0 || i > 99)
-                throw new ArgumentOutOfRangeException("The value of the integer you are trying to make a string with leading zeros is not between 0 and 99.");
+            {
+                Console.WriteLine("WARNING: Utility.LeadZero was called using invalid input. The requested input was: " + i);
+                return i < 0 ? "00" : "99";
+                //throw new ArgumentOutOfRangeException("The value of the integer you are trying to make a string with leading zeros is not between 0 and 99.");
+            }
+                
 
             return i < 10 ? "0" + i : i.ToString(); // 1 -> "01"  --  24 -> "24"  --  4 -> "04"  --  etc.|
         }

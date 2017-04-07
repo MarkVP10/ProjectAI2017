@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SteeringCS.behaviour;
+using SteeringCS.goal_driven_behaviour;
+using SteeringCS.goal_driven_behaviour.ThinkGoals;
+using SteeringCS.graph;
 
 namespace SteeringCS.entity
 {
@@ -24,13 +27,15 @@ namespace SteeringCS.entity
 
         //public List<SteeringBehaviour> SB { get; set; }
         public CombineForces combineStratagy;
+        public readonly Goal_Think Brain;
+        public AStarRemnant PathToTarget;
 
         public Vector2D HeadingVector { get; set; } //Normalized vector pointing in the direction the entity is heading
         public Vector2D SideVector { get; set; } // A vector perpendicular to the heading vector
         public float MaxTurnRate { get; set; }
         public Vector2D SteeringV { get; set; }
 
-        public MovingEntity(Vector2D pos, World w) : base(pos, w)
+        protected MovingEntity(Vector2D pos, World w, Goal_Think brain) : base(pos, w)
         {
             //Previous good settings
             //Mass = 3;
@@ -60,10 +65,15 @@ namespace SteeringCS.entity
             SideVector = HeadingVector.Perpendicular();
 
             combineStratagy = new CombineForces(this);
+            Brain = brain;
+            PathToTarget = null;
         }
 
         public override void Update(float timeElapsed)
         {
+            //Process the things in the brain.
+            Brain.Process();
+
             //Calculate the combined force from each steering behavior in the vehicle's list
             //Vector2D steeringForce = combineStratagy.calcCombinedForce(SB);
             Vector2D steeringForce = combineStratagy.calcCombinedForce();

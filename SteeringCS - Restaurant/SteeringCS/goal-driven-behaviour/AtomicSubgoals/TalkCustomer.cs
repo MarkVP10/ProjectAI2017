@@ -1,26 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static SteeringCS.goal_driven_behaviour.Enums;
 using SteeringCS.fuzzy;
-using SteeringCS.fuzzy.fuzzysets;
+using SteeringCS.goal_driven_behaviour;
 
-
-
-namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
+namespace SteeringCS.AtomicSubgoals
 {
     class TalkCustomer : Goal
     {
-        public TalkCustomer()
+        public TalkCustomer(World w) : base(w)
         {}
 
         public override void Activate()
         {
             System.Windows.Forms.MessageBox.Show("Activating talking");
 
-            state = State.Active;
+            state = Enums.State.Active;
         }
 
         public override int Process()
@@ -79,7 +73,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
         {
             System.Windows.Forms.MessageBox.Show("Terminate talking");
 
-            state = State.Complete;
+            state = Enums.State.Complete;
         }
 
         public override string GetName()

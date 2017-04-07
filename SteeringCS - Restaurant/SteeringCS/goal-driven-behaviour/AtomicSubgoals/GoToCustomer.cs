@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static SteeringCS.goal_driven_behaviour.Enums;
+using SteeringCS.goal_driven_behaviour;
 
-namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
+namespace SteeringCS.AtomicSubgoals
 {
     class GoToCustomer : Goal
     {
-        public GoToCustomer()
+        public GoToCustomer(World w) : base(w)
         {}
 
         public override void Activate()
@@ -20,7 +16,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
              * Path has been found in previous state.
              * Walk that path here
              */
-            state = State.Active;
+            state = Enums.State.Active;
         }
 
         public override int Process()
@@ -42,7 +38,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
         {
             System.Windows.Forms.MessageBox.Show("Terminating GoToCustomer");
 
-            state = State.Complete;
+            state = Enums.State.Complete;
         }
 
         public override string GetName()

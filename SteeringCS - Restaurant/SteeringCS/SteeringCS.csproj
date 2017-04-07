@@ -79,16 +79,23 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\Goal_ChooseCustomer.cs" />
-    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\Goal_FindPathToLocation.cs" />
-    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\Goal_FollowEdge.cs" />
-    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\Goal_GetScoreFromCustomer.cs" />
+    <Compile Include="goal-driven-behaviour\AtomicSubgoals\ChooseCustomer.cs" />
+    <Compile Include="goal-driven-behaviour\AtomicSubgoals\FindPathToCustomer.cs" />
+    <Compile Include="goal-driven-behaviour\AtomicSubgoals\Goal_ChooseCustomer.cs" />
+    <Compile Include="goal-driven-behaviour\AtomicSubgoals\Goal_FollowEdge.cs" />
+    <Compile Include="goal-driven-behaviour\AtomicSubgoals\Goal_GetScoreFromCustomer.cs" />
+    <Compile Include="goal-driven-behaviour\AtomicSubgoals\GoToCustomer.cs" />
+    <Compile Include="goal-driven-behaviour\AtomicSubgoals\TalkCustomer.cs" />
+    <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_FollowPath.cs" />
     <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_GoToLocation.cs" />
     <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_GoToPlayerSpot.cs" />
     <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_GoToTable.cs" />
     <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_TalkWithCustomer.cs" />
-    <Compile Include="goal-driven-behaviour\CompositeGoals\ThinkManager.cs" />
+    <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_WanderRestaurant.cs" />
+    <Compile Include="goal-driven-behaviour\Goal_Think.cs" />
     <Compile Include="goal-driven-behaviour\Telegram.cs" />
+    <Compile Include="goal-driven-behaviour\ThinkGoals\Goal_ManagerThink.cs" />
+    <Compile Include="goal-driven-behaviour\ThinkGoals\Goal_NullThink.cs" />
     <Compile Include="graph\AStarRemnant.cs" />
     <Compile Include="fuzzy\FuzzyModule.cs" />
     <Compile Include="fuzzy\FuzzyRule.cs" />
@@ -100,10 +107,6 @@
     <Compile Include="fuzzy\FuzzyVariable.cs" />
     <Compile Include="fuzzy\FzAND.cs" />
     <Compile Include="goal-driven-behaviour\CompositeGoal.cs" />
-    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\ChooseCustomer.cs" />
-    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\FindPathToCustomer.cs" />
-    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\GoToCustomer.cs" />
-    <Compile Include="goal-driven-behaviour\CompositeGoals\AtomicSubgoals\TalkCustomer.cs" />
     <Compile Include="goal-driven-behaviour\CompositeGoals\TalkToCustomer.cs" />
     <Compile Include="goal-driven-behaviour\Enums.cs" />
     <Compile Include="goal-driven-behaviour\Goal.cs" />

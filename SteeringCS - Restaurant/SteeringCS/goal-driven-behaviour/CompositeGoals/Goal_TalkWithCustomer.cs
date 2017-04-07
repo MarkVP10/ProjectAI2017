@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals;
+using System.Windows.Forms;
+using SteeringCS.AtomicSubgoals;
 
 namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 {
@@ -12,31 +13,47 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 
         //todo
 
+        public Goal_TalkWithCustomer(World theWorld) : base(theWorld)
+        {
+        }
+
+
         public override void Activate()
         {
+            state = Enums.State.Active;
 
+            //AddSubgoal(new Goal_ChooseCustomer());
+            //AddSubgoal(new Goal_GoToTable());
+            //AddSubgoal(new Goal_ChooseCustomer());
 
-            AddSubgoal(new Goal_ChooseCustomer());
-            AddSubgoal(new Goal_GoToTable());
-            AddSubgoal(new Goal_ChooseCustomer());
-
-
-            throw new NotImplementedException();
+            
         }
 
         public override int Process()
         {
-            throw new NotImplementedException();
+            ActivateIfIdle();
+
+            Console.WriteLine("TALKING WITH CUSTOMER!!");
+
+
+            state = (Enums.State)ProcessSubgoals();
+
+
+
+            return (int) state;
         }
 
         public override void Terminate()
         {
-            throw new NotImplementedException();
+            //nothing to clean up
+            Console.WriteLine("TERMINATE TALKING");
         }
 
         public override string GetName()
         {
             return "TalkWithCustomer";
         }
+
+        
     }
 }

@@ -8,8 +8,12 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 {
     class Goal_GoToTable : CompositeGoal
     {
-        
+
         //todo
+
+        public Goal_GoToTable(World theWorld) : base(theWorld)
+        {
+        }
 
         public override void Activate()
         {
@@ -30,5 +34,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
         {
             return "GoToTable";
         }
+
+        
     }
 }

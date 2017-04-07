@@ -140,11 +140,12 @@ namespace SteeringCS
 
 
 
-            if (AStar_FirstRemnant != null)
-            {
-                DoTheBossMove();
-                TheBoss.Update(timeElapsed);
-            }
+            TheBoss.Update(timeElapsed);
+            //if (AStar_FirstRemnant != null)
+            //{
+            //    DoTheBossMove();
+            //    TheBoss.Update(timeElapsed);
+            //}
                 
         }
 
@@ -156,7 +157,7 @@ namespace SteeringCS
 
 
                 //todo if the manager has a path, draw it's A*Remnants
-                AStar_FirstRemnant?.Draw(g); //Null Propogation
+                //AStar_FirstRemnant?.Draw(g); //Null Propogation
             }
 
             restaurandWallGraph.DrawGraph(g, Color.Black);
@@ -168,6 +169,13 @@ namespace SteeringCS
             obstacles.ForEach(o => o.Render(g));
             TheBoss.Render(g);
 
+
+            //Draw the paths for entities if they have them
+            foreach (MovingEntity entity in entities)
+            {
+                entity.PathToTarget?.Draw(g);
+            }
+            TheBoss.PathToTarget?.Draw(g);
 
             //todo: Draw rooms
             //Kitchen

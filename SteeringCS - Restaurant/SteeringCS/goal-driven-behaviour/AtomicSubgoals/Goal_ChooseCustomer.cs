@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SteeringCS.goal_driven_behaviour;
 
-namespace SteeringCS.goal_driven_behaviour.CompositeGoals
+namespace SteeringCS.AtomicSubgoals
 {
-    class ThinkManager : CompositeGoal
+    class Goal_ChooseCustomer : Goal
     {
-        public ThinkManager(string name)
-        {
 
+        //todo
+
+        public Goal_ChooseCustomer(World theWorld) : base(theWorld)
+        {
+            
         }
 
         public override void Activate()
@@ -30,7 +30,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 
         public override string GetName()
         {
-            return "Think";
+            return "ChooseCustomer";
         }
     }
 }

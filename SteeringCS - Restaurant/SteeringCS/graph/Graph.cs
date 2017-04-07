@@ -76,30 +76,30 @@ namespace SteeringCS.graph
             return resultList;
         }
 
-
-
-
         public Vertex FindClosestNodeToWorldCoords(int xCoord, int yCoord)
         {
-            //graphSeperationFactor
-            
-            int startNodeX = (xCoord/(int)graphNodeSeperationFactor);
-            int startNodeY = (yCoord/(int) graphNodeSeperationFactor);
-            Vector2D inWorldVector = new Vector2D(xCoord, yCoord);
-
-            Vertex leftTop = GetVertexByName(Utility.LeadZero(startNodeX) + Utility.LeadZero(startNodeY));
-            Vertex leftBottom = GetVertexByName(Utility.LeadZero(startNodeX) + Utility.LeadZero(startNodeY+1));
-            Vertex rightTop = GetVertexByName(Utility.LeadZero(startNodeX+1) + Utility.LeadZero(startNodeY));
-            Vertex rightBottom = GetVertexByName(Utility.LeadZero(startNodeX+1) + Utility.LeadZero(startNodeY+1));
-
-            List<Vertex> listOfVertices = new List<Vertex>();
-            listOfVertices.Add(leftTop);
-            listOfVertices.Add(leftBottom);
-            listOfVertices.Add(rightTop);
-            listOfVertices.Add(rightBottom);
-
             Vertex returnVertex = null;
             double delta = Int32.MaxValue;
+            Vector2D inWorldVector = new Vector2D(xCoord, yCoord);
+
+            //todo Make the below commented code work for improvement in finding the closest node
+
+            //int startNodeX = (xCoord/(int)graphNodeSeperationFactor);
+            //int startNodeY = (yCoord/(int) graphNodeSeperationFactor);
+
+
+            //Vertex leftTop = GetVertexByName(Utility.LeadZero(startNodeX) + Utility.LeadZero(startNodeY));
+            //Vertex leftBottom = GetVertexByName(Utility.LeadZero(startNodeX) + Utility.LeadZero(startNodeY+1));
+            //Vertex rightTop = GetVertexByName(Utility.LeadZero(startNodeX+1) + Utility.LeadZero(startNodeY));
+            //Vertex rightBottom = GetVertexByName(Utility.LeadZero(startNodeX+1) + Utility.LeadZero(startNodeY+1));
+
+            //List<Vertex> listOfVertices = new List<Vertex>();
+            //listOfVertices.Add(leftTop);
+            //listOfVertices.Add(leftBottom);
+            //listOfVertices.Add(rightTop);
+            //listOfVertices.Add(rightBottom);
+
+
 
             //foreach (Vertex vertex in listOfVertices)
             //{
@@ -110,12 +110,12 @@ namespace SteeringCS.graph
             //        returnVertex = vertex;
             //}
 
-            
+
             //if(returnVertex != null)
             //    return returnVertex;
-            
-            
 
+
+            //Search all nodes
             foreach (KeyValuePair<string, Vertex> pair in graphMap)
             {
                 double diff = (pair.Value.Pos - inWorldVector).Length();
@@ -124,7 +124,6 @@ namespace SteeringCS.graph
                     returnVertex = pair.Value;
                     delta = diff;
                 }
-                    
             }
 
 
@@ -132,44 +131,7 @@ namespace SteeringCS.graph
         }
 
 
-
-
-        public List<Vertex> PrepareAStarOnClick(int xCoord, int yCoord, int xCurr, int yCurr)
-        {
-            List<Vertex> res = new List<Vertex>();
-
-            res.Add(FindClosestNode(xCoord, yCoord));
-            res.Add(FindClosestNode(xCurr, yCurr));
-
-
-            return res;
-        }
-
-        public Vertex FindClosestNode(int xCoord, int yCoord)
-        {
-            Vertex closest = null;
-
-            foreach (KeyValuePair<string, Vertex> node in graphMap)
-            {
-                if (closest == null)
-                {
-                    closest = node.Value;
-                    continue;
-                }
-
-                int now = Math.Abs((int)node.Value.X - xCoord) + Math.Abs((int)node.Value.Y - yCoord);
-
-                int curr = Math.Abs(closest.X - xCoord) + Math.Abs(closest.Y - yCoord);
-
-                if (now < curr)
-                {
-                    closest = node.Value;
-                }
-            }
-            return closest;
-        }
-
-
+        
 
 
 
@@ -182,6 +144,16 @@ namespace SteeringCS.graph
             
             //Nothing found
             return null;
+        }
+
+
+        //Gets a random Vertex from the graph map
+        public Vertex GetRandomVertex()
+        {
+            if (graphMap.Count == 0)
+                return null;
+            Random rng = new Random();
+            return graphMap.Values.ToList()[rng.Next(0, graphMap.Count)];
         }
         
 

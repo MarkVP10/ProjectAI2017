@@ -53,7 +53,7 @@ namespace SteeringCS.behaviour
 
 
             //todo remove console.writeline
-            Console.WriteLine(angleNeededToPointHeaderToInfinitePositiveX);
+            //Console.WriteLine(angleNeededToPointHeaderToInfinitePositiveX);
             //Console.WriteLine(ME.HeadingVector);
             //Console.WriteLine(Vector2D.ToDegrees(ME.HeadingVector));
 

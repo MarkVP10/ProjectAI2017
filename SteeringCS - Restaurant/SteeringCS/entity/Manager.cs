@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SteeringCS.goal_driven_behaviour.ThinkGoals;
 
 namespace SteeringCS.entity
 {
@@ -11,7 +12,7 @@ namespace SteeringCS.entity
     {
 
         //todo
-        public Manager(Vector2D pos, World w) : base(pos, w)
+        public Manager(Vector2D pos, World w) : base(pos, w, new Goal_ManagerThink(w))
         {
             Scale = 15;
             VColor = Color.CadetBlue;

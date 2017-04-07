@@ -11,6 +11,10 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 
         //todo
 
+        public Goal_GoToPlayerSpot(World theWorld) : base(theWorld)
+        {
+        }
+
         public override void Activate()
         {
             throw new NotImplementedException();
@@ -30,5 +34,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
         {
             return "GoToPlayerSpot";
         }
+
+        
     }
 }

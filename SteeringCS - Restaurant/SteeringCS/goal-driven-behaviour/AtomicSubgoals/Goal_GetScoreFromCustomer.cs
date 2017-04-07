@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SteeringCS.goal_driven_behaviour;
 
-namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
+namespace SteeringCS.AtomicSubgoals
 {
     class Goal_GetScoreFromCustomer : Goal
     {
 
         //todo
+
+        public Goal_GetScoreFromCustomer(World theWorld) : base(theWorld)
+        {
+
+        }
 
         public override void Activate()
         {
@@ -30,5 +32,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals.AtomicSubgoals
         {
             return "GetScoreFromCustomer";
         }
+
+        
     }
 }

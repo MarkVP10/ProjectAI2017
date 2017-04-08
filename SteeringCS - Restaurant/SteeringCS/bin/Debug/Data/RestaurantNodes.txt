@@ -698,50 +698,50 @@
 {"Name":"SeatTable6","X":4,"Y":24} //6p - bottom left
 {"Name":"SeatTable6","X":6,"Y":24} //6p - bottom right
 
-//3pNorthWest
-{"Name":"SeatTable3","X":11,"Y":11} //3p - left
-{"Name":"SeatTable3","X":13,"Y":11} //3p - right
-{"Name":"SeatTable3","X":12,"Y":10} //3p - top left
-{"Name":"SeatTable3","X":12,"Y":12} //3p - bottom left
-//3pWest
-{"Name":"SeatTable3","X":11,"Y":17} //3p - left
-{"Name":"SeatTable3","X":13,"Y":17} //3p - right
-{"Name":"SeatTable3","X":12,"Y":16} //3p - top left
-{"Name":"SeatTable3","X":12,"Y":18} //3p - bottom right
-//3pSouthWest
-{"Name":"SeatTable3","X":11,"Y":23} //3p - left
-{"Name":"SeatTable3","X":13,"Y":23} //3p - right
-{"Name":"SeatTable3","X":12,"Y":22} //3p - top left
-{"Name":"SeatTable3","X":12,"Y":24} //3p - bottom right
+//4pNorthWest
+{"Name":"SeatTable4","X":11,"Y":11} //4p - left
+{"Name":"SeatTable4","X":13,"Y":11} //4p - right
+{"Name":"SeatTable4","X":12,"Y":10} //4p - top left
+{"Name":"SeatTable4","X":12,"Y":12} //4p - bottom left
+//4pWest
+{"Name":"SeatTable4","X":11,"Y":17} //4p - left
+{"Name":"SeatTable4","X":13,"Y":17} //4p - right
+{"Name":"SeatTable4","X":12,"Y":16} //4p - top left
+{"Name":"SeatTable4","X":12,"Y":18} //4p - bottom right
+//4pSouthWest
+{"Name":"SeatTable4","X":11,"Y":23} //4p - left
+{"Name":"SeatTable4","X":13,"Y":23} //4p - right
+{"Name":"SeatTable4","X":12,"Y":22} //4p - top left
+{"Name":"SeatTable4","X":12,"Y":24} //4p - bottom right
 
-//3pNorth
-{"Name":"SeatTable3","X":17,"Y":11} //3p - left
-{"Name":"SeatTable3","X":19,"Y":11} //3p - right
-{"Name":"SeatTable3","X":18,"Y":10} //3p - top left
-{"Name":"SeatTable3","X":18,"Y":12} //3p - bottom right
-//3pCenter
-{"Name":"SeatTable3","X":17,"Y":17} //3p - left
-{"Name":"SeatTable3","X":19,"Y":17} //3p - right
-{"Name":"SeatTable3","X":18,"Y":16} //3p - top left
-{"Name":"SeatTable3","X":18,"Y":18} //3p - bottom right
-//3pSouth
-{"Name":"SeatTable3","X":17,"Y":23} //3p - left
-{"Name":"SeatTable3","X":19,"Y":23} //3p - right
-{"Name":"SeatTable3","X":18,"Y":22} //3p - top left
-{"Name":"SeatTable3","X":18,"Y":24} //3p - bottom right
+//4pNorth
+{"Name":"SeatTable4","X":17,"Y":11} //4p - left
+{"Name":"SeatTable4","X":19,"Y":11} //4p - right
+{"Name":"SeatTable4","X":18,"Y":10} //4p - top left
+{"Name":"SeatTable4","X":18,"Y":12} //4p - bottom right
+//4pCenter
+{"Name":"SeatTable4","X":17,"Y":17} //4p - left
+{"Name":"SeatTable4","X":19,"Y":17} //4p - right
+{"Name":"SeatTable4","X":18,"Y":16} //4p - top left
+{"Name":"SeatTable4","X":18,"Y":18} //4p - bottom right
+//4pSouth
+{"Name":"SeatTable4","X":17,"Y":23} //4p - left
+{"Name":"SeatTable4","X":19,"Y":23} //4p - right
+{"Name":"SeatTable4","X":18,"Y":22} //4p - top left
+{"Name":"SeatTable4","X":18,"Y":24} //4p - bottom right
 
-//3pNorthEast
-{"Name":"SeatTable3","X":23,"Y":11} //3p - left
-{"Name":"SeatTable3","X":25,"Y":11} //3p - right
-{"Name":"SeatTable3","X":24,"Y":10} //3p - top left
-{"Name":"SeatTable3","X":24,"Y":12} //3p - bottom right
-//3pEast
-{"Name":"SeatTable3","X":23,"Y":17} //3p - left
-{"Name":"SeatTable3","X":25,"Y":17} //3p - right
-{"Name":"SeatTable3","X":24,"Y":16} //3p - top left
-{"Name":"SeatTable3","X":24,"Y":18} //3p - bottom right
-//3pSouthEast
-{"Name":"SeatTable3","X":23,"Y":23} //3p - left
-{"Name":"SeatTable3","X":25,"Y":23} //3p - right
-{"Name":"SeatTable3","X":24,"Y":22} //3p - top left
-{"Name":"SeatTable3","X":24,"Y":24} //3p - bottom right
+//4pNorthEast
+{"Name":"SeatTable4","X":23,"Y":11} //4p - left
+{"Name":"SeatTable4","X":25,"Y":11} //4p - right
+{"Name":"SeatTable4","X":24,"Y":10} //4p - top left
+{"Name":"SeatTable4","X":24,"Y":12} //4p - bottom right
+//4pEast
+{"Name":"SeatTable4","X":23,"Y":17} //4p - left
+{"Name":"SeatTable4","X":25,"Y":17} //4p - right
+{"Name":"SeatTable4","X":24,"Y":16} //4p - top left
+{"Name":"SeatTable4","X":24,"Y":18} //4p - bottom right
+//4pSouthEast
+{"Name":"SeatTable4","X":23,"Y":23} //4p - left
+{"Name":"SeatTable4","X":25,"Y":23} //4p - right
+{"Name":"SeatTable4","X":24,"Y":22} //4p - top left
+{"Name":"SeatTable4","X":24,"Y":24} //4p - bottom right

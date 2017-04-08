@@ -85,7 +85,7 @@ namespace SteeringCS.behaviour
 
 
                 //todo remove
-                Console.WriteLine("WARNING! OBJECT IN RANGE! Location:" + LocalPos);
+                //Console.WriteLine("WARNING! OBJECT IN RANGE! Location:" + LocalPos);
 
                 //Find and save intersection
                 double cX = LocalPos.X;

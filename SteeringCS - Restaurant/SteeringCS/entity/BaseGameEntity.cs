@@ -19,7 +19,7 @@ namespace SteeringCS
             MyWorld = w;
 
             VColor = Color.Blue;
-            OutLineColor = Color.Blue;
+            OutLineColor = Color.Black;
             Scale = 10;
         }
 

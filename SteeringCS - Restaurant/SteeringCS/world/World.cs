@@ -15,51 +15,41 @@ using System.IO;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using SteeringCS.goal_driven_behaviour.CompositeGoals;
+using SteeringCS.world;
 
 namespace SteeringCS
 {
     class World
     {
-        private static readonly double graphNodeSeperationFactor = 30;
+        private static readonly int graphNodeSeperationFactor = 30;
         private readonly Graph restaurandWallGraph = new Graph(graphNodeSeperationFactor);
         public readonly Graph restaurandFloorGraph = new Graph(graphNodeSeperationFactor);
-        public AStarRemnant AStar_FirstRemnant;
+        
 
-        public bool graphVisible = true;
-        public bool goalsVisible = false;
-        Font goalFont = new Font(new FontFamily("Arial"), 8, FontStyle.Regular);
+        public bool graphVisible = true; //D
+        public bool pathVisible = true; //F
+        public bool goalsVisible = false; //G
+        private readonly Font goalFont = new Font(new FontFamily("Arial"), 8, FontStyle.Regular);
 
 
-        private List<MovingEntity> entities = new List<MovingEntity>();
-        private List<BaseGameEntity> obstacles = new List<BaseGameEntity>();
+        private readonly List<MovingEntity> entities = new List<MovingEntity>();
+        private readonly List<BaseGameEntity> obstacles = new List<BaseGameEntity>();
+        private readonly List<SentientTable> tables = new List<SentientTable>();
         public Manager TheBoss;
 
-        public Vehicle Target { get; set; }
+        public Vehicle Target { get; set; } //The player's last clicked location
         public int Width { get; set; }
         public int Height { get; set; }
         public readonly int RestaurantWidth = 34; //amount of nodes that span the width of the restaurant
         public readonly int RestaurantHeight = 28;//amount of nodes that span the height of the restaurant
 
-
+        
 
 
 
 
         public World(int w, int h)
         {
-            //TalkToCustomer goal = new TalkToCustomer();
-            //goal.Activate();
-            //List<string> goalStringList = goal.GetCompositeGoalAsStringList();
-            //goal.Process();
-            //MessageBox.Show("Test");
-            //string messageGoal = "";
-            //foreach (string s in goalStringList.AsReadOnly())
-            //{
-            //    messageGoal += s + "\r\n";
-            //}
-            //MessageBox.Show(messageGoal);
-
-
             Width = w;
             Height = h;
             populate();
@@ -68,12 +58,6 @@ namespace SteeringCS
 
         private void populate()
         {
-            Vehicle v = new Vehicle(new Vector2D(200,100), this);
-            v.VColor = Color.Blue;
-            //entities.Add(v);
-
-
-
             //Waitresses
             Waitress w1 = new Waitress(new Vector2D(100, 200), this);
             w1.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.Wander);
@@ -95,10 +79,11 @@ namespace SteeringCS
 
             //Manager
             TheBoss = new Manager(new Vector2D(300, 300), this);
-            
+            entities.Add(TheBoss);
 
 
 
+            //todo make customers
             //Customer c1 = new Customer(new Vector2D(100, 300), this);
             //entities.Add(c1);
             //Customer c2 = new Customer(new Vector2D(100, 400), this);
@@ -106,12 +91,7 @@ namespace SteeringCS
 
             Target = new Vehicle(new Vector2D(), this);
             Target.VColor = Color.DarkRed;
-            Target.Pos = new Vector2D(200, 200);
-
-
-            BasicCircularObstacle b1 = new BasicCircularObstacle(new Vector2D(300, 300), this);
-            b1.Scale = 10;
-            //obstacles.Add(b1);
+            Target.Pos = new Vector2D(-50, -50);
         }
 
 
@@ -136,52 +116,47 @@ namespace SteeringCS
 
             foreach (MovingEntity me in entities)
             {
-                me.combineStratagy.SetTarget(Target.Pos);
                 me.Update(timeElapsed);
-            }
-
-
-
-            TheBoss.Update(timeElapsed);
-            //if (AStar_FirstRemnant != null)
-            //{
-            //    DoTheBossMove();
-            //    TheBoss.Update(timeElapsed);
-            //}
-                
+                //me.Update(timeElapsed); //Double update??
+            }    
         }
 
         public void Render(Graphics g)
         {
+            //todo: Draw rooms
+            //Kitchen
+            //BathroomMale
+            //BathroomFemale
+            //Reception
+            //Dining Area
+            //WalkingArea
+
+            //Draw the Walls
+            restaurandWallGraph.DrawGraph(g, Color.Black);
+
+            //Draw the graph, when needed
             if (graphVisible)
-            {
                 restaurandFloorGraph.DrawGraph(g, Color.SteelBlue);
 
 
-                //todo if the manager has a path, draw it's A*Remnants
-                //AStar_FirstRemnant?.Draw(g); //Null Propogation
-            }
 
-            restaurandWallGraph.DrawGraph(g, Color.Black);
-
-
-            //Todo: edit render function to draw all Agents(entities) and StaticObjects(obstacles).
+            
+            obstacles.ForEach(o => o.Render(g));
             entities.ForEach(e => e.Render(g));
             Target.Render(g);
-            obstacles.ForEach(o => o.Render(g));
-            TheBoss.Render(g);
 
 
-            //Draw the paths for entities if they have them
-            foreach (MovingEntity entity in entities)
+            //Draw the paths for entities if they have them, when needed
+            if (pathVisible)
             {
-                entity.PathToTarget?.Draw(g);
+                foreach (MovingEntity entity in entities)
+                {
+                    entity.PathToTarget?.Draw(g);
+                }
             }
-            TheBoss.PathToTarget?.Draw(g);
 
 
-
-            //Draw the goals for all entities
+            //Draw the goals for all entities, when needed
             if (goalsVisible)
             {
                 int goalDraw_xCoord = 0;
@@ -190,7 +165,6 @@ namespace SteeringCS
                 foreach (MovingEntity entity in entities)
                 {
                     List<string> entityGoals = entity.Brain.GetCompositeGoalAsStringList();
-                    //entityGoals.Reverse();
                     goalDraw_xCoord = (int)(entity.Pos.X + entity.Scale + 5);
                     goalDraw_yCoord = (int)entity.Pos.Y;
                     foreach (string s in entityGoals)
@@ -199,33 +173,34 @@ namespace SteeringCS
                         goalDraw_yCoord += 8;
                     }
                 }
-
-                
-                goalDraw_xCoord = (int)(TheBoss.Pos.X + TheBoss.Scale + 5);
-                goalDraw_yCoord = (int)TheBoss.Pos.Y;
-                List<string> bossGoalsList = TheBoss.Brain.GetCompositeGoalAsStringList();
-                //bossGoalsList.Reverse();
-                foreach (string s in bossGoalsList)
-                {
-                    g.DrawString(s, goalFont, Brushes.DarkSlateGray, goalDraw_xCoord, goalDraw_yCoord);
-                    goalDraw_yCoord += 8;
-                }
             }
 
-            //todo: Draw rooms
-            //Kitchen
-            //BathroomMale
-            //BathroomFemale
+            
         }
+
+
+        //Get a random unfilled table
+        public Table GetRandomFilledTable()
+        {
+            List<Table> unfilledTables = (from t in tables where t.table.HasCustomers select t.table).ToList();
+            if (unfilledTables.Count == 0)
+                return null;
+
+            Random rng = new Random();
+            return unfilledTables[rng.Next(0, unfilledTables.Count)];
+        }
+
 
 
         //Needed for object avoidance detection
         public List<BaseGameEntity> GetAllWorldObstacles()
         {
+            //todo: remove this function, seeing as we don;t use Obstacle Detection
             return obstacles;
         }
         public List<BaseGameEntity> GetAllObstaclesInRange(MovingEntity entity, double radius)
         {
+            //todo: remove this function, seeing as we don;t use Obstacle Detection
             //Fill the container with obstacles in range
             List<BaseGameEntity> obstaclesWithinRange = new List<BaseGameEntity>();
             foreach (BaseGameEntity obstacle in obstacles)
@@ -239,44 +214,7 @@ namespace SteeringCS
 
             return obstaclesWithinRange;
         } 
-
-        public void SwitchAgentBehaviour(CombineForces.Behaviours behaviour)
-        {
-            foreach (MovingEntity me in entities)
-            {
-                me.combineStratagy.SwitchBehaviour(behaviour);
-            }
-        }
-        public void SetArriveDeceleration(ArriveBehaviour.Deceleration deceleration)
-        {
-            foreach (MovingEntity me in entities)
-            {
-                me.combineStratagy.SetArriveDeceleration(deceleration);
-            }
-        }
-
-
-        //It's better if this method is in the Goals, but we're short on time, so this'll do.
-        public void DoTheBossMove()
-        {
-            //Compare
-            int deltaX = (int) Math.Abs(TheBoss.Pos.X - AStar_FirstRemnant.GetPosition().X);
-            int deltaY = (int) Math.Abs(TheBoss.Pos.Y - AStar_FirstRemnant.GetPosition().Y);
-            int dist = 10;
-
-            if (deltaX < dist && deltaY < dist)
-            {
-                //Hardstop if it reached the final node.
-                if (AStar_FirstRemnant.isEnd())
-                {
-                    TheBoss.Velocity = new Vector2D();
-                    AStar_FirstRemnant = null;
-                    return;
-                }
-                AStar_FirstRemnant = AStar_FirstRemnant.GetNext();
-                TheBoss.combineStratagy.SetTarget(AStar_FirstRemnant.GetPosition());
-            }
-        }
+        
 
 
 
@@ -290,6 +228,8 @@ namespace SteeringCS
             restaurandFloorGraph.AddVertecis(restaurantFloorNodes);
             GenerateWallEdges();
             GenerateFloorEdges();
+            GenerateTables();
+
         }
 
 
@@ -314,8 +254,46 @@ namespace SteeringCS
                          */
 
 
+
+
+        private void GenerateTables()
+        {
+            List<string> tableInJSON = ReadNodeFile(@"Data\RestaurantTablePosition.txt");
+
+            foreach (string s in tableInJSON)
+            {
+                //Not yet safe... Needs a try-catch
+                Table t = JsonConvert.DeserializeObject<Table>(s);
+                t = new Table(t.X, t.Y, t.IsFourPerson);
+
+
+
+                //todo remove this!!!
+                t.HasCustomers = true;
+
+                SentientTable st =
+                    new SentientTable(
+                        new Vector2D(t.X*graphNodeSeperationFactor, t.Y*graphNodeSeperationFactor), 
+                        this,
+                        t, 
+                        graphNodeSeperationFactor);
+
+                obstacles.Add(st);
+                tables.Add(st);
+            }
+        }
+
+
+
+
+
+
+
+
+
         /// <summary>
-        /// Returns a list of strings that contains only JSON objects and is save to be used for deserialization. (Without worry of syntax errors or empty strings)
+        /// Returns a list of strings that contains only JSON objects and is save to be used for deserialization. (Without worry of syntax errors or empty strings).
+        /// For this function to recognize JSON objects, the first character on the line must be a '{'.
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>

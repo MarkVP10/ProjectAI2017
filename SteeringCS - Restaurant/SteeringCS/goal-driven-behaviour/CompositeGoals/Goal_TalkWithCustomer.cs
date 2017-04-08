@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteeringCS.AtomicSubgoals;
+using SteeringCS.goal_driven_behaviour.AtomicSubgoals;
+using SteeringCS.world;
 
 namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 {
@@ -12,6 +14,8 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
     {
 
         //todo
+        private Table table;
+
 
         public Goal_TalkWithCustomer(World theWorld) : base(theWorld)
         {
@@ -21,32 +25,54 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
         public override void Activate()
         {
             state = Enums.State.Active;
+            Console.WriteLine("ACTIVATING TALKING WITH CUSTOMER!");
 
-            //AddSubgoal(new Goal_ChooseCustomer());
-            //AddSubgoal(new Goal_GoToTable());
-            //AddSubgoal(new Goal_ChooseCustomer());
+
+            //Choose a customer filled table
+            table = world.GetRandomFilledTable();
+            
+            if (table == null)
+            {
+                //No tables available to talk to.
+                state = Enums.State.Failed;
+                Console.WriteLine("Wanted to talk to a customer, but there are none. :c");
+                return;
+            }
+
+            string nameOfRandomTable = table.GetNodeNameForWaiterPosition();
+            Vector2D tablePos = world.restaurandFloorGraph.GetVertexByName(nameOfRandomTable).Pos;
 
             
+            //Goto customer (GoToLocation)
+            //Idle at table for 2 seconds
+            //Get score from the customer
+            //Idle at table for 2 seconds
+            //todo: Dismiss customers from table?
+
+
+            AddSubgoal(new Goal_IdleAtCurrentLocation(world, 2));
+            AddSubgoal(new Goal_GetScoreFromCustomer(world));
+            AddSubgoal(new Goal_IdleAtCurrentLocation(world, 2));
+            AddSubgoal(new Goal_GoToLocation(world, tablePos));
         }
 
         public override int Process()
         {
             ActivateIfIdle();
-
-            Console.WriteLine("TALKING WITH CUSTOMER!!");
-
-
+            
             state = (Enums.State)ProcessSubgoals();
-
-
-
+            
             return (int) state;
         }
 
         public override void Terminate()
         {
             //nothing to clean up
-            Console.WriteLine("TERMINATE TALKING");
+            Console.WriteLine("TERMINATE TALKING WITH CUSTOMER\r\n\r\n");
+
+
+            //todo remove this!!!
+            table.HasCustomers = false;
         }
 
         public override string GetName()

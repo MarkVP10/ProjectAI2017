@@ -24,11 +24,13 @@ namespace SteeringCS.goal_driven_behaviour.ThinkGoals
             Random RNG = new Random();
 
 
-            //A 10% chance that the manager will talk to a customer when it has nothing to do.
-            if (RNG.Next(0, 10) == 0)
-                AddGoal_TalkWithCustomer();
-            else
+            //A 33% chance that the manager will wander around the restaurant
+            //A 67% change to talk to a customer
+            if (RNG.Next(0, 3) == 0)
                 AddGoal_WanderRestaurant();
+            else
+                AddGoal_TalkWithCustomer();
+            
         }
 
         public override void HandleMessageToBrain(string simpleMessage, object data)

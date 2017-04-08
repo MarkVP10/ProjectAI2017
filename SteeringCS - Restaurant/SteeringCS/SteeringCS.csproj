@@ -79,18 +79,13 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="goal-driven-behaviour\AtomicSubgoals\ChooseCustomer.cs" />
-    <Compile Include="goal-driven-behaviour\AtomicSubgoals\FindPathToCustomer.cs" />
     <Compile Include="goal-driven-behaviour\AtomicSubgoals\Goal_ChooseCustomer.cs" />
     <Compile Include="goal-driven-behaviour\AtomicSubgoals\Goal_FollowEdge.cs" />
     <Compile Include="goal-driven-behaviour\AtomicSubgoals\Goal_GetScoreFromCustomer.cs" />
     <Compile Include="goal-driven-behaviour\AtomicSubgoals\Goal_IdleAtCurrentLocation.cs" />
-    <Compile Include="goal-driven-behaviour\AtomicSubgoals\GoToCustomer.cs" />
-    <Compile Include="goal-driven-behaviour\AtomicSubgoals\TalkCustomer.cs" />
     <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_FollowPath.cs" />
     <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_GoToLocation.cs" />
     <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_GoToPlayerSpot.cs" />
-    <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_GoToTable.cs" />
     <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_TalkWithCustomer.cs" />
     <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_WanderRestaurant.cs" />
     <Compile Include="goal-driven-behaviour\Goal_Think.cs" />
@@ -108,7 +103,6 @@
     <Compile Include="fuzzy\FuzzyVariable.cs" />
     <Compile Include="fuzzy\FzAND.cs" />
     <Compile Include="goal-driven-behaviour\CompositeGoal.cs" />
-    <Compile Include="goal-driven-behaviour\CompositeGoals\TalkToCustomer.cs" />
     <Compile Include="goal-driven-behaviour\Enums.cs" />
     <Compile Include="goal-driven-behaviour\Goal.cs" />
     <Compile Include="graph\Edge.cs" />
@@ -131,6 +125,7 @@
     <Compile Include="util\PriorityQueue_Vertex.cs" />
     <Compile Include="util\Utility.cs" />
     <Compile Include="util\Vector2D.cs" />
+    <Compile Include="world\Table.cs" />
     <Compile Include="world\World.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

@@ -67,7 +67,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
             state = (Enums.State)ProcessSubgoals();
 
             //If the wandering takes to long to get to the goal, it will complete automatically
-            if(sw.ElapsedMilliseconds > timeToWander*1000)
+            if (sw.ElapsedMilliseconds > timeToWander*1000)
                 state = Enums.State.Complete;
 
 
@@ -77,6 +77,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
         public override void Terminate()
         {
             sw.Stop();
+            Console.WriteLine("Stop Wandering.\r\n\r\n");
         }
 
         public override string GetName()

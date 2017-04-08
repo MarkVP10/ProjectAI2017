@@ -125,6 +125,7 @@
     <Compile Include="util\PriorityQueue_Vertex.cs" />
     <Compile Include="util\Utility.cs" />
     <Compile Include="util\Vector2D.cs" />
+    <Compile Include="world\Room.cs" />
     <Compile Include="world\Table.cs" />
     <Compile Include="world\World.cs" />
     <EmbeddedResource Include="Form1.resx">

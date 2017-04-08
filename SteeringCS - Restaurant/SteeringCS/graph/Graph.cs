@@ -81,41 +81,9 @@ namespace SteeringCS.graph
             Vertex returnVertex = null;
             double delta = Int32.MaxValue;
             Vector2D inWorldVector = new Vector2D(xCoord, yCoord);
+            
 
-            //todo Make the below commented code work for improvement in finding the closest node
-
-            //int startNodeX = (xCoord/(int)graphNodeSeperationFactor);
-            //int startNodeY = (yCoord/(int) graphNodeSeperationFactor);
-
-
-            //Vertex leftTop = GetVertexByName(Utility.LeadZero(startNodeX) + Utility.LeadZero(startNodeY));
-            //Vertex leftBottom = GetVertexByName(Utility.LeadZero(startNodeX) + Utility.LeadZero(startNodeY+1));
-            //Vertex rightTop = GetVertexByName(Utility.LeadZero(startNodeX+1) + Utility.LeadZero(startNodeY));
-            //Vertex rightBottom = GetVertexByName(Utility.LeadZero(startNodeX+1) + Utility.LeadZero(startNodeY+1));
-
-            //List<Vertex> listOfVertices = new List<Vertex>();
-            //listOfVertices.Add(leftTop);
-            //listOfVertices.Add(leftBottom);
-            //listOfVertices.Add(rightTop);
-            //listOfVertices.Add(rightBottom);
-
-
-
-            //foreach (Vertex vertex in listOfVertices)
-            //{
-            //    if(vertex == null)
-            //        continue;
-            //    double diff = (vertex.Pos - inWorldVector).Length();
-            //    if (diff < delta)
-            //        returnVertex = vertex;
-            //}
-
-
-            //if(returnVertex != null)
-            //    return returnVertex;
-
-
-            //Search all nodes
+            //Search all nodes - inefficient, but it works
             foreach (KeyValuePair<string, Vertex> pair in graphMap)
             {
                 double diff = (pair.Value.Pos - inWorldVector).Length();
@@ -158,12 +126,12 @@ namespace SteeringCS.graph
         
 
 
-        public void DrawGraph(Graphics g, Color? color = null)
+        public void DrawGraph(Graphics g, Color? color = null, float edgeSize = 1f)
         {
             Color trueColor = color ?? Color.Gray;
 
             var penBox = new Pen(trueColor, 4f);
-            var penLine = new Pen(trueColor, 1f);
+            var penLine = new Pen(trueColor, edgeSize);
             foreach (Vertex vertex in graphMap.Values)
             {
                 g.DrawEllipse(penBox, new RectangleF((float)vertex.Pos.X - 2f, (float)vertex.Pos.Y - 2f, 4, 4));

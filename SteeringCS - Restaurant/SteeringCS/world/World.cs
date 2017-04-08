@@ -21,7 +21,7 @@ namespace SteeringCS
 {
     class World
     {
-        private static readonly int graphNodeSeperationFactor = 30;
+        public static readonly int graphNodeSeperationFactor = 30;
         private readonly Graph restaurandWallGraph = new Graph(graphNodeSeperationFactor);
         public readonly Graph restaurandFloorGraph = new Graph(graphNodeSeperationFactor);
         
@@ -35,6 +35,7 @@ namespace SteeringCS
         private readonly List<MovingEntity> entities = new List<MovingEntity>();
         private readonly List<BaseGameEntity> obstacles = new List<BaseGameEntity>();
         private readonly List<SentientTable> tables = new List<SentientTable>();
+        private readonly List<Room> rooms = new List<Room>(); 
         public Manager TheBoss;
 
         public Vehicle Target { get; set; } //The player's last clicked location
@@ -130,9 +131,14 @@ namespace SteeringCS
             //Reception
             //Dining Area
             //WalkingArea
+            foreach (Room room in rooms)
+            {
+                g.FillRectangle(new SolidBrush(room.color), room.GetRectangle());
+                g.DrawString(room.name, goalFont, Brushes.Black, room.GetCenterPosition().ToPointF());
+            }
 
             //Draw the Walls
-            restaurandWallGraph.DrawGraph(g, Color.Black);
+            restaurandWallGraph.DrawGraph(g, Color.Black, 2f);
 
             //Draw the graph, when needed
             if (graphVisible)
@@ -229,7 +235,7 @@ namespace SteeringCS
             GenerateWallEdges();
             GenerateFloorEdges();
             GenerateTables();
-
+            GenerateRooms();
         }
 
 
@@ -285,7 +291,16 @@ namespace SteeringCS
 
 
 
-
+        private void GenerateRooms()
+        {
+            rooms.Add(new Room(0,  0,  25, 6,  Color.DarkOrange, "Kitchen"));
+            rooms.Add(new Room(25, 0,  29, 3,  Color.RoyalBlue, "Toilet ♂"));
+            rooms.Add(new Room(29, 0,  33, 3,  Color.RoyalBlue, "Toilet ♀"));
+            rooms.Add(new Room(29, 22, 33, 27, Color.Peru, "Reception"));
+            rooms.Add(new Room(0,  6,  29, 27, Color.Pink, "Dining"));
+            rooms.Add(new Room(25, 3,  33, 6,  Color.OrangeRed, "Walkway"));
+            rooms.Add(new Room(29, 6,  33, 22, Color.OrangeRed, "Walkway"));
+        }
 
 
 

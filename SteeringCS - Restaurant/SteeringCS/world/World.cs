@@ -26,6 +26,8 @@ namespace SteeringCS
         public AStarRemnant AStar_FirstRemnant;
 
         public bool graphVisible = true;
+        public bool goalsVisible = false;
+        Font goalFont = new Font(new FontFamily("Arial"), 8, FontStyle.Regular);
 
 
         private List<MovingEntity> entities = new List<MovingEntity>();
@@ -176,6 +178,39 @@ namespace SteeringCS
                 entity.PathToTarget?.Draw(g);
             }
             TheBoss.PathToTarget?.Draw(g);
+
+
+
+            //Draw the goals for all entities
+            if (goalsVisible)
+            {
+                int goalDraw_xCoord = 0;
+                int goalDraw_yCoord = 0;
+
+                foreach (MovingEntity entity in entities)
+                {
+                    List<string> entityGoals = entity.Brain.GetCompositeGoalAsStringList();
+                    //entityGoals.Reverse();
+                    goalDraw_xCoord = (int)(entity.Pos.X + entity.Scale + 5);
+                    goalDraw_yCoord = (int)entity.Pos.Y;
+                    foreach (string s in entityGoals)
+                    {
+                        g.DrawString(s, goalFont, Brushes.DarkSlateGray, goalDraw_xCoord, goalDraw_yCoord);
+                        goalDraw_yCoord += 8;
+                    }
+                }
+
+                
+                goalDraw_xCoord = (int)(TheBoss.Pos.X + TheBoss.Scale + 5);
+                goalDraw_yCoord = (int)TheBoss.Pos.Y;
+                List<string> bossGoalsList = TheBoss.Brain.GetCompositeGoalAsStringList();
+                //bossGoalsList.Reverse();
+                foreach (string s in bossGoalsList)
+                {
+                    g.DrawString(s, goalFont, Brushes.DarkSlateGray, goalDraw_xCoord, goalDraw_yCoord);
+                    goalDraw_yCoord += 8;
+                }
+            }
 
             //todo: Draw rooms
             //Kitchen

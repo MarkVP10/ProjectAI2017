@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SteeringCS.goal_driven_behaviour.AtomicSubgoals;
 
 namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 {
@@ -11,23 +12,36 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 
         //todo
 
-        public Goal_GoToPlayerSpot(World theWorld) : base(theWorld)
+        private readonly Vector2D destination;
+
+        public Goal_GoToPlayerSpot(World theWorld, Vector2D playerChoosenWorldCoords) : base(theWorld)
         {
+            destination = playerChoosenWorldCoords;
         }
 
         public override void Activate()
         {
-            throw new NotImplementedException();
+            state = Enums.State.Active;
+
+            //-Go to player appointed spot
+            //-Idle for 1 second
+            AddSubgoal(new Goal_IdleAtCurrentLocation(world, 1));
+            AddSubgoal(new Goal_GoToLocation(world, destination));
         }
 
         public override int Process()
         {
-            throw new NotImplementedException();
+            ActivateIfIdle();
+
+            state = (Enums.State)ProcessSubgoals();
+
+            return (int)state;
         }
 
         public override void Terminate()
         {
-            throw new NotImplementedException();
+            //nothing, realy...
+            Console.WriteLine("Done going to player spot");
         }
 
         public override string GetName()

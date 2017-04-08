@@ -12,8 +12,7 @@ namespace SteeringCS.goal_driven_behaviour
     abstract class CompositeGoal : Goal
     {
         //todo: remove all 'MyStack<Goal> subgoal' refecenses and commented code
-
-        //public MyStack<Goal> subgoals;
+        
         public Stack<Goal> subgoalStack;
 
 
@@ -25,7 +24,6 @@ namespace SteeringCS.goal_driven_behaviour
 
         public override void AddSubgoal(Goal g)
         {
-            //subgoals.Push(g);
             subgoalStack.Push(g);
         }
 
@@ -34,36 +32,19 @@ namespace SteeringCS.goal_driven_behaviour
             return (subgoalStack.Count > 0 && subgoalStack.Peek() != null);
         }
         
+
+        /// <summary>
+        /// Get a list of strings that have the names of all subgoals. This list is default reverced because all subgoals are in stacks.
+        /// </summary>
+        /// <returns></returns>
         public override List<string> GetCompositeGoalAsStringList()
         {
-            
-            //List<string> message = new List<string>();
-            //ListNode<Goal> indexNode = subgoals?.List.Head.Next;
-            
-            
-            ////Go through every subgoal to get the names of all goals.
-            //while (indexNode?.Data != null)
-            //{
-            //    List<string> returnedNames = indexNode.Data.GetCompositeGoalAsStringList();
-                    
-            //    foreach (string s in returnedNames)
-            //        message.Add("  " + s);
-
-            //    indexNode = indexNode.Next;
-            //}
-
-
-            ////Because there is a stack, the name order needs to be reverced
-            //message.Add(GetName());
-            //message.Reverse();
-            
-
-            //return message;
-            
-
-            
             List<string> message = new List<string>();
             List<Goal> goalList = subgoalStack.ToList();
+
+
+            message.Add(GetName());
+
             //Go through every subgoal to get the names of all goals.
             foreach (Goal goal in goalList)
             {
@@ -72,15 +53,10 @@ namespace SteeringCS.goal_driven_behaviour
                 
                 List<string> returnedNames = goal.GetCompositeGoalAsStringList();
                     
+                //Add a space for each string returned to simulate tabs
                 foreach (string s in returnedNames)
                     message.Add("  " + s);
             }
-
-
-            //Because there is a stack, the name order needs to be reverced
-            message.Add(GetName());
-            message.Reverse();
-            
 
             return message;
         }
@@ -115,38 +91,7 @@ namespace SteeringCS.goal_driven_behaviour
                 return (int)State.Complete;
             }
 
-
-
-
-
-            ////Remove all completed and/or failed goals from the top the subgoal list.
-            //while (subgoals.Top() != null && subgoals.Top().isComplete() || subgoals.Top().hasFailed())
-            //{
-            //    subgoals.Top().Terminate();
-            //    subgoals.Pop();
-            //}
-
-
-            //if (subgoals.Top() != null)
-            //{
-            //    if(subgoals.Top().isIdle())
-            //        subgoals.Top().Activate();
-
-            //    int statusOfSubGoals = subgoals.Top().Process();
-
-            //    //If the subgoal is complete, but there are more subgoals to complete
-            //    if (statusOfSubGoals == (int)State.Complete && subgoals.Size() > 1)
-            //        return (int)State.Active;
-
-
-            //    //Return the status of the latest processed subgoal. The subgoal either failed, is still active or is the last in the goal list (and the status of that goal will be returned).
-            //    return statusOfSubGoals;
-            //}
-            //else
-            //{
-            //    //No more subgoals to process, so this composite goal is comlete.
-            //    return (int)State.Complete;
-            //}
+            
         }
 
         public void RemoveAllSubgoals()
@@ -156,15 +101,6 @@ namespace SteeringCS.goal_driven_behaviour
                 subgoalStack.Pop().Terminate();
             }
             subgoalStack = new Stack<Goal>();
-
-
-
-            //while(subgoals.Top() != null)
-            //{
-            //    subgoals.Top().Terminate();
-            //    subgoals.Pop();
-            //}
-            //subgoals = new MyStack<Goal>();
         }
 
 

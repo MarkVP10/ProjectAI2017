@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteeringCS.behaviour;
+using SteeringCS.goal_driven_behaviour.ThinkGoals;
 using SteeringCS.graph;
 
 namespace SteeringCS
@@ -48,14 +49,24 @@ namespace SteeringCS
             world.Target.Pos = new Vector2D(e.X, e.Y);
 
 
+            world.TheBoss.Brain.HandleMessageToBrain("GoToPlayerSpot", e);
+            //try
+            //{
+                
+            //}
+            //catch (Exception)
+            //{
+                
+            //    throw;
+            //}
 
-            List<Vertex> thatList = world.restaurandFloorGraph.PrepareAStarUsingWorldPosition((int) world.TheBoss.Pos.X,
-                (int) world.TheBoss.Pos.Y, e.X, e.Y);
+            //List<Vertex> thatList = world.restaurandFloorGraph.PrepareAStarUsingWorldPosition((int) world.TheBoss.Pos.X,
+            //    (int) world.TheBoss.Pos.Y, e.X, e.Y);
 
-            AStarRemnant remnant = world.restaurandFloorGraph.AStar(thatList[0], thatList[1]);
-            world.AStar_FirstRemnant = remnant;
-            world.TheBoss.combineStratagy.SetTarget(remnant.GetPosition());
-            world.TheBoss.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.Seek);
+            //AStarRemnant remnant = world.restaurandFloorGraph.AStar(thatList[0], thatList[1]);
+            //world.AStar_FirstRemnant = remnant;
+            //world.TheBoss.combineStratagy.SetTarget(remnant.GetPosition());
+            //world.TheBoss.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.Seek);
 
             //todo: 
             //convert click position to graph node position (e.X, e.Y)
@@ -98,8 +109,12 @@ namespace SteeringCS
                     label_DecelerationSpeed.Text = "Fast";
                     world.SetArriveDeceleration(ArriveBehaviour.Deceleration.Fast);
                     break;
+
                 case 'd':
                     world.graphVisible = !world.graphVisible;
+                    break;
+                case 'g':
+                    world.goalsVisible = !world.goalsVisible;
                     break;
             }
         }

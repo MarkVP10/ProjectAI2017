@@ -8,12 +8,9 @@ namespace SteeringCS.AtomicSubgoals
     class Goal_FollowEdge : Goal
     {
         private AStarRemnant remnant;
-        //private Edge edge;
-        //private bool lastEdge;
         
-        //todo deside whether to use Remnant or Edge
-
-        //public Goal_FollowEdge(World theWorld, Edge edge, bool lastEdge) : base(theWorld)
+        //todo clean up all goals
+        
         public Goal_FollowEdge(World theWorld, AStarRemnant remnant) : base(theWorld)
         {
             //this.edge = edge;
@@ -26,11 +23,11 @@ namespace SteeringCS.AtomicSubgoals
             state = Enums.State.Active;
 
             //Set the target
-            //world.TheBoss.combineStratagy.SetTarget(edge.Destination.Pos);
             world.TheBoss.combineStratagy.SetTarget(remnant.GetPosition());
 
             //Set to Arrive to the last node. All other nodes will be Seeked.
             world.TheBoss.combineStratagy.SwitchBehaviour(remnant.isEnd() ? CombineForces.Behaviours.Arrive : CombineForces.Behaviours.Seek);
+            world.TheBoss.combineStratagy.SetArriveDeceleration(ArriveBehaviour.Deceleration.Slow);
         }
 
         public override int Process()
@@ -39,16 +36,17 @@ namespace SteeringCS.AtomicSubgoals
             
 
             //If reached the node, return complete
-            //if (world.TheBoss.IsAtPosition(edge.Destination.Pos))
             if (world.TheBoss.IsAtPosition(remnant.GetPosition()))
+            {
                 state = Enums.State.Complete;
-
+            }
             return (int)state;
         }
 
         public override void Terminate()
         {
-            world.TheBoss.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.None);
+            //Don't set the behaviour to None. This causes it to slide along the floor, because it still has Velocity.
+            //world.TheBoss.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.None);
         }
 
         public override string GetName()

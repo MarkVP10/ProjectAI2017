@@ -14,11 +14,15 @@ namespace SteeringCS.goal_driven_behaviour.ThinkGoals
         }
 
 
+        public override void HandleMessageToBrain(string simpleMessage, object data)
+        {
+            //cant handle messages
+        }
 
         public override string GetName()
         {
             //It doesn't do anything, so it will return an empty string
-            return "";
+            return "Braindead";
         }
     }
 }

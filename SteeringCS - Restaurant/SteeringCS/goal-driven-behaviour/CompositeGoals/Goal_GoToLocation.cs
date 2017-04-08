@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SteeringCS.behaviour;
 using SteeringCS.graph;
 
 namespace SteeringCS.goal_driven_behaviour.CompositeGoals
@@ -43,7 +44,10 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 
         public override void Terminate()
         {
-            //Doesn't do anything on terminate
+            //Hardstop the host movement when arrived on target
+            world.TheBoss.Velocity = new Vector2D();
+            world.TheBoss.combineStratagy.SetTarget(null);
+            world.TheBoss.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.None);
         }
 
         public override string GetName()

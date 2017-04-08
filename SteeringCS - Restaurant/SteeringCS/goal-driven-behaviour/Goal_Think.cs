@@ -51,6 +51,9 @@ namespace SteeringCS.goal_driven_behaviour
         }
 
 
+        //This is a VERY crude function. But we don't have time to develop and test the Telegram messaging system.
+        public abstract void HandleMessageToBrain(string simpleMessage, object data);
+
 
         public override string GetName()
         {

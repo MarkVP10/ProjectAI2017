@@ -84,6 +84,7 @@
     <Compile Include="goal-driven-behaviour\AtomicSubgoals\Goal_ChooseCustomer.cs" />
     <Compile Include="goal-driven-behaviour\AtomicSubgoals\Goal_FollowEdge.cs" />
     <Compile Include="goal-driven-behaviour\AtomicSubgoals\Goal_GetScoreFromCustomer.cs" />
+    <Compile Include="goal-driven-behaviour\AtomicSubgoals\Goal_IdleAtCurrentLocation.cs" />
     <Compile Include="goal-driven-behaviour\AtomicSubgoals\GoToCustomer.cs" />
     <Compile Include="goal-driven-behaviour\AtomicSubgoals\TalkCustomer.cs" />
     <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_FollowPath.cs" />

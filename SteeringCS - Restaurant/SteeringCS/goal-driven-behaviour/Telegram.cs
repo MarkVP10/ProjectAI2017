@@ -6,16 +6,8 @@ using System.Threading.Tasks;
 
 namespace SteeringCS.goal_driven_behaviour
 {
-    public class Telegram
+    class Telegram
     {
-        //todo
-
-        public Telegram()
-        {
-            throw new NotImplementedException();
-        }
-
-
-
+        //Todo
     }
 }

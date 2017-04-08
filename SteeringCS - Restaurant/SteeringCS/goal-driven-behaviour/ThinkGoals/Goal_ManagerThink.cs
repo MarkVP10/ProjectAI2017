@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using SteeringCS.goal_driven_behaviour.CompositeGoals;
 
 namespace SteeringCS.goal_driven_behaviour.ThinkGoals
@@ -29,7 +30,18 @@ namespace SteeringCS.goal_driven_behaviour.ThinkGoals
             else
                 AddGoal_WanderRestaurant();
         }
-        
+
+        public override void HandleMessageToBrain(string simpleMessage, object data)
+        {
+            switch (simpleMessage)
+            {
+                case "GoToPlayerSpot":
+                    if (data.GetType() == typeof (MouseEventArgs))
+                        AddGoal_GoToPlayerSpot(((MouseEventArgs)data).X, ((MouseEventArgs)data).Y);
+                    break;
+            }
+        }
+
         public void AddGoal_TalkWithCustomer()
         {
             //Check to see if the current subgoal is the talk with customer.
@@ -44,11 +56,9 @@ namespace SteeringCS.goal_driven_behaviour.ThinkGoals
 
         public void AddGoal_GoToPlayerSpot(int xCoord, int yCoord)
         {
-            if (!IsCurrentActiveSubgoal("GoToPlayerSpot"))
-            {
-                RemoveAllSubgoals();
-                AddSubgoal(new Goal_GoToPlayerSpot(world));
-            }
+            //Player will always interupt the current goal.
+            RemoveAllSubgoals();
+            AddSubgoal(new Goal_GoToPlayerSpot(world, new Vector2D(xCoord, yCoord)));
         }
 
 
@@ -57,7 +67,7 @@ namespace SteeringCS.goal_driven_behaviour.ThinkGoals
             if (!IsCurrentActiveSubgoal("WanderRestaurant"))
             {
                 RemoveAllSubgoals();
-                AddSubgoal(new Goal_WanderRestaurant(world));
+                AddSubgoal(new Goal_WanderRestaurant(world, 20, 40));
             }
         }
 

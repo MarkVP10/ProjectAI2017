@@ -9,22 +9,23 @@ namespace SteeringCS.world
 {
     class Table
     {
-
-        public int X;
-        public int Y;
+        //Center node of the table
+        public int X; // x value of the node
+        public int Y; // y value of the node
+        
         public bool IsFourPerson;
-        public bool HasCustomers; //todo: when customer arrives, set to true. When they leave, set to false
+        public bool HasCustomers;
 
         
-
         public Table(int xNode, int yNode, bool fourPeople)
         {
             X = xNode;
             Y = yNode;
             IsFourPerson = fourPeople;
         }
-
-
+        
+        //Returns the name for a node that the waiter (or any other personel) will stand at to talk to the table.
+        //This node is to the top right of the table.
         public string GetNodeNameForWaiterPosition()
         {
             string xxyy = "";
@@ -34,9 +35,5 @@ namespace SteeringCS.world
 
             return xxyy;
         }
-
-
-
-
     }
 }

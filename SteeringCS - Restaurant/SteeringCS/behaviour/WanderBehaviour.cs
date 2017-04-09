@@ -17,7 +17,7 @@ namespace SteeringCS.behaviour
 
 
         private const double OneRadian = Math.PI/180;
-        private static Random randomizer = new Random();
+        private static readonly Random randomizer = new Random();
 
         
         public WanderBehaviour(MovingEntity me, double radius, double distance, double jitter) : base(me)
@@ -26,7 +26,6 @@ namespace SteeringCS.behaviour
             wanderDistance = distance;
             wanderJitter = jitter;
             wanderCurrentAngle = randomizer.Next(0, 360);
-            //MessageBox.Show(wanderCurrentAngle.ToString()); //Prints current randomized angle to test if the randomizers are different //todo remove the messagebox.show
         }
 
         public override Vector2D Calculate()

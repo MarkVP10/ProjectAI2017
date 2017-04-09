@@ -18,9 +18,7 @@ namespace SteeringCS.util
         }
 
 
-
-        //todo Very inefficient!!
-        //todo Improve/Optimize later
+        
         public void Add(Vertex newItem)
         {
             //Adds the item to the first if the list is empty
@@ -33,8 +31,6 @@ namespace SteeringCS.util
             //Go through each vertex, untill you find one that has a lower 'score' (Score = Stepcount + (manhatten)Heuristic)
             foreach (Vertex vertex in queue)
             {
-                //todo: fix this: choose one...
-                //if (newItem.GetScore() < vertex.GetScore())
                 if (newItem.GetScore() <= vertex.GetScore())
                 {
                     queue.AddBefore(queue.Find(vertex), newItem);

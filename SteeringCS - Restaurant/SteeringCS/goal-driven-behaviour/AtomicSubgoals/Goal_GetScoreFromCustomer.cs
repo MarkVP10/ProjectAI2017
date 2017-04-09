@@ -2,24 +2,20 @@
 using System.Collections.Generic;
 using SteeringCS.fuzzy;
 using SteeringCS.goal_driven_behaviour;
+using SteeringCS.util;
 
 namespace SteeringCS.AtomicSubgoals
 {
     class Goal_GetScoreFromCustomer : Goal
     {
-
-        //todo
-
         public Goal_GetScoreFromCustomer(World theWorld) : base(theWorld)
-        {
-
-        }
+        {}
 
         public override void Activate()
         {
             state = Enums.State.Active;
 
-            Console.WriteLine("Start talking to customer.");
+            Utility.WriteToConsoleUsingColor("Start talking to customer.", ConsoleColor.White, ConsoleColor.Blue);
         }
 
         public override int Process()
@@ -68,10 +64,11 @@ namespace SteeringCS.AtomicSubgoals
             double fuzzyCrispResult = fm.CalculatePerRule(domFood, domService, "Total");
 
             //Talk to customer and use the fuzzy logic result to show the result of the review.
-            Console.WriteLine("Manager:'Is everything to your liking?'");
-            Console.WriteLine("Customer:'I'll give the dinner a " + Math.Round((fuzzyCrispResult/10), 1) +
-                              " out of 10!'");
-            Console.WriteLine("Manager:'Thank you for your review with your Fuzzy Logic. :)'");
+            string text = "Customer:'I'll give the dinner a " + Math.Round((fuzzyCrispResult / 10), 1) +
+                              " out of 10!'";
+            Utility.WriteToConsoleUsingColor("Manager:'Is everything to your liking?'", ConsoleColor.White, ConsoleColor.Gray);
+            Utility.WriteToConsoleUsingColor(text, ConsoleColor.White, ConsoleColor.DarkCyan);
+            Utility.WriteToConsoleUsingColor("Manager:'Thank you for your review with your Fuzzy Logic. :)'", ConsoleColor.White, ConsoleColor.Gray);
 
 
             state = Enums.State.Complete;
@@ -81,7 +78,7 @@ namespace SteeringCS.AtomicSubgoals
 
         public override void Terminate()
         {
-            Console.WriteLine("Done with talking");
+            Utility.WriteToConsoleUsingColor("Done with talking.", ConsoleColor.White, ConsoleColor.Red);
         }
 
         public override string GetName()

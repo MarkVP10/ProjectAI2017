@@ -15,22 +15,19 @@ namespace SteeringCS.entity
             Velocity = new Vector2D(0, 0);
             Scale = 5;
 
-            VColor = Color.Black;
+            VColor = Color.DarkRed;
         }
         
         public override void Render(Graphics g)
         {
+            //Determine position & size
             double leftCorner = Pos.X - Scale;
             double rightCorner = Pos.Y - Scale;
             double size = Scale * 2;
 
+            //Draw circle at last player clicked location
             Pen p = new Pen(VColor, 2);
             g.DrawEllipse(p, new Rectangle((int) leftCorner, (int) rightCorner, (int) size, (int) size));
-            g.DrawLine(p, (int) Pos.X, (int) Pos.Y, (int) Pos.X + (int)(Velocity.X * 2), (int)Pos.Y + (int)(Velocity.Y * 2));
-
-            //Draws the steering vector
-            Pen steeringPen = new Pen(Color.Green, 2);
-            g.DrawLine(steeringPen, (int)Pos.X, (int)Pos.Y, (int)Pos.X + (int)(SteeringV.X * 2), (int)Pos.Y + (int)(SteeringV.Y * 2));
         }
     }
 }

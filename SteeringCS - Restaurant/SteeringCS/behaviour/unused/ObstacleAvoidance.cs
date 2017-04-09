@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using SteeringCS.entity;
 using SteeringCS.util;
 
-namespace SteeringCS.behaviour
+namespace SteeringCS.behaviour.unused
 {
     class ObstacleAvoidance
     {
@@ -21,6 +17,12 @@ namespace SteeringCS.behaviour
         }
 
 
+        //
+        // Note: There are some thing that don't work yet. 
+        // Namely the detection box is not working. 
+        // The Vector rotator doesn't work yet, so whenever an obstacle is in range, it will detect it at random rotations (Mostly in an X pattern.)
+        // I think it might be caused by something in the Matrix2D class (in the base functions of Matrix2D) or something with rotating any Vector. (to allign obstacles to local worldspace)
+        //
         public Vector2D Calculate()
         {
             //The detection box length is proportional to the agent's velocity.
@@ -28,7 +30,11 @@ namespace SteeringCS.behaviour
 
 
             DetectionBoxLength += ME.Scale; //Added, so that when an entity is REALY large, this will still work...
-            List<BaseGameEntity> entitiesInRange = ME.MyWorld.GetAllObstaclesInRange(ME, DetectionBoxLength);
+            List<BaseGameEntity> entitiesInRange = new List<BaseGameEntity>();
+            /*
+             This function would get all entities in range of the entity, but that function has been removed from World.
+             entitiesInRange = ME.MyWorld.GetAllObstaclesInRange(ME, DetectionBoxLength);
+             */
 
 
 
@@ -49,10 +55,9 @@ namespace SteeringCS.behaviour
             if (angleNeededToPointHeaderToInfinitePositiveX < 0)
                 angleNeededToPointHeaderToInfinitePositiveX += 360;
             Matrix2D rotateMatrix2D = Matrix2D.RotateClockWise(angleNeededToPointHeaderToInfinitePositiveX);
+
             
-
-
-            //todo remove console.writeline
+            //Debug lines
             //Console.WriteLine(angleNeededToPointHeaderToInfinitePositiveX);
             //Console.WriteLine(ME.HeadingVector);
             //Console.WriteLine(Vector2D.ToDegrees(ME.HeadingVector));
@@ -64,7 +69,7 @@ namespace SteeringCS.behaviour
                 double vectorLength = toTarget.Length();
 
 
-                //todo remove
+                //Debug lines
                 //Console.WriteLine("VECTOR TO TARGET: " + toTarget.ToString());
 
 
@@ -83,8 +88,8 @@ namespace SteeringCS.behaviour
                 if(localY >= ME.Scale + obstacle.Scale)
                     continue;
 
-
-                //todo remove
+                
+                //Debug lines
                 //Console.WriteLine("WARNING! OBJECT IN RANGE! Location:" + LocalPos);
 
                 //Find and save intersection

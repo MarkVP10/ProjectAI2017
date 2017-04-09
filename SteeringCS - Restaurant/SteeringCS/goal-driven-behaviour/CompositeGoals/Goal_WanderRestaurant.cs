@@ -7,20 +7,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteeringCS.goal_driven_behaviour.AtomicSubgoals;
+using SteeringCS.util;
 
 namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 {
     class Goal_WanderRestaurant : CompositeGoal
     {
-
-        //todo
         private Stopwatch sw;
         private readonly int minTimeToWander;
         private readonly int maxTimeToWander;
         private int timeToWander;
-
-
-        private int tmpDebugTime = 0;
+        private int consoleUpdateTime;
 
         public Goal_WanderRestaurant(World theWorld, int minimumWanderTime, int maximumWanderTime) : base(theWorld)
         {
@@ -42,11 +39,16 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
             Vector2D randomSpot = world.restaurandFloorGraph.GetRandomVertex().Pos;
 
 
+            //Print to console
+            Utility.WriteToConsoleUsingColor("Start wandering the restaurant.", ConsoleColor.White, ConsoleColor.Blue);
+
+
             //Add last goal: Idle
             AddSubgoal(new Goal_IdleAtCurrentLocation(world, 3));
             //Add first goal: GoToLocation
             AddSubgoal(new Goal_GoToLocation(world, randomSpot));
             
+
             //Start the stopwatch after all the 'heavy' cost functions
             sw.Start();
         }
@@ -56,10 +58,12 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
             ActivateIfIdle();
 
 
-            if (sw.ElapsedMilliseconds > tmpDebugTime)
+            if (sw.ElapsedMilliseconds > consoleUpdateTime)
             {
-                tmpDebugTime += 1000;
-                Console.WriteLine("Wandering the restaurant! At " + sw.ElapsedMilliseconds / 1000.0 + " of " + timeToWander + " max seconds of wandering");
+                consoleUpdateTime += 1000;
+                string text = "Wandering the restaurant! At " + Math.Round(sw.ElapsedMilliseconds/1000.0) + " of " +
+                              timeToWander + " max seconds of wandering";
+                Utility.WriteToConsoleUsingColor(text, ConsoleColor.White, ConsoleColor.DarkYellow);
             }
             
 
@@ -77,7 +81,8 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
         public override void Terminate()
         {
             sw.Stop();
-            Console.WriteLine("Stop Wandering.\r\n\r\n");
+
+            Utility.WriteToConsoleUsingColor("Stop Wandering.\r\n\r\n", ConsoleColor.White, ConsoleColor.Red);
         }
 
         public override string GetName()

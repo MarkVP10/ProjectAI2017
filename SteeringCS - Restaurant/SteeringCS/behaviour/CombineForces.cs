@@ -9,10 +9,9 @@ namespace SteeringCS.behaviour
 {
     class CombineForces
     {
-        private SeekBehaviour seekBehaviour;
-        private ArriveBehaviour arriveBehaviour;
-        private WanderBehaviour wanderBehaviour;
-        private ObstacleAvoidance obstacleAvoidance;
+        private readonly SeekBehaviour seekBehaviour;
+        private readonly ArriveBehaviour arriveBehaviour;
+        private readonly WanderBehaviour wanderBehaviour;
 
 
         
@@ -32,15 +31,12 @@ namespace SteeringCS.behaviour
             seekBehaviour = new SeekBehaviour(me);
             arriveBehaviour = new ArriveBehaviour(me, ArriveBehaviour.Deceleration.Slow);
             wanderBehaviour = new WanderBehaviour(me, 30, 20, 20);
-            obstacleAvoidance = new ObstacleAvoidance(me);
         }
 
 
 
 
-
-
-        //todo, make the combined values
+        
         public Vector2D calcCombinedForce()
         {
             Vector2D combinedVector = new Vector2D();
@@ -58,13 +54,7 @@ namespace SteeringCS.behaviour
                 case Behaviours.None:
                     break;
             }
-
-
-            //todo swap
-            //combinedVector += (obstacleAvoidance.Calculate()*5);
-            obstacleAvoidance.Calculate();
-
-
+            
             return combinedVector;
         }
 

@@ -55,21 +55,19 @@
   <ItemGroup>
     <Compile Include="behaviour\ArriveBehaviour.cs" />
     <Compile Include="behaviour\CombineForces.cs" />
-    <Compile Include="behaviour\GroupFollowingBehaviour.cs" />
-    <Compile Include="behaviour\ObstacleAvoidance.cs" />
-    <Compile Include="behaviour\QueueBehaviour.cs" />
+    <Compile Include="behaviour\unused\GroupFollowingBehaviour.cs" />
+    <Compile Include="behaviour\unused\ObstacleAvoidance.cs" />
+    <Compile Include="behaviour\unused\QueueBehaviour.cs" />
     <Compile Include="behaviour\WanderBehaviour.cs" />
     <Compile Include="entity\BaseGameEntity.cs" />
     <Compile Include="behaviour\SeekBehaviour.cs" />
     <Compile Include="DBPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="entity\BasicCircularObstacle.cs" />
     <Compile Include="entity\Customer.cs" />
     <Compile Include="entity\Manager.cs" />
     <Compile Include="entity\MovingEntity.cs" />
     <Compile Include="entity\Obstacle.cs" />
-    <Compile Include="entity\PottedPlant.cs" />
     <Compile Include="entity\SentientTable.cs" />
     <Compile Include="entity\Vehicle.cs" />
     <Compile Include="entity\Waitress.cs" />
@@ -79,7 +77,6 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="goal-driven-behaviour\AtomicSubgoals\Goal_ChooseCustomer.cs" />
     <Compile Include="goal-driven-behaviour\AtomicSubgoals\Goal_FollowEdge.cs" />
     <Compile Include="goal-driven-behaviour\AtomicSubgoals\Goal_GetScoreFromCustomer.cs" />
     <Compile Include="goal-driven-behaviour\AtomicSubgoals\Goal_IdleAtCurrentLocation.cs" />
@@ -90,8 +87,10 @@
     <Compile Include="goal-driven-behaviour\CompositeGoals\Goal_WanderRestaurant.cs" />
     <Compile Include="goal-driven-behaviour\Goal_Think.cs" />
     <Compile Include="goal-driven-behaviour\Telegram.cs" />
+    <Compile Include="goal-driven-behaviour\ThinkGoals\Goal_CustomerThink.cs" />
     <Compile Include="goal-driven-behaviour\ThinkGoals\Goal_ManagerThink.cs" />
     <Compile Include="goal-driven-behaviour\ThinkGoals\Goal_NullThink.cs" />
+    <Compile Include="goal-driven-behaviour\ThinkGoals\Goal_WaitressThink.cs" />
     <Compile Include="graph\AStarRemnant.cs" />
     <Compile Include="fuzzy\FuzzyModule.cs" />
     <Compile Include="fuzzy\FuzzyRule.cs" />
@@ -117,10 +116,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="behaviour\SteeringBehaviour.cs" />
-    <Compile Include="stack\IStack.cs" />
-    <Compile Include="stack\LinkedList\LinkedList.cs" />
-    <Compile Include="stack\LinkedList\ListNode.cs" />
-    <Compile Include="stack\Stack.cs" />
     <Compile Include="util\Matrix2D.cs" />
     <Compile Include="util\PriorityQueue_Vertex.cs" />
     <Compile Include="util\Utility.cs" />
@@ -157,7 +152,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="behaviour\unused\README.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

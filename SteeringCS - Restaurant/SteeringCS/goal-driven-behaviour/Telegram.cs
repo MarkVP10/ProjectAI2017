@@ -8,6 +8,6 @@ namespace SteeringCS.goal_driven_behaviour
 {
     class Telegram
     {
-        //Todo
+        //unfortunately we couldn't implement this.
     }
 }

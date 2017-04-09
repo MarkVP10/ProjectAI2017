@@ -11,8 +11,6 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 {
     class Goal_GoToLocation : CompositeGoal
     {
-        //todo
-
         private readonly Vector2D destination;
 
 
@@ -25,12 +23,15 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
         {
             state = Enums.State.Active;
             
-
+            //Get the current host's position
             Vector2D currPos = world.TheBoss.Pos;
+
+            //Do A*
             List<Vertex> closestNodes = world.restaurandFloorGraph.PrepareAStarUsingWorldPosition((int)currPos.X, (int)currPos.Y, (int)destination.X, (int)destination.Y);
             AStarRemnant remnant = world.restaurandFloorGraph.AStar(closestNodes[0], closestNodes[1]);
-            AddSubgoal(new Goal_FollowPath(world, remnant));
             
+            //Add subgoal to follow remnant path.
+            AddSubgoal(new Goal_FollowPath(world, remnant)); //Even if remnant is null, the Goal_FollowPath will handle the null correctly without crashing
         }
 
         public override int Process()
@@ -44,7 +45,10 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 
         public override void Terminate()
         {
-            //Hardstop the host movement when arrived on target
+            //Hardstop the host movement when arrived on target. Otherwise it will slide across the floor because it still has Velocity.
+            //If the host has a high Velocity and makes a 'perfect' landing, it will stop immediately.
+            //It's ugly, we know... 
+
             world.TheBoss.Velocity = new Vector2D();
             world.TheBoss.combineStratagy.SetTarget(null);
             world.TheBoss.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.None);

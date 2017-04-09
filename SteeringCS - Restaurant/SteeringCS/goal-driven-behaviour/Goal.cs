@@ -8,8 +8,6 @@ using static SteeringCS.goal_driven_behaviour.Enums;
 
 namespace SteeringCS.goal_driven_behaviour
 {
-    //todo: Make this class generic and add a rule that all classes must be children of BaseGameEntity
-
     abstract class Goal
     {
         public State state = State.Idle;
@@ -29,7 +27,7 @@ namespace SteeringCS.goal_driven_behaviour
         }
 
 
-        //todo 'HandleMessage()' remove if not used
+        //It would've been nice if we could have finished this...
         public virtual bool HandleMessage(Telegram t)
         {return false;}
 

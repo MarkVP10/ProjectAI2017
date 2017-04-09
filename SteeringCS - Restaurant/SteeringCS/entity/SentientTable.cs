@@ -8,17 +8,15 @@ using SteeringCS.world;
 
 namespace SteeringCS.entity
 {
-    class SentientTable : Obstacle//:Obstacle or :MovingEntity or :BaseGameEntity ??
+    class SentientTable : Obstacle
     {
-
-        //todo
         public Table table;
-        private int nodeWidth;
+        private readonly int nodeWidth;
 
-        public SentientTable(Vector2D pos, World w, Table t, int nodeWidth) : base(pos, w)
+        public SentientTable(Vector2D pos, World w, Table t) : base(pos, w)
         {
             table = t;
-            this.nodeWidth = nodeWidth;
+            nodeWidth = World.graphNodeSeperationFactor;
         }
 
 

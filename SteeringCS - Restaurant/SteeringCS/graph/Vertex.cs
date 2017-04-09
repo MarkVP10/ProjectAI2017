@@ -9,15 +9,15 @@ namespace SteeringCS.graph
 {
     class Vertex
     {
-        public string Name;         //Name of this vertex.
+        public string Name;         //Name of this vertex. ("xxyy" where xx = X and yy = Y. So that tiles can easily be found)
         public List<Edge> Adjacent; //List of adjacent edges.
         public int X;            //n-th node from the left (tilebased location)
         public int Y;            //n-th node from the top (tilebased location)
-        public Vector2D Pos;    //Coord on the map
+        public Vector2D Pos;    //Coord on the map (pixel position)
 
         //Used in A*
         public Vertex Previous; //Stores the vertex
-        public int StepCount;   //How many steps away from the start this vertex is.
+        public double StepCount;   //How many steps away from the start this vertex is.
         public bool Seen;       //Set to true when searched.
         public Vertex Target;   //Target vertex
 
@@ -31,20 +31,9 @@ namespace SteeringCS.graph
 
             ResetPath();
         }
+        
 
-
-        //todo: remove debug function
-        public void printAdjacent()
-        {
-            foreach (Edge edge in Adjacent)
-            {
-                Console.WriteLine("{0}\t-->\t{1}\t|\t{2}", Name, edge.Destination.Name);
-            }
-        }
-
-
-
-
+        //Used to reset A* values after A* is done.
         public void ResetPath()
         {
             Previous = null;
@@ -58,11 +47,11 @@ namespace SteeringCS.graph
         {
             Target = t;
         }
-        public int GetScore()
+        public double GetScore()
         {
             return StepCount + CalculateManhattanHeuristic(Target);
         }
-        public int GetScore(Vertex target)
+        public double GetScore(Vertex target)
         {
             return StepCount + CalculateManhattanHeuristic(target);
         }
@@ -72,7 +61,5 @@ namespace SteeringCS.graph
                 return 0;
             return (Math.Abs(X - targetVertex.X) + Math.Abs(Y - targetVertex.Y));
         }
-
-        
     }
 }

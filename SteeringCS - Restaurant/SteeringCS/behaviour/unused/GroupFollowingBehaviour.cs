@@ -1,11 +1,8 @@
-﻿using SteeringCS.entity;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SteeringCS.entity;
 
-namespace SteeringCS.behaviour
+namespace SteeringCS.behaviour.unused
 {
     class GroupFollowingBehaviour
     {
@@ -35,6 +32,7 @@ namespace SteeringCS.behaviour
             this.UpdateFollowers(followers, leader, timeElapsed);
         }
 
+        //Call this method in the Update. Or make a way to implement this in CombineForces.
         private void UpdateFollowers(MovingEntity[] followers, MovingEntity leader, float timeElapsed)
         {
             int numFollowers = followers.Count();

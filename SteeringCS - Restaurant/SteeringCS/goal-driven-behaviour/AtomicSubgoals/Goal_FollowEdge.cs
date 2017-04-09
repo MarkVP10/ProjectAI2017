@@ -7,14 +7,10 @@ namespace SteeringCS.AtomicSubgoals
 {
     class Goal_FollowEdge : Goal
     {
-        private AStarRemnant remnant;
-        
-        //todo clean up all goals
+        private readonly AStarRemnant remnant;
         
         public Goal_FollowEdge(World theWorld, AStarRemnant remnant) : base(theWorld)
         {
-            //this.edge = edge;
-            //this.lastEdge = lastEdge;
             this.remnant = remnant;
         }
 
@@ -35,18 +31,19 @@ namespace SteeringCS.AtomicSubgoals
             ActivateIfIdle();
             
 
-            //If reached the node, return complete
-            if (world.TheBoss.IsAtPosition(remnant.GetPosition()))
-            {
+            //If reached the node, return complete (when it is the last remnant, you want to be more precise)
+            if (remnant.isEnd() && world.TheBoss.IsAtPosition(remnant.GetPosition(), 0.1))
                 state = Enums.State.Complete;
-            }
+            else if (!remnant.isEnd() && world.TheBoss.IsAtPosition(remnant.GetPosition()))
+                state = Enums.State.Complete;
+
+
             return (int)state;
         }
 
         public override void Terminate()
         {
-            //Don't set the behaviour to None. This causes it to slide along the floor, because it still has Velocity.
-            //world.TheBoss.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.None);
+            //nothing
         }
 
         public override string GetName()

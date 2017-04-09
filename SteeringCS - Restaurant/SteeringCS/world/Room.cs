@@ -9,9 +9,11 @@ namespace SteeringCS.world
 {
     class Room
     {
+        //Top Left node of the room.
         public readonly int topLeftNodeX;
         public readonly int topLeftNodeY;
 
+        //Bottom right node of the room
         public readonly int bottomRightNodeX;
         public readonly int bottomRightNodeY;
 
@@ -31,7 +33,7 @@ namespace SteeringCS.world
             topLeftNodeY = tlY;
             bottomRightNodeX = brX;
             bottomRightNodeY = brY;
-
+            
             this.color = color;
             this.name = name;
         }

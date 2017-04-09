@@ -15,7 +15,6 @@ namespace SteeringCS.behaviour
         public SeekBehaviour(MovingEntity me, Vector2D target = null) : base(me)
         {
             Target = target;
-            //Weight = 2;
         }
         
 

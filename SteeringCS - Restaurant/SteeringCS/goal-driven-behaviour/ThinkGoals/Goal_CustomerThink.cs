@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace SteeringCS.goal_driven_behaviour.ThinkGoals
 {
-    class Goal_NullThink : Goal_Think
+    class Goal_CustomerThink : Goal_Think
     {
-        public Goal_NullThink(World theWorld) : base(theWorld)
+        public Goal_CustomerThink(World theWorld) : base(theWorld)
         {
         }
-        
-        public override void HandleMessageToBrain(string simpleMessage, object data)
+
+        public override void HandleMessageToBrain(string simpleMessage, object data = null)
         {
-            //cant handle messages
+            //doesn't handle messages. (yet)
         }
 
         public override string GetName()
         {
-            return "Braindead";
+            return "BrainlessCustomer";
         }
     }
 }

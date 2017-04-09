@@ -32,13 +32,19 @@ namespace SteeringCS
 
 
         
-        public bool IsAtPosition(Vector2D targetPos)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="targetPos">The location you want to be at</param>
+        /// <param name="diffFactor">Optional param: Give a factor to multiply the differnce with. Numbers lower than 1 will increase accuracy. Numbers heigher than 1 will decrease accuracy</param>
+        /// <returns></returns>
+        public bool IsAtPosition(Vector2D targetPos, double diffFactor = 1)
         {
-            int deltaX = (int)Math.Abs(Pos.X - targetPos.X);
-            int deltaY = (int)Math.Abs(Pos.Y - targetPos.Y);
-            int difference = 10; //Max amount of pixels that the entity's and target's position can be differ.
+            double deltaX = (int)Math.Abs(Pos.X - targetPos.X);
+            double deltaY = (int)Math.Abs(Pos.Y - targetPos.Y);
+            double diff = 10 * diffFactor; //Max amount of pixels that the entity's and target's position can be differ.
 
-            return deltaX < difference && deltaY < difference;
+            return deltaX < diff && deltaY < diff;
         }
     }
     

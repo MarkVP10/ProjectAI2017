@@ -15,8 +15,8 @@ namespace SteeringCS
 {
     public partial class Form1 : Form
     {
-        World world;
-        System.Timers.Timer timer;
+        private readonly World world;
+        private System.Timers.Timer timer;
         
         public const int FPS = 60;
         public const float timeDelta = 1/(float)FPS;
@@ -25,8 +25,13 @@ namespace SteeringCS
         {
             InitializeComponent();
 
+
+            int newWidth = ((World.RestaurantWidth - 1) * World.graphNodeSeperationFactor) + 16; //The 16 is the two 8pixel width border on the left and right size
+            int newHeight = ((World.RestaurantHeight - 1) * World.graphNodeSeperationFactor) + 39; //The 39 is the two borders on top and bottom of the screen.
+            this.Size = new Size(newWidth, newHeight);
             world = new World(w: dbPanel1.Width, h: dbPanel1.Height);
 
+            lbl_ShowSteering.Text = world.steeringVisible.ToString();
             lbl_ShowGraph.Text = world.graphVisible.ToString();
             lbl_ShowPath.Text = world.pathVisible.ToString();
             lbl_ShowGoals.Text = world.goalsVisible.ToString();
@@ -50,9 +55,8 @@ namespace SteeringCS
         
         private void dbPanel1_MouseClick(object sender, MouseEventArgs e)
         {
-            world.Target.Pos = new Vector2D(e.X, e.Y);
-
-
+            world.SetPlayerTarget(e.X, e.Y);
+            
             world.TheBoss.Brain.HandleMessageToBrain("GoToPlayerSpot", e);
         }
 
@@ -60,6 +64,10 @@ namespace SteeringCS
         {
             switch (e.KeyChar)
             {
+                case 's':
+                    world.steeringVisible= !world.steeringVisible;
+                    lbl_ShowSteering.Text = world.steeringVisible.ToString();
+                    break;
                 case 'd':
                     world.graphVisible = !world.graphVisible;
                     lbl_ShowGraph.Text = world.graphVisible.ToString();
@@ -71,6 +79,9 @@ namespace SteeringCS
                 case 'g':
                     world.goalsVisible = !world.goalsVisible;
                     lbl_ShowGoals.Text = world.goalsVisible.ToString();
+                    break;
+                case (char)32: //space
+                    world.TheBoss.Brain.HandleMessageToBrain("ForceCustomerTalk");
                     break;
             }
         }

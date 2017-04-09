@@ -12,22 +12,12 @@ namespace SteeringCS.graph
 {
     class Graph
     {
-        //private List<Vertex> Map = new List<Vertex>();
-
-        private Dictionary<string, Vertex> graphMap = new Dictionary<string, Vertex>();
-
-        public double graphNodeSeperationFactor;
-
-        public Graph(double separationFactor)
-        {
-            graphNodeSeperationFactor = separationFactor;
-        }
-        
+        private readonly Dictionary<string, Vertex> graphMap = new Dictionary<string, Vertex>();
         
         
         public void AddVertex(Vertex v)
         {
-            //v.Name contains the tile number and nothing else. ex. v.Name = "2606"; 26 is the x-coord and 6 is the y-coord
+            //v.Name contains the tile number and nothing else. ex. v.Name = "2606"; 26 is the x-node and 6 is the y-node on the graph.
             graphMap.Add(v.Name, v);
         }
 
@@ -37,7 +27,7 @@ namespace SteeringCS.graph
                 AddVertex(vertex);
         }
 
-        public void AddEdge(string sourceName, string destinationName)
+        public void AddEdge(string sourceName, string destinationName, bool IsDiagonal = false)
         {
             Vertex source = GetVertex(sourceName);
             Vertex destination = GetVertex(destinationName);
@@ -50,31 +40,38 @@ namespace SteeringCS.graph
             }
                 
 
-            source.Adjacent.Add(new Edge(destination));
+            source.Adjacent.Add(new Edge(destination, IsDiagonal));
         }
-        public void AddMultiEdge(string sourceName, string destName)
+        public void AddMultiEdge(string sourceName, string destName, bool IsDiagonal = false)
         {
-            AddEdge(sourceName, destName);
-            AddEdge(destName, sourceName);
+            AddEdge(sourceName, destName, IsDiagonal);
+            AddEdge(destName, sourceName, IsDiagonal);
         }
 
 
 
 
 
-
+        /// <summary>
+        /// If you only have the world coordinates of a start and end position and want to get the Vertices of both at the same time.
+        /// Usefull if you want to use A* next.
+        /// </summary>
+        /// <param name="xStart">X coordinate of the start position in the world</param>
+        /// <param name="yStart">Y coordinate of the start position in the world</param>
+        /// <param name="xTarget">X coordinate of the end position in the world</param>
+        /// <param name="yTarget">Y coordinate of the end position in the world</param>
+        /// <returns>A list of two Vertices. The first index is the start Vertex, the second index is the end Vertex.</returns>
         public List<Vertex> PrepareAStarUsingWorldPosition(int xStart, int yStart, int xTarget, int yTarget)
         {
             List<Vertex> resultList = new List<Vertex>();
 
-
-            //
+            //Find the names of the nodes closest to the given coordinates
             resultList.Add(FindClosestNodeToWorldCoords(xStart, yStart));
             resultList.Add(FindClosestNodeToWorldCoords(xTarget, yTarget));
-            
 
             return resultList;
         }
+
 
         public Vertex FindClosestNodeToWorldCoords(int xCoord, int yCoord)
         {
@@ -137,6 +134,7 @@ namespace SteeringCS.graph
                 g.DrawEllipse(penBox, new RectangleF((float)vertex.Pos.X - 2f, (float)vertex.Pos.Y - 2f, 4, 4));
                 foreach (Edge edge in vertex.Adjacent)
                 {
+                    //Note that all nodes will be drawn, even the ones that are already drawn. This is due to the Edges being multidirectional and stored in seperate Vertecis.
                     g.DrawLine(penLine, (float)vertex.Pos.X, (float)vertex.Pos.Y, (float)edge.Destination.Pos.X, (float)edge.Destination.Pos.Y);
                 }
             }
@@ -157,17 +155,25 @@ namespace SteeringCS.graph
         }
         public AStarRemnant AStar(Vertex start, Vertex target)
         {
-            //todo: possiblitlity to make the step increment be math.sqrt(2) for diagonal edges...
-            int StepIncrement = 1;
+            //If no valid start or target are given, return with null
+            if (start == null || target == null)
+                return null;
+
+            //Set the values for NonDiagonal and Diagonal travel.
+            int StepIncrementNonDiagonal = 1;
+            double StepIncrementDiagonal = Math.Sqrt(2);
             
+
             List<Vertex> visitedVertices = new List<Vertex>();
             PriorityQueue_Vertex queue = new PriorityQueue_Vertex();
             
+            //Set the values for the first loop
             start.Seen = true;
             start.StepCount = 0;
             start.Target = target;
             queue.Add(start);
 
+            //Go through every node that is connected to the starter node to find the target node
             while (!queue.IsEmpty())
             {
                 Vertex currentVertex = queue.Pop();
@@ -182,8 +188,9 @@ namespace SteeringCS.graph
                     //If already seen, no need to do anything.
                     if (edge.Destination.Seen)
                         continue;
-                    
-                    
+
+                    double StepIncrement = edge.IsDiagonal ? StepIncrementDiagonal : StepIncrementNonDiagonal;
+
                     //Stepcount update
                     if (edge.Destination.StepCount >= currentVertex.StepCount + StepIncrement)
                     {
@@ -215,33 +222,6 @@ namespace SteeringCS.graph
 
             //Return the remnant containing all the other remnants
             return theFirstRemnant;
-        }
-
-
-
-        //todo: Remove this unnecesary function. I'll let it stay, because it might be used later on.
-        public void RemoveVertex(string vertexName)
-        {
-            //Get the vertex and check if it is present in the list.
-            Vertex target = GetVertexByName(vertexName);
-            if (target == null)
-                return;
-
-            //Go through each vertex that the target is connected to and remove all edges that connect to the target-vertex.
-            //(basically removing all multiedges.)
-            foreach (Edge edge in target.Adjacent)
-            {
-                //Gets the destination vertex from the target-vertex.
-                Vertex destination = edge.Destination;
-                destination.Adjacent =
-                    (from backEgde in destination.Adjacent where backEgde.Destination.Name != vertexName select backEgde)
-                        .ToList();
-            }
-
-            //Remove the target vertex from the list of vertexes. If this fails, throw an exception, because this isn't ment to happen.
-            if (!graphMap.Remove(target.Name))
-                throw new NullReferenceException(
-                    "There was an error removing a Node from the Graph.\r\nThe Node that the Graph is trying to remove is not present in the Vertex List.");
         }
 
 

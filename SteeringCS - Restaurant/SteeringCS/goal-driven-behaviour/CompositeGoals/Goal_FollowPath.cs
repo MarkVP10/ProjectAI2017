@@ -11,7 +11,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 {
     class Goal_FollowPath : CompositeGoal
     {
-        private AStarRemnant theFirstRemnant; //Used in render function
+        private AStarRemnant theFirstRemnant; //Possible future uses.
         private AStarRemnant currentRemnant;
         
 
@@ -56,7 +56,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 
             //When the FollowEdge is complete, but there are still more edges to follow.
             //Gets the next remnant
-            if (state == Enums.State.Complete && currentRemnant != null)
+            if (isComplete() && currentRemnant != null)
             {
                 Activate();
             }
@@ -67,7 +67,7 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 
         public override void Terminate()
         {
-            
+            //nothing to do.
         }
 
         public override string GetName()

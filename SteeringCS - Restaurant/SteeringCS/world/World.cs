@@ -21,11 +21,15 @@ namespace SteeringCS
 {
     class World
     {
-        public static readonly int graphNodeSeperationFactor = 30;
-        private readonly Graph restaurandWallGraph = new Graph(graphNodeSeperationFactor);
-        public readonly Graph restaurandFloorGraph = new Graph(graphNodeSeperationFactor);
+        public const int graphNodeSeperationFactor = 30; //Amount of pixels between nodes. And will determine the 'size' of the restaurant. Default is 30px.
+        public const int RestaurantWidth = 34; //amount of nodes that span the width of the restaurant
+        public const int RestaurantHeight = 28;//amount of nodes that span the height of the restaurant
+
+        private readonly Graph restaurandWallGraph = new Graph();
+        public readonly Graph restaurandFloorGraph = new Graph();
         
 
+        public bool steeringVisible = false; //S
         public bool graphVisible = true; //D
         public bool pathVisible = true; //F
         public bool goalsVisible = false; //G
@@ -36,13 +40,12 @@ namespace SteeringCS
         private readonly List<BaseGameEntity> obstacles = new List<BaseGameEntity>();
         private readonly List<SentientTable> tables = new List<SentientTable>();
         private readonly List<Room> rooms = new List<Room>(); 
-        public Manager TheBoss;
+        public Manager TheBoss; //Reference to the manager
 
-        public Vehicle Target { get; set; } //The player's last clicked location
+        private Vehicle Target; //The player's last clicked location
         public int Width { get; set; }
         public int Height { get; set; }
-        public readonly int RestaurantWidth = 34; //amount of nodes that span the width of the restaurant
-        public readonly int RestaurantHeight = 28;//amount of nodes that span the height of the restaurant
+        
 
         
 
@@ -53,89 +56,66 @@ namespace SteeringCS
         {
             Width = w;
             Height = h;
-            populate();
             GenerateGraph();
+            Populate();
         }
 
-        private void populate()
+        private void Populate()
         {
-            //Waitresses
-            Waitress w1 = new Waitress(new Vector2D(100, 200), this);
+            //Waitresses - they have no AI yet, so they will idle forever, except one, who will demonstrate the Wander Behaviour
+            Waitress w1 = new Waitress(restaurandFloorGraph.GetVertexByName("2705").Pos, this);
+            Waitress w2 = new Waitress(restaurandFloorGraph.GetVertexByName("3105").Pos, this);
+            Waitress w3 = new Waitress(restaurandFloorGraph.GetVertexByName("2709").Pos, this);
+            Waitress w4 = new Waitress(restaurandFloorGraph.GetVertexByName("3109").Pos, this);
             w1.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.Wander);
             entities.Add(w1);
-
-            Waitress w2 = new Waitress(new Vector2D(150, 200), this);
-            w2.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.Wander);
             entities.Add(w2);
-
-            Waitress w3 = new Waitress(new Vector2D(200, 200), this);
-            w3.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.Wander);
             entities.Add(w3);
-
-            Waitress w4 = new Waitress(new Vector2D(250, 200), this);
-            w4.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.Wander);
             entities.Add(w4);
 
-
+            
 
             //Manager
-            TheBoss = new Manager(new Vector2D(300, 300), this);
+            TheBoss = new Manager(restaurandFloorGraph.GetVertexByName("1010").Pos, this);
             entities.Add(TheBoss);
 
 
 
-            //todo make customers
-            //Customer c1 = new Customer(new Vector2D(100, 300), this);
-            //entities.Add(c1);
-            //Customer c2 = new Customer(new Vector2D(100, 400), this);
-            //entities.Add(c2);
-
-            Target = new Vehicle(new Vector2D(), this);
-            Target.VColor = Color.DarkRed;
-            Target.Pos = new Vector2D(-50, -50);
+            //Customers - they have no AI yet, so they will idle forever
+            Customer c1 = new Customer(restaurandFloorGraph.GetVertexByName("3026").Pos, this);
+            Customer c2 = new Customer(restaurandFloorGraph.GetVertexByName("3125").Pos, this);
+            Customer c3 = new Customer(restaurandFloorGraph.GetVertexByName("3226").Pos, this);
+            Customer c4 = new Customer(restaurandFloorGraph.GetVertexByName("1717").Pos, this);
+            Customer c5 = new Customer(restaurandFloorGraph.GetVertexByName("1816").Pos, this);
+            Customer c6 = new Customer(restaurandFloorGraph.GetVertexByName("1818").Pos, this);
+            c4.ChangeHeading(new Vector2D(1,0)); //Makes the customer face right.
+            entities.Add(c1);
+            entities.Add(c2);
+            entities.Add(c3);
+            entities.Add(c4);
+            entities.Add(c5);
+            entities.Add(c6);
         }
 
-
-        public void Queue(float timeElapsed)
-        {
-            //Queue behaviour, dont know if this is the right way to call it. It works though.
-            //To use this you can call this method in the Update method instead of the current code that is in there.
-            new QueueBehaviour().UpdateQueue(timeElapsed, entities, Target);
-        }
-        public void GroupFollowing(float timeElapsed)
-        {
-            //Group following behaviour, dont know if this is the right way to call it. It works though.
-            //To use this you can call this method in the Update method instead of the current code that is in there.
-            new GroupFollowingBehaviour().Group(timeElapsed, entities, Target);
-        }
-
+        
 
         public void Update(float timeElapsed)
         {
-            //todo: uncomment
-            //new GroupFollowingBehaviour().Group(timeElapsed, entities, Target);
-
             foreach (MovingEntity me in entities)
             {
                 me.Update(timeElapsed);
-                //me.Update(timeElapsed); //Double update??
             }    
         }
 
         public void Render(Graphics g)
         {
-            //todo: Draw rooms
-            //Kitchen
-            //BathroomMale
-            //BathroomFemale
-            //Reception
-            //Dining Area
-            //WalkingArea
+            //Draw the rooms
             foreach (Room room in rooms)
             {
                 g.FillRectangle(new SolidBrush(room.color), room.GetRectangle());
                 g.DrawString(room.name, goalFont, Brushes.Black, room.GetCenterPosition().ToPointF());
             }
+
 
             //Draw the Walls
             restaurandWallGraph.DrawGraph(g, Color.Black, 2f);
@@ -144,12 +124,11 @@ namespace SteeringCS
             if (graphVisible)
                 restaurandFloorGraph.DrawGraph(g, Color.SteelBlue);
 
-
-
             
+            //Render the Agents and Obstacles
             obstacles.ForEach(o => o.Render(g));
             entities.ForEach(e => e.Render(g));
-            Target.Render(g);
+            Target?.Render(g);
 
 
             //Draw the paths for entities if they have them, when needed
@@ -165,8 +144,8 @@ namespace SteeringCS
             //Draw the goals for all entities, when needed
             if (goalsVisible)
             {
-                int goalDraw_xCoord = 0;
-                int goalDraw_yCoord = 0;
+                int goalDraw_xCoord;
+                int goalDraw_yCoord;
 
                 foreach (MovingEntity entity in entities)
                 {
@@ -176,7 +155,7 @@ namespace SteeringCS
                     foreach (string s in entityGoals)
                     {
                         g.DrawString(s, goalFont, Brushes.DarkSlateGray, goalDraw_xCoord, goalDraw_yCoord);
-                        goalDraw_yCoord += 8;
+                        goalDraw_yCoord += 9;
                     }
                 }
             }
@@ -198,28 +177,13 @@ namespace SteeringCS
 
 
 
-        //Needed for object avoidance detection
-        public List<BaseGameEntity> GetAllWorldObstacles()
+        public void SetPlayerTarget(int xCoord, int yCoord)
         {
-            //todo: remove this function, seeing as we don;t use Obstacle Detection
-            return obstacles;
+            if (Target == null)
+                Target = new Vehicle(new Vector2D(), this);
+
+            Target.Pos = new Vector2D(xCoord, yCoord);
         }
-        public List<BaseGameEntity> GetAllObstaclesInRange(MovingEntity entity, double radius)
-        {
-            //todo: remove this function, seeing as we don;t use Obstacle Detection
-            //Fill the container with obstacles in range
-            List<BaseGameEntity> obstaclesWithinRange = new List<BaseGameEntity>();
-            foreach (BaseGameEntity obstacle in obstacles)
-            {
-                Vector2D toTarget = obstacle.Pos - entity.Pos;
-
-                //Test if the obstacle is within bounding radius, if it is, add it to the list
-                if (toTarget.Length() - obstacle.Scale < radius + entity.Scale)
-                    obstaclesWithinRange.Add(obstacle);
-            }
-
-            return obstaclesWithinRange;
-        } 
         
 
 
@@ -237,123 +201,7 @@ namespace SteeringCS
             GenerateTables();
             GenerateRooms();
         }
-
-
-        /*
-         How to call A* example:
-            //string start = "3024";
-            //string end = "1117";
-            string start = "1117";
-            string end = "3103";
-            AStarRemnant pathFindingRemnant = restaurandFloorGraph.AStar(start, end);
-            AStar_FirstRemnant = pathFindingRemnant;
-
-        Debug info:
-            AStarRemnant indexRemnant = pathFindingRemnant;
-            string message = "List of vertexes to target:";
-            while (indexRemnant != null)
-            {
-                message += ("\r\n [" + indexRemnant.GetPosition().X + ":" + indexRemnant.GetPosition().Y + "]");
-                indexRemnant = indexRemnant.GetNext();
-            }
-            MessageBox.Show(message);
-                         */
-
-
-
-
-        private void GenerateTables()
-        {
-            List<string> tableInJSON = ReadNodeFile(@"Data\RestaurantTablePosition.txt");
-
-            foreach (string s in tableInJSON)
-            {
-                //Not yet safe... Needs a try-catch
-                Table t = JsonConvert.DeserializeObject<Table>(s);
-                t = new Table(t.X, t.Y, t.IsFourPerson);
-
-
-
-                //todo remove this!!!
-                t.HasCustomers = true;
-
-                SentientTable st =
-                    new SentientTable(
-                        new Vector2D(t.X*graphNodeSeperationFactor, t.Y*graphNodeSeperationFactor), 
-                        this,
-                        t, 
-                        graphNodeSeperationFactor);
-
-                obstacles.Add(st);
-                tables.Add(st);
-            }
-        }
-
-
-
-        private void GenerateRooms()
-        {
-            rooms.Add(new Room(0,  0,  25, 6,  Color.DarkOrange, "Kitchen"));
-            rooms.Add(new Room(25, 0,  29, 3,  Color.RoyalBlue, "Toilet ♂"));
-            rooms.Add(new Room(29, 0,  33, 3,  Color.RoyalBlue, "Toilet ♀"));
-            rooms.Add(new Room(29, 22, 33, 27, Color.Peru, "Reception"));
-            rooms.Add(new Room(0,  6,  29, 27, Color.Pink, "Dining"));
-            rooms.Add(new Room(25, 3,  33, 6,  Color.OrangeRed, "Walkway"));
-            rooms.Add(new Room(29, 6,  33, 22, Color.OrangeRed, "Walkway"));
-        }
-
-
-
-
-
-        /// <summary>
-        /// Returns a list of strings that contains only JSON objects and is save to be used for deserialization. (Without worry of syntax errors or empty strings).
-        /// For this function to recognize JSON objects, the first character on the line must be a '{'.
-        /// </summary>
-        /// <param name="fileName"></param>
-        /// <returns></returns>
-        private List<string> ReadNodeFile(string fileName)
-        {
-            //ex. filename = @"Data\RestaurantWallNodes.txt";
-            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileName);
-            string[] lines = File.ReadAllLines(path);
-            List<string> nodeLines = new List<string>();
-
-
-            //todo: test is file is opened/exists before trying to read it. If it can't be found/opened, return an empty list or throw an error.
-
-
-            foreach (string s in lines)
-            {
-                string line = s.TrimStart();
-                if(line.Length == 0)
-                    continue;
-                char firstChar = line.Substring(0, 1).ToCharArray()[0];
-                if (firstChar == '{')
-                    nodeLines.Add(line);
-            }
-
-            return nodeLines;
-        }
-        private List<Vertex> CreateNodesFromFile(string filename)
-        {
-            List<Vertex> nodeList = new List<Vertex>();
-            List<string> fileNodeList = ReadNodeFile(filename);
-
-
-            //Convert JSON objects from the file to Vertex node objects.
-            foreach (string s in fileNodeList)
-            {
-                Vertex v = JsonConvert.DeserializeObject<Vertex>(s);
-                v = new Vertex(v.X, v.Y, graphNodeSeperationFactor);
-                nodeList.Add(v);
-            }
-
-            return nodeList;
-        }
-
-
-
+        
         private void GenerateWallEdges()
         {
             restaurandWallGraph.AddMultiEdge("0000", "0027");//TopLeft to BottomLeft
@@ -407,8 +255,8 @@ namespace SteeringCS
                         {
                             NE_Vertex =
                                 restaurandFloorGraph.GetVertexByName(Utility.LeadZero(x + 1) + Utility.LeadZero(y - 1));
-                            if(NE_Vertex != null)
-                                restaurandFloorGraph.AddMultiEdge(indexVertex.Name, NE_Vertex.Name);
+                            if (NE_Vertex != null)
+                                restaurandFloorGraph.AddMultiEdge(indexVertex.Name, NE_Vertex.Name, true);
                         }
 
                         //Diagonal: SouthEast
@@ -416,14 +264,95 @@ namespace SteeringCS
                         {
                             SE_Vertex = restaurandFloorGraph.GetVertexByName(Utility.LeadZero(x + 1) + Utility.LeadZero(y + 1));
                             if (SE_Vertex != null)
-                                restaurandFloorGraph.AddMultiEdge(indexVertex.Name, SE_Vertex.Name);
+                                restaurandFloorGraph.AddMultiEdge(indexVertex.Name, SE_Vertex.Name, true);
                         }
                     }
                 }
             }
 
         }
+        
+        private void GenerateTables()
+        {
+            List<string> tableInJSON = ReadNodeFile(@"Data\RestaurantTablePosition.txt");
+
+            foreach (string s in tableInJSON)
+            {
+                //Not yet safe... Needs a try-catch.
+                Table t = JsonConvert.DeserializeObject<Table>(s);
+                t = new Table(t.X, t.Y, t.IsFourPerson);
 
 
+
+                //
+                t.HasCustomers = true;
+
+                SentientTable st =
+                    new SentientTable(
+                        new Vector2D(t.X*graphNodeSeperationFactor, t.Y*graphNodeSeperationFactor), 
+                        this, t);
+
+                obstacles.Add(st);
+                tables.Add(st);
+            }
+        }
+        
+        private void GenerateRooms()
+        {
+            rooms.Add(new Room(0,  0,  25, 6,  Color.DarkOrange, "Kitchen"));
+            rooms.Add(new Room(25, 0,  29, 3,  Color.RoyalBlue, "Toilet ♂"));
+            rooms.Add(new Room(29, 0,  33, 3,  Color.RoyalBlue, "Toilet ♀"));
+            rooms.Add(new Room(29, 22, 33, 27, Color.Peru, "Reception"));
+            rooms.Add(new Room(0,  6,  29, 27, Color.Pink, "Dining"));
+            rooms.Add(new Room(25, 3,  33, 6,  Color.OrangeRed, "Walkway"));
+            rooms.Add(new Room(29, 6,  33, 22, Color.OrangeRed, "Walkway"));
+        }
+
+
+
+
+
+        /// <summary>
+        /// Returns a list of strings that contains only JSON objects and is save to be used for deserialization. (Without worry of syntax errors or empty strings).
+        /// For this function to recognize JSON objects, the first character on the line must be a '{'.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        private List<string> ReadNodeFile(string fileName)
+        {
+            //ex. filename = @"Data\RestaurantWallNodes.txt";
+            string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), fileName);
+            string[] lines = File.ReadAllLines(path);
+            List<string> nodeLines = new List<string>();
+
+            
+            foreach (string s in lines)
+            {
+                string line = s.TrimStart();
+                if(line.Length == 0)
+                    continue;
+                char firstChar = line.Substring(0, 1).ToCharArray()[0];
+                if (firstChar == '{')
+                    nodeLines.Add(line);
+            }
+
+            return nodeLines;
+        }
+        private List<Vertex> CreateNodesFromFile(string filename)
+        {
+            List<Vertex> nodeList = new List<Vertex>();
+            List<string> fileNodeList = ReadNodeFile(filename);
+
+
+            //Convert JSON objects from the file to Vertex node objects.
+            foreach (string s in fileNodeList)
+            {
+                Vertex v = JsonConvert.DeserializeObject<Vertex>(s);
+                v = new Vertex(v.X, v.Y, graphNodeSeperationFactor);
+                nodeList.Add(v);
+            }
+
+            return nodeList;
+        }
     }
 }

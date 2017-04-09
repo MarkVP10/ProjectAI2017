@@ -79,5 +79,15 @@ namespace SteeringCS.util
             //Returns the starter remnant, for it connects to all other remnants like a tree structure.
             return remnants[startVertex.Name];
         }
+
+
+
+        public static void WriteToConsoleUsingColor(string message, ConsoleColor fontColor, ConsoleColor backgroundColor)
+        {
+            Console.BackgroundColor = backgroundColor;
+            Console.ForegroundColor = fontColor;
+            Console.WriteLine(message);
+            Console.ResetColor();
+        }
     }
 }

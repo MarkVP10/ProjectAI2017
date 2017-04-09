@@ -1,46 +1,42 @@
-﻿using SteeringCS.stack;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SteeringCS.stack.LinkedList;
 using static SteeringCS.goal_driven_behaviour.Enums;
 
 namespace SteeringCS.goal_driven_behaviour
 {
     abstract class CompositeGoal : Goal
     {
-        //todo: remove all 'MyStack<Goal> subgoal' refecenses and commented code
-        
-        public Stack<Goal> subgoalStack;
+        public Stack<Goal> SubgoalStack;
 
 
         protected CompositeGoal(World theWorld) : base(theWorld)
         {
-            subgoalStack = new Stack<Goal>();
+            SubgoalStack = new Stack<Goal>();
         }
 
 
         public override void AddSubgoal(Goal g)
         {
-            subgoalStack.Push(g);
+            SubgoalStack.Push(g);
         }
 
         private bool IsNextGoalNonNull()
         {
-            return (subgoalStack.Count > 0 && subgoalStack.Peek() != null);
+            return (SubgoalStack.Count > 0 && SubgoalStack.Peek() != null);
         }
         
 
         /// <summary>
-        /// Get a list of strings that have the names of all subgoals. This list is default reverced because all subgoals are in stacks.
+        /// Get a list of strings that have the names of all subgoals.
         /// </summary>
         /// <returns></returns>
         public override List<string> GetCompositeGoalAsStringList()
         {
             List<string> message = new List<string>();
-            List<Goal> goalList = subgoalStack.ToList();
+            List<Goal> goalList = SubgoalStack.ToList();
 
 
             message.Add(GetName());
@@ -64,21 +60,21 @@ namespace SteeringCS.goal_driven_behaviour
         public int ProcessSubgoals()
         {
             //Remove all completed and/or failed goals from the top the subgoal list.
-            while (IsNextGoalNonNull() && (subgoalStack.Peek().isComplete() || subgoalStack.Peek().hasFailed()))
+            while (IsNextGoalNonNull() && (SubgoalStack.Peek().isComplete() || SubgoalStack.Peek().hasFailed()))
             {
-                subgoalStack.Pop().Terminate();
+                SubgoalStack.Pop().Terminate();
             }
 
 
-            if (subgoalStack.Count > 0)
+            if (SubgoalStack.Count > 0)
             {
-                if (subgoalStack.Peek().isIdle())
-                    subgoalStack.Peek().Activate();
+                if (SubgoalStack.Peek().isIdle())
+                    SubgoalStack.Peek().Activate();
 
-                int statusOfSubGoals = subgoalStack.Peek().Process();
+                int statusOfSubGoals = SubgoalStack.Peek().Process();
 
                 //If the subgoal is complete, but there are more subgoals to complete
-                if (statusOfSubGoals == (int)State.Complete && subgoalStack.Count() > 1)
+                if (statusOfSubGoals == (int)State.Complete && SubgoalStack.Count() > 1)
                     return (int)State.Active;
 
 
@@ -98,12 +94,9 @@ namespace SteeringCS.goal_driven_behaviour
         {
             while (IsNextGoalNonNull())
             {
-                subgoalStack.Pop().Terminate();
+                SubgoalStack.Pop().Terminate();
             }
-            subgoalStack = new Stack<Goal>();
+            SubgoalStack = new Stack<Goal>();
         }
-
-
-
     }
 }

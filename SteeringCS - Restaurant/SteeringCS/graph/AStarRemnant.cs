@@ -9,12 +9,10 @@ namespace SteeringCS.graph
 {
     class AStarRemnant
     {
-        //overwogen
-
         private AStarRemnant NextInRoute;
-        private List<AStarRemnant> Considered;
-        private Vector2D Position;
-        private bool IsEnd;
+        private readonly List<AStarRemnant> Considered;
+        private readonly Vector2D Position;
+        private readonly bool IsEnd;
 
         public AStarRemnant(Vector2D pos, bool end = false)
         {

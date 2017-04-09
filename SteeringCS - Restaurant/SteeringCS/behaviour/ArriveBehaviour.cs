@@ -17,7 +17,6 @@ namespace SteeringCS.behaviour
         {
             TargetPos = target;
             deceleration = dec;
-            //Weight = 2;
         }
         
 

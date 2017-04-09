@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SteeringCS.behaviour;
+using SteeringCS.util;
 
 namespace SteeringCS.goal_driven_behaviour.AtomicSubgoals
 {
@@ -27,7 +28,9 @@ namespace SteeringCS.goal_driven_behaviour.AtomicSubgoals
             world.TheBoss.combineStratagy.SetTarget(null);
             world.TheBoss.combineStratagy.SwitchBehaviour(CombineForces.Behaviours.None);
 
-            Console.WriteLine("Start idling.");
+            string text = "Start idling for " + amountOfSecondsToIdle + " seconds. ";
+            Utility.WriteToConsoleUsingColor(text, ConsoleColor.White, ConsoleColor.Blue);
+
             sw.Start();
         }
 
@@ -46,7 +49,8 @@ namespace SteeringCS.goal_driven_behaviour.AtomicSubgoals
         public override void Terminate()
         {
             sw.Stop();
-            Console.WriteLine("Stop idling.");
+
+            Utility.WriteToConsoleUsingColor("Stop idling.", ConsoleColor.White, ConsoleColor.Red);
         }
 
         public override string GetName()

@@ -10,9 +10,6 @@ namespace SteeringCS.goal_driven_behaviour.ThinkGoals
 {
     class Goal_ManagerThink : Goal_Think
     {
-
-
-
         public Goal_ManagerThink(World theWorld) : base(theWorld)
         {}
 
@@ -33,13 +30,16 @@ namespace SteeringCS.goal_driven_behaviour.ThinkGoals
             
         }
 
-        public override void HandleMessageToBrain(string simpleMessage, object data)
+        public override void HandleMessageToBrain(string simpleMessage, object data = null)
         {
             switch (simpleMessage)
             {
                 case "GoToPlayerSpot":
                     if (data.GetType() == typeof (MouseEventArgs))
                         AddGoal_GoToPlayerSpot(((MouseEventArgs)data).X, ((MouseEventArgs)data).Y);
+                    break;
+                case "ForceCustomerTalk":
+                    AddGoal_TalkWithCustomer();
                     break;
             }
         }
@@ -74,8 +74,9 @@ namespace SteeringCS.goal_driven_behaviour.ThinkGoals
         }
 
 
-
-
-
+        public override string GetName()
+        {
+            return "Think_Manager";
+        }
     }
 }

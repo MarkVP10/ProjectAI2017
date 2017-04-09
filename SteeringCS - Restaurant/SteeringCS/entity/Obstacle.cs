@@ -9,15 +9,11 @@ namespace SteeringCS.entity
 {
     abstract class Obstacle : BaseGameEntity
     {
-        public Obstacle(Vector2D pos, World w) : base(pos, w)
-        {
-
-        }
+        protected Obstacle(Vector2D pos, World w) : base(pos, w)
+        {}
 
 
         public override void Update(float delta)
-        {
-            
-        }
+        {}
     }
 }

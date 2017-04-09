@@ -12,7 +12,7 @@ namespace SteeringCS
         public MovingEntity ME { get; set; }
         public abstract Vector2D Calculate();
 
-        public SteeringBehaviour(MovingEntity me)
+        protected SteeringBehaviour(MovingEntity me)
         {
             ME = me;
         }

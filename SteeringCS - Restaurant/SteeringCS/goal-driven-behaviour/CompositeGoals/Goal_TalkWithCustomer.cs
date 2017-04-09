@@ -6,26 +6,24 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SteeringCS.AtomicSubgoals;
 using SteeringCS.goal_driven_behaviour.AtomicSubgoals;
+using SteeringCS.util;
 using SteeringCS.world;
 
 namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 {
     class Goal_TalkWithCustomer : CompositeGoal
     {
-
-        //todo
         private Table table;
 
 
         public Goal_TalkWithCustomer(World theWorld) : base(theWorld)
-        {
-        }
+        {}
 
 
         public override void Activate()
         {
             state = Enums.State.Active;
-            Console.WriteLine("ACTIVATING TALKING WITH CUSTOMER!");
+            Utility.WriteToConsoleUsingColor("Going to talk to a customer!", ConsoleColor.White, ConsoleColor.Blue);
 
 
             //Choose a customer filled table
@@ -35,10 +33,11 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
             {
                 //No tables available to talk to.
                 state = Enums.State.Failed;
-                Console.WriteLine("Wanted to talk to a customer, but there are none. :c");
+                Utility.WriteToConsoleUsingColor("Wanted to talk to a customer, but there are none. :c", ConsoleColor.White, ConsoleColor.Gray);
                 return;
             }
 
+            //Get the table position.
             string nameOfRandomTable = table.GetNodeNameForWaiterPosition();
             Vector2D tablePos = world.restaurandFloorGraph.GetVertexByName(nameOfRandomTable).Pos;
 
@@ -47,9 +46,9 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
             //Idle at table for 2 seconds
             //Get score from the customer
             //Idle at table for 2 seconds
-            //todo: Dismiss customers from table?
 
 
+            //Add the subgoals
             AddSubgoal(new Goal_IdleAtCurrentLocation(world, 2));
             AddSubgoal(new Goal_GetScoreFromCustomer(world));
             AddSubgoal(new Goal_IdleAtCurrentLocation(world, 2));
@@ -67,11 +66,11 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
 
         public override void Terminate()
         {
-            //nothing to clean up
-            Console.WriteLine("TERMINATE TALKING WITH CUSTOMER\r\n\r\n");
+            //Just says that it's done.
+            Utility.WriteToConsoleUsingColor("Done talking to customer.\r\n\r\n", ConsoleColor.White, ConsoleColor.Red);
 
-
-            //todo remove this!!!
+            
+            //Empties table after talking.
             table.HasCustomers = false;
         }
 
@@ -79,7 +78,5 @@ namespace SteeringCS.goal_driven_behaviour.CompositeGoals
         {
             return "TalkWithCustomer";
         }
-
-        
     }
 }

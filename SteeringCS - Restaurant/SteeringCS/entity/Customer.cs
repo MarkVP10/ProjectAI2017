@@ -10,7 +10,7 @@ namespace SteeringCS.entity
 {
     class Customer : MovingEntity
     {
-        public Customer(Vector2D pos, World w) : base(pos, w, new Goal_NullThink(w))
+        public Customer(Vector2D pos, World w) : base(pos, w, new Goal_CustomerThink(w))
         {
             Velocity = new Vector2D(0, 0);
             Scale = 15;
@@ -22,20 +22,19 @@ namespace SteeringCS.entity
         
         public override void Render(Graphics g)
         {
+            //Get variables to determine where to draw Customer, depending on the SideVector (perpendicular to HeadingVector) to determine where Customer is looking at.
             Vector2D v1 = Pos + (SideVector * Scale);//Left Circle
             Vector2D v2 = Pos - (SideVector * Scale);//Right Circle
-
-
-
             //
             double leftCorner = Pos.X - Scale;
             double rightCorner = Pos.Y - Scale;
             double size = Scale * 2;
-
+            //
             double v1_xCorner = v1.X - (Scale/2);
             double v1_yCorner = v1.Y - (Scale/2);
             double v2_xCorner = v2.X - (Scale/2);
             double v2_yCorner = v2.Y - (Scale/2);
+
 
             //Colors
             SolidBrush innerBrush = new SolidBrush(VColor);
@@ -53,14 +52,8 @@ namespace SteeringCS.entity
             g.DrawEllipse(outlinePen, new Rectangle((int)leftCorner, (int)rightCorner, (int)size, (int)size));
 
 
-            //Draw the velocity
-            Pen VelocityPen = new Pen(Color.Blue, 2);
-            g.DrawLine(VelocityPen, (int)Pos.X, (int)Pos.Y, (int)Pos.X + (int)(Velocity.X * 2), (int)Pos.Y + (int)(Velocity.Y * 2));
-
-            //Draws the steering vector
-            Pen steeringPen = new Pen(Color.Green, 2);
-            g.DrawLine(steeringPen, (int)Pos.X, (int)Pos.Y, (int)Pos.X + (int)(SteeringV.X * 2),
-                (int)Pos.Y + (int)(SteeringV.Y * 2));
+            if (MyWorld.steeringVisible)
+                RenderHeadingAndVelocity(g);
         }
     }
 }

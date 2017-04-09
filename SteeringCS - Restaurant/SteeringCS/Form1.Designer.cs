@@ -164,7 +164,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.Text = "Steering";
+            this.Text = "Restaurant";
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
             this.dbPanel1.ResumeLayout(false);
             this.dbPanel1.PerformLayout();
